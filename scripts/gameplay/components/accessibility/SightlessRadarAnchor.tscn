@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="AudioStream" path="res://_engine/audio/sounds/ui_default_typewriter.wav" id="1_23fss"]
+[ext_resource type="Script" path="res://_engine/scripts/gameplay/components/accessibility/SightlessRadarAnchor.gd" id="2_601uk"]
+[ext_resource type="Texture2D" uid="uid://dlm05wq0d1c2" path="res://packs/invo_CORE/characters/chs_stars/sprite_nya_heart.png" id="3_gbcpl"]
+
+[sub_resource type="Animation" id="Animation_03gy7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_348an"]
+resource_name = "pop"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.4, 1.4), Vector2(1, 1), Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7vn17"]
+_data = {
+"RESET": SubResource("Animation_03gy7"),
+"pop": SubResource("Animation_348an")
+}
+
+[node name="PING" type="AudioStreamPlayer2D"]
+scale = Vector2(6, 6)
+stream = ExtResource("1_23fss")
+volume_db = 10.0
+max_distance = 1024.0
+attenuation = 2.82843
+panning_strength = 1.5
+bus = &"Accessibility"
+script = ExtResource("2_601uk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_gbcpl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_7vn17")
+}
