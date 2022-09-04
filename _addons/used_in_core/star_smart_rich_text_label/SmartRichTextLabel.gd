@@ -61,9 +61,9 @@ func _gui_input(event):
 func write(_text):
 	is_typing = true
 	is_emitting_physical_sound = true
-	
+	clear()
 	visible = true
-	text = special_format(_text)
+	parse_bbcode(special_format(_text))
 	visible_characters = 0
 	
 	var old_text = get_parsed_text()
@@ -136,6 +136,7 @@ func write(_text):
 	clear()
 	resumed.emit()
 	completed.emit()
+	print("DIALOG FINISHED")
 
 func beep():
 	if has_node("beep"):

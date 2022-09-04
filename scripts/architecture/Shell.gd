@@ -94,7 +94,6 @@ func execute(command):
 				printx("Invalid Dialog!")
 				return
 			dialog_box.write("- " + command.content)
-			print(" :: ", command.params)
 			if input: input.release_focus()
 			await dialog_box.completed
 		# Item management
