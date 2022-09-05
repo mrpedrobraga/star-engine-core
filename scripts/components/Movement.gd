@@ -1,11 +1,15 @@
 @tool
 extends Component
-class_name Movement2D, "res://core/scripts/icons/icon_component_movement.png"
+class_name Movement2D
+@icon("res://_engine/scripts/icons/icon_component_movement.png")
 
 enum MovementMode {
 	FREE, DISCRETE
 }
 
+@export_category("Movement")
+
+@export_group("Input")
 @export var input_action_up := "move_up"
 @export var input_action_left := "move_left"
 @export var input_action_down := "move_down"
@@ -14,6 +18,7 @@ enum MovementMode {
 @export var input_action_special := "OK"
 @export var input_scale := Vector2.ONE
 
+@export_group("Parameters")
 @export var motion_mode : MovementMode
 @export var motion_maximum_speed := 768
 @export var motion_acceleration := 12288
@@ -24,6 +29,7 @@ enum MovementMode {
 @export var motion_jump_strength := 0.5
 @export var motion_sidescroller := false
 
+@export_group("Animation")
 @export var animation_visual_sprite : CanvasItem
 @export var animation_active := false
 @export var animation_squash_and_stretch_active := false

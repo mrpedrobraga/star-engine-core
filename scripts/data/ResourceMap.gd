@@ -36,21 +36,18 @@ func get_resource(name : String) -> Resource:
 ## Gets a resource from the resource map tree.
 ## Accepts nested paths (an array path).
 func Nget_resource(name : PackedStringArray):
-	var sub
-	
 	# If there is no entry with the name, return null.
 	if not _data.has(name[0]): return ERR_DOES_NOT_EXIST
+
 	# If it is already loaded, simply return it.
-	if _data[name[0]].loaded:
-		sub = _data[name[0]].resource
-	# If not, load and then retrieve it.
-	sub = load(_data[name[0]].path)
+	var sub = _data[name[0]].get_resource()
 	
 	# If the return value is a resource map, continue Ngetting from it.
 	if sub is ResourceMap:
 		name.remove_at(0)
 		return sub.Nget_resource(name)
 	
+	# If not, return the resource.
 	return sub
 
 func preload_batch(names : Array[String]) -> void:
@@ -80,4 +77,20 @@ func load_resource(name):
 	resource_loaded.emit(name)
 
 func _to_string():
-	return str(_data)
+	var s := ""
+	for k in _data.keys():
+		var v = _data[k]
+		s += str(k) + ":\t\t" + str(v)
+	return s
+
+func get_formated_description() -> String:
+	var s := ""
+	
+	s += "[table=2]"
+	
+	for k in _data.keys():
+		var v = _data[k]
+		s += "[cell]\"%s\"  [/cell][cell]%s[/cell]" % [str(k), v.get_formated_description()]
+	
+	s += "[/table]"
+	return s

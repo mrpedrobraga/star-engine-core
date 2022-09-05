@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6sk3ko4lvski"
-path="res://.godot/imported/icon_event.png-6d0d3199f0df75ecfb39ce610100e510.ctex"
+uid="uid://cxshemj8dfk2o"
+path="res://.godot/imported/icon_pathwayevent_small.png-fe313ece8f8a7a823ddc8254810f4aa2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://_engine/scripts/gameplay/events/icon_event.png"
-dest_files=["res://.godot/imported/icon_event.png-6d0d3199f0df75ecfb39ce610100e510.ctex"]
+source_file="res://_engine/scripts/icons/icon_pathwayevent_small.png"
+dest_files=["res://.godot/imported/icon_pathwayevent_small.png-fe313ece8f8a7a823ddc8254810f4aa2.ctex"]
 
 [params]
 

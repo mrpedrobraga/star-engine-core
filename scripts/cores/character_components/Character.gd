@@ -18,4 +18,4 @@ class_name Character
 @export var world_node : Node2D
 
 func _to_string():
-	return "[Character:"+str(name)+"]"
+	return "[Character: "+str(name)+"]"

@@ -69,6 +69,7 @@ func engage_battle(battle : BattleInstance):
 	battle_requested.emit()
 	Game.Audio.bgm_pause()
 	Game.Audio.battle_start()
+	Game.set_state(&"Battle")
 	battle_engage_transition()
 	
 	await get_tree().create_timer(0.2).timeout
@@ -126,6 +127,7 @@ func dismiss_battle():
 	await get_tree().create_timer(0.2).timeout
 	
 	Game.Audio.bgm_resume()
+	Game.set_state(&"Overworld")
 	battle_dismissed.emit()
 
 func battle_dismiss_transition():

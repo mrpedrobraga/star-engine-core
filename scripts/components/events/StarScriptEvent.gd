@@ -1,6 +1,6 @@
 extends __EventBase
 class_name StarScriptEvent
-@icon("icon_dialogevent.png")
+@icon("res://_engine/scripts/icons/icon_dialogevent_small.png")
 
 @export var event_pool : Resource
 @export var event_key : String = ""

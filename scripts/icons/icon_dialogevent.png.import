@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dpkf63o1emnsm"
-path="res://.godot/imported/icon_dialogevent.png-7d4b169848d626bbd083aa67ba03126f.ctex"
+path="res://.godot/imported/icon_dialogevent.png-0c7a82d42414be72b8f5c3b5afd89454.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://_engine/scripts/gameplay/events/icon_dialogevent.png"
-dest_files=["res://.godot/imported/icon_dialogevent.png-7d4b169848d626bbd083aa67ba03126f.ctex"]
+source_file="res://_engine/scripts/icons/icon_dialogevent.png"
+dest_files=["res://.godot/imported/icon_dialogevent.png-0c7a82d42414be72b8f5c3b5afd89454.ctex"]
 
 [params]
 

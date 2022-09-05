@@ -1,11 +1,14 @@
-##Class that encapsulates an instance of a game,
-##it loads Core nodes from the scene tree plus
+##Class that encapsulates an instance of a game,.
+##
+##It loads Core nodes from the scene tree plus
 ##handle some things.
 ##
 ##Instead of instantiating this class, you should
 ##probably [i]write your own[/i].
+
 extends Control
-class_name GameInstance, "res://core/scripts/icons/icon_Game.svg"
+class_name GameInstance
+@icon("res://_engine/scripts/icons/icon_dialogevent.png")
 
 @export var audio_core : Node
 @export var dialog_cutscene_core : Node

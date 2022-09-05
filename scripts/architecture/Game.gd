@@ -1,10 +1,14 @@
-##Singleton that handles the many cores this engine profiles
-##and the game state.
+## Singleton that handles the many cores this engine profiles
+## and the game state.
 ##
-##This is an optional class, provided for convenience,
-##when creating you game you should probably not inherit
-##this class; instead make your own taking this one as
-##inspiration.
+## This is class, provided for convenience,
+## when creating you game you should probably not inherit
+## this class; instead make your own taking this one as
+## inspiration.
+##
+## For all of the Cores to work you need to provide them with a
+## reference to this class by adding it as a singleton named
+## 'Game'.
 extends Node
 
 ##################### SINGLETONS #####################
@@ -30,7 +34,7 @@ var States := {
 ##Emitted when the game state changes.
 ##@param state The state to which the Game changed.
 signal state_changed(state)
-var _current_state : StringName
+var _current_state : StringName = &"Overworld"
 
 ##Sets the current game state.
 func set_state( state : StringName ) -> void:
