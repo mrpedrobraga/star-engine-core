@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6sk3ko4lvski"
-path="res://.godot/imported/icon_event.png-53ad965bb0c683e8e76b01d0475c2231.ctex"
+uid="uid://drkvhp13eysrn"
+path="res://.godot/imported/icon_dialogevent_small.png-026cb3f6e56c3483fff7839b394adcb6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://_engine/_addons/used_in_core/star_events/icon_event.png"
-dest_files=["res://.godot/imported/icon_event.png-53ad965bb0c683e8e76b01d0475c2231.ctex"]
+source_file="res://_engine/scripts/gameplay/events/icon_dialogevent_small.png"
+dest_files=["res://.godot/imported/icon_dialogevent_small.png-026cb3f6e56c3483fff7839b394adcb6.ctex"]
 
 [params]
 

@@ -3,6 +3,7 @@
 @tool
 extends RichTextLabel
 class_name SmartRichTextLabel
+@icon("icon_smart_rich_text_label.png")
 
 ##################################################################
 #
@@ -63,16 +64,17 @@ func write(_text):
 	is_emitting_physical_sound = true
 	clear()
 	visible = true
-	parse_bbcode(special_format(_text))
+	var with_bb_code = special_format(_text)
+	parse_bbcode(with_bb_code)
 	visible_characters = 0
 	
 	var old_text = get_parsed_text()
 	
 	for i in FormatCharacters.values():
-		text = text.replace(i, "")
+		with_bb_code = with_bb_code.replace(i, "")
+	parse_bbcode(with_bb_code)
 	
-	var parsed_text = get_parsed_text()
-	DisplayServer.tts_speak(parsed_text, "")
+	if tts_enabled: DisplayServer.tts_speak(get_parsed_text(), "")
 	
 	resumed.emit()
 	
@@ -136,7 +138,6 @@ func write(_text):
 	clear()
 	resumed.emit()
 	completed.emit()
-	print("DIALOG FINISHED")
 
 func beep():
 	if has_node("beep"):

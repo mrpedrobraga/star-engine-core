@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxshemj8dfk2o"
-path="res://.godot/imported/icon_pathwayevent_small.png-08ead58d591bbca1203b2d75937677ad.ctex"
+uid="uid://chjmp42nr20n2"
+path="res://.godot/imported/icon_smart_rich_text_label.png-d39ef88a4ca9f78dd0bd43afec2e6637.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://_engine/_addons/used_in_core/star_events/icon_pathwayevent_small.png"
-dest_files=["res://.godot/imported/icon_pathwayevent_small.png-08ead58d591bbca1203b2d75937677ad.ctex"]
+source_file="res://_engine/_addons/used_in_core/star_smart_rich_text_label/icon_smart_rich_text_label.png"
+dest_files=["res://.godot/imported/icon_smart_rich_text_label.png-d39ef88a4ca9f78dd0bd43afec2e6637.ctex"]
 
 [params]
 

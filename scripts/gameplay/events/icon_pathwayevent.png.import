@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpkf63o1emnsm"
-path="res://.godot/imported/icon_dialogevent.png-b7a8db5069e3f1669b1472ca8bbe91f8.ctex"
+uid="uid://ceib0lu46mo4e"
+path="res://.godot/imported/icon_pathwayevent.png-1f3acd792e5f759dce10df822f458f1f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://_engine/_addons/used_in_core/star_events/icon_dialogevent.png"
-dest_files=["res://.godot/imported/icon_dialogevent.png-b7a8db5069e3f1669b1472ca8bbe91f8.ctex"]
+source_file="res://_engine/scripts/gameplay/events/icon_pathwayevent.png"
+dest_files=["res://.godot/imported/icon_pathwayevent.png-1f3acd792e5f759dce10df822f458f1f.ctex"]
 
 [params]
 

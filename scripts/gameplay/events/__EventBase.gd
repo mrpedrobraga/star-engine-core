@@ -3,7 +3,7 @@
 ##or every tick.
 extends Area2D
 class_name __EventBase
-@icon("res://addons/builtin/star_events/icon_event.png")
+@icon("icon_event_small")
 
 enum TriggerCondition {
 	ON_TOUCH, ON_INTERACT, ON_SCENE_START, EVERY_TICK

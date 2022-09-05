@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chjmp42nr20n2"
-path="res://.godot/imported/addonicon_smart_rich_text_label.png-0e2fc8f8e9906f57f366c04c22202ab2.ctex"
+uid="uid://8xda041088uw"
+path="res://.godot/imported/icon_event_small.png-c8fc8dcbd28a85d99c6d40f2b610509a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://_engine/_addons/used_in_core/star_smart_rich_text_label/addonicon_smart_rich_text_label.png"
-dest_files=["res://.godot/imported/addonicon_smart_rich_text_label.png-0e2fc8f8e9906f57f366c04c22202ab2.ctex"]
+source_file="res://_engine/scripts/gameplay/events/icon_event_small.png"
+dest_files=["res://.godot/imported/icon_event_small.png-c8fc8dcbd28a85d99c6d40f2b610509a.ctex"]
 
 [params]
 

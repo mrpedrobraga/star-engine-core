@@ -2,6 +2,8 @@ extends __GameplayCoreBase
 class_name AudioCore, "res://core/scripts/icons/icon_music.svg"
 
 @onready var bgm_player : AudioStreamPlayer = $BGM
+var _bgm_back_buffer : AudioStream
+
 @onready var battle_player : AudioStreamPlayer = $BattlePlayer
 
 @onready var sfx_battle_start : AudioStreamPlayer = $SFX_Battle_Start
@@ -11,9 +13,10 @@ func bgm_pause():
 
 func bgm_load_from_bank(bgm:String) -> void:
 	Shell.printx("[Game::AudioCore] Loading BGM from MUS/" + str(bgm))
-	bgm_player.stream = Game.Data.get_resource("MUS/" + bgm)
+	_bgm_back_buffer = Game.Data.get_resource("MUS/" + bgm)
 
 func bgm_resume() -> void:
+	bgm_player.stream = _bgm_back_buffer
 	if not bgm_player.playing:
 		bgm_player.play()
 	bgm_player.stream_paused = false
