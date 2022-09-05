@@ -2,7 +2,7 @@
 extends Node
 class_name __Shell, "res://core/scripts/icons/icon_console.svg"
 
-##################### The SHELL #####################
+#
 
 # The environment variables for the shell.
 @export var ENV := {}
@@ -25,6 +25,12 @@ func execute_block(commands):
 		execute(command)
 		await command_finished
 	sequence_finished.emit()
+
+##TODO: Change this class to a generic class!
+# it will have an overridable execute function.
+#
+#func execute(command):
+#	await get_tree().process_frame
 
 ##Executes a single command in StarScript dictionary format.
 func execute(command):
