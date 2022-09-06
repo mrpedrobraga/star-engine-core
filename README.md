@@ -177,8 +177,10 @@ And since there's `StarScriptEvent` that calls a StarScript file when it's trigg
 You can contribute by opening issues, pull requests (for solving issues), proposals...
 You can also contribute by giving me money, with which I'll pay bills and be alive to make more things for Star Engine and other Star projects.
 
-🔶 [Patreon not yet available]
-☕ Buy me a coffee : [https://ko-fi.com/mrpedrobraga]
+<hr/>
+🔶 [Patreon not yet available]<br/>
+☕ Buy me a coffee : [https://ko-fi.com/mrpedrobraga]<br/>
+<hr/>
 
 In another, stranger, way, you can also contributing by sharing what you've built with Star.
 
