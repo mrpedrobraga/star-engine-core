@@ -1,11 +1,11 @@
-# Star Engine
+# ⭐ Star Engine
 
 A simple, modular, *cherry-pickable* framework for creating RPG-like games in [Godot Engine](https://godotengine.org/).
  
 Star Engine is the engine used in my ([@mrpedrobraga](https://twitter.com/mrpedrobraga) game *'Inner Voices'*.
 It contains components backported from it but made to be completely agnostic to it.
 
-## The idea behind it
+## 🪧 The idea behind it
 
 With Star Engine, you can use it entirely (with integration addons) OR cherry-pick which classes you want and copy those to your project -- many classes are built to work on their own, making this possible.
 
@@ -34,9 +34,9 @@ It is designed as a **Multi-level API**. This means you can choose to let Star d
 And lastly, but not leastly(...?), it contains the beautiful StarScript -- a domain-specific language for writing dialogs for Star. 
 Its parser is wonderfully generic, so you can add your own commands.
 
-# How to use Star Engine
+# 🪧 How to use Star Engine
 
-## Preparation
+## 🚩 Preparation
 
 - First, you'll need Godot Engine and be basically acquainted to it.
 
@@ -48,7 +48,7 @@ Its parser is wonderfully generic, so you can add your own commands.
 > 
 > Don't worry, it's super easy.
 
-## Download
+## ⬇️ Download
 
 Go to your project's folder and download the repository there inside a folder.
 
@@ -64,7 +64,7 @@ git submodule add https://github.com/mr-pedro-braga/star-engine-core.git <your_s
 > 
 > This is the advice of someone who has been through many things...
 
-## How to Use
+## 📓 What's in it?
 
 There are four types of additions that Star provies.
 
@@ -84,7 +84,7 @@ For Cores, however, you'll need to...
 
 That's it!
 
-## Workflow
+## 🌊 Workflow
 
 I previously mentioned Star is a multi-level API. But what does that mean?
 
@@ -172,13 +172,13 @@ Those files get parsed before in editor-time, before your game ever runs, so no 
 
 And since there's `StarScriptEvent` that calls a StarScript file when it's triggered in the world. This means after you code the base of your game, the level designer *may never need to touch GDScript.*
 
-# Contributing
+# ❤️ Contributing
 
 You can contribute by opening issues, pull requests (for solving issues), proposals...
 You can also contribute by giving me money, with which I'll pay bills and be alive to make more things for Star Engine and other Star projects.
 
-[Patreon not yet available]
-Buy me a coffee : [https://ko-fi.com/mrpedrobraga]
+🔶 [Patreon not yet available]
+☕ Buy me a coffee : [https://ko-fi.com/mrpedrobraga]
 
 In another, stranger, way, you can also contributing by sharing what you've built with Star.
 
