@@ -37,7 +37,7 @@ And if you want different ones, you can extend and/or modify their code -- in fa
 It is designed as a **Multi-level API**. This means you can choose to let Star do the work for you, but it's not ALL or nothing -- you can choose exactly how much and in which ways Star takes control. In programmin lingo, you have a steady chain from low-level to high-level that you can intercept anywhere.
 
 And lastly, but not leastly(...?), it contains the beautiful StarScript -- a domain-specific language for writing dialogs for Star. 
-Its parser is wonderfully generic, so you can add your own commands.
+Its parser is wonderfully generic, so you can add your own commands, and it's so easy to use that even Benichi can do so.
 
 # 🪧 How to use Star Engine
 
