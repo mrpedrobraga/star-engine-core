@@ -1,5 +1,10 @@
 # ⭐ Star Engine
 
+> This repo is currently in development -- alpha 0.3
+> 
+> You can still use it on your game, but things might change at any moment.
+> So update at your own risk.
+
 A simple, modular, *cherry-pickable* framework for creating RPG-like games in [Godot Engine](https://godotengine.org/).
  
 Star Engine is the engine used in my ([@mrpedrobraga](https://twitter.com/mrpedrobraga) game *'Inner Voices'*.
