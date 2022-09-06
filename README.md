@@ -179,7 +179,7 @@ You can also contribute by giving me money, with which I'll pay bills and be ali
 
 <hr/>
 🔶 [Patreon not yet available]<br/>
-☕ Buy me a coffee : [https://ko-fi.com/mrpedrobraga]<br/>
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'C0C4BRV1X');kofiwidget2.draw();</script> <br/>
 <hr/>
 
 In another, stranger, way, you can also contributing by sharing what you've built with Star.
