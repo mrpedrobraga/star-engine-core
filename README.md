@@ -4,6 +4,8 @@
 > 
 > You can still use it on your game, but things might change at any moment.
 > So update at your own risk.
+> 
+> And, unlike another similar engine, Modot, it might even get released at some point.
 
 A simple, modular, *cherry-pickable* framework for creating RPG-like games in [Godot Engine](https://godotengine.org/).
  
