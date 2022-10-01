@@ -1,6 +1,7 @@
 ##CORE class that handles turn-based battles!
 extends __GameplayCoreBase
-class_name BattleCore, "res://core/scripts/icons/icon_event_pathway.svg"
+class_name BattleCore
+@icon("res://core/scripts/icons/icon_event_pathway.svg")
 
 signal battle_requested
 signal battle_engaged

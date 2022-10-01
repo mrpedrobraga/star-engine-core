@@ -5,7 +5,7 @@ extends Node2D
 class_name SightlessRadarPulse
 
 func _process(delta):
-	update()
+	queue_redraw()
 	
 	var max_radius = 128.
 	if radius < max_radius:

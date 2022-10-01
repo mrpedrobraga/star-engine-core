@@ -128,7 +128,7 @@ func write(_text):
 				await get_tree().create_timer(text_delay).timeout
 				visible_characters += 1
 		char_tick.emit()
-		update()
+		queue_redraw()
 	paused.emit()
 	is_typing = false
 	is_emitting_physical_sound = false

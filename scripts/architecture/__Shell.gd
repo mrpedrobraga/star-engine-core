@@ -1,6 +1,7 @@
 @tool
 extends Node
-class_name __Shell, "res://core/scripts/icons/icon_console.svg"
+class_name __Shell
+@icon("res://core/scripts/icons/icon_console.svg")
 
 ## A helper class that handles quick commands for convenience.
 ##

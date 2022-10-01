@@ -9,7 +9,7 @@ enum MovementMode {
 
 @export_category("Movement")
 
-@export_group("Input")
+@export_group("Controls")
 @export var input_action_up := "move_up"
 @export var input_action_left := "move_left"
 @export var input_action_down := "move_down"
@@ -44,7 +44,7 @@ signal direction_changed(direction)
 
 ################################## CODE ###################################
 
-var parent = get_parent()
+var parent : CharacterBody2D = get_parent()
 
 func _ready():
 	property_list_changed.emit()
@@ -56,27 +56,26 @@ func _notification(what):
 func _physics_process(delta):
 	if Engine.is_editor_hint():
 		return
-	
+
 	# Get the input vector
 	input_vector = Input.get_vector(
 		input_action_left,
 		input_action_right,
 		input_action_up,
-		input_action_down,
-		0.2
+		input_action_down
 	)
-	
+
 	if input_vector:
 		var a = facing_vector
 		facing_vector = input_vector.normalized()
 		if facing_vector != a:
 			direction_changed.emit(facing_vector)
-	
+
 	# Move!
 	match motion_mode:
 		MovementMode.FREE:
 			move_free(delta)
-	
+
 	# Juicy Effects
 	if animation_squash_and_stretch_active:
 		if not animation_visual_sprite:
@@ -113,7 +112,7 @@ func move_free(delta):
 		position_z += vz * delta
 		animation_visual_sprite.position.y = min(- position_z, 0)
 		var target_scale = animation_squash_and_stretch_target_scale
-		
+
 		if position_z > 0.0:
 			vz -= motion_gravity_magnitude * delta * 2
 		if position_z < 0.0:
@@ -127,6 +126,7 @@ func move_free(delta):
 			if animation_squash_and_stretch_active:
 				animation_visual_sprite.scale.x = target_scale.x * 0.5
 				animation_visual_sprite.scale.y = target_scale.y * 2.0
+	pass
 
 ######################### EDITOR CONFIGURATION #########################
 

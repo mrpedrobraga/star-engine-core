@@ -17,12 +17,9 @@ const regex_dialog_text = "(?<speaker>[\\w_]+)(?:\\s*,\\s*(?<options>[\\w ,]*))*
 
 # Loads 
 static func load_sson(path):
-	var file = File.new()
-	var err = file.open(path, File.READ)
-	if err != OK:
-		return err
+	print_rich("[b]Loading from: [/b]" + path)
+	var file = FileAccess.open(path, FileAccess.READ)
 	var raw = file.get_as_text()
-	file.close()
 	
 	return raw
 

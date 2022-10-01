@@ -1,5 +1,6 @@
 extends __GameplayCoreBase
-class_name DataCore, "res://core/scripts/icons/icon_event_pathway.svg"
+class_name DataCore
+@icon("res://core/scripts/icons/icon_event_pathway.svg")
 
 ### Game SAVE and LOAD ###
 
@@ -15,8 +16,7 @@ func save_game(file: String) -> int:
 
 func load_game(file: String) -> int:
 	var path ="res://"+file+".tres"
-	var f = File.new()
-	if not f.file_exists(path):
+	if not FileAccess.file_exists(path):
 		Shell.print_err(
 			"Missing Save File",
 			"No save file "+file+" at the save directiory.",
