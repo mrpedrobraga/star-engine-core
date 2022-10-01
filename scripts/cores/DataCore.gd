@@ -1,6 +1,6 @@
 extends __GameplayCoreBase
 class_name DataCore
-@icon("res://core/scripts/icons/icon_event_pathway.svg")
+@icon("res://_engine/scripts/icons/icon_pathwayevent_small.png")
 
 ### Game SAVE and LOAD ###
 

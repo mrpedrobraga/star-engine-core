@@ -4,7 +4,7 @@ class_name BattleInstance
 ##Class that contains an instance of a battle. Used by BattleCore.
 
 ##An array containing the ally Characters.
-var allies : Array[Character] = []
+@export var allies : Array[Character] = []
 ##An array containing the opponent Characters.
 @export var opponents := []
 ##An array containing the current targets of the last executed action.

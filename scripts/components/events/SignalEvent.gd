@@ -8,4 +8,3 @@ signal triggered()
 
 func _trigger():
 	triggered.emit()
-

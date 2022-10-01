@@ -5,6 +5,8 @@ type="CompressedTexture2D"
 uid="uid://dvhyacu8cwcmq"
 path="res://.godot/imported/icon_music.svg-223a6c5efe59aa74353769003d3fd221.ctex"
 metadata={
+"editor_dark_theme": true,
+"has_editor_variant": true,
 "vram_texture": false
 }
 
@@ -34,4 +36,4 @@ process/size_limit=0
 detect_3d/compress_to=1
 svg/scale=1.0
 editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
+editor/convert_colors_with_editor_theme=true

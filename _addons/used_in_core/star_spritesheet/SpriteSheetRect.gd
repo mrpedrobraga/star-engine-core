@@ -3,7 +3,7 @@
 extends TextureRect
 class_name SpriteSheetRect
 
-@export var sprite_sheet_pool : Resource:
+@export var sprite_sheet_pool : SpriteSheetPool:
 	set(v):
 		sprite_sheet_pool = v
 		update_texture()
@@ -29,7 +29,7 @@ func update_texture():
 	if sprite_sheet_pool == null:
 		return
 		
-	var p : SpriteSheetPool = sprite_sheet_pool
+	var p = sprite_sheet_pool
 	if not p.pool.keys().has(current_sheet):
 		return
 	

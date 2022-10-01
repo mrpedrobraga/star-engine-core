@@ -1,6 +1,6 @@
 extends __GameplayCoreBase
 class_name AudioCore
-@icon("res://core/scripts/icons/icon_music.svg")
+@icon("res://_engine/scripts/icons/icon_music.svg")
 
 @onready var bgm_player : AudioStreamPlayer = $BGM
 var _bgm_back_buffer : AudioStream

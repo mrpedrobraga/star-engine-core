@@ -9,7 +9,7 @@ class_name SpriteSheetSprite2D
 ##This is done for convenience, you can use your own
 ##naming convention for your sheets and quickly swap
 ##different characters by swapping the pool.
-@export var sprite_sheet_pool : Resource:
+@export var sprite_sheet_pool : SpriteSheetPool:
 	set(v):
 		sprite_sheet_pool = v
 		update_texture()

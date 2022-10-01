@@ -35,6 +35,9 @@ enum MovementMode {
 @export var animation_squash_and_stretch_active := false
 @export var animation_squash_and_stretch_target_scale := Vector2.ONE
 
+@export_group("")
+@export var required_state = &"Overworld"
+
 var position_z := 0.0
 var vz := 0.0
 var input_vector := Vector2.ZERO
@@ -55,6 +58,9 @@ func _notification(what):
 
 func _physics_process(delta):
 	if Engine.is_editor_hint():
+		return
+
+	if not Game.get_state() == required_state:
 		return
 
 	# Get the input vector

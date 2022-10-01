@@ -1,7 +1,7 @@
 ##CORE class that handles turn-based battles!
 extends __GameplayCoreBase
 class_name BattleCore
-@icon("res://core/scripts/icons/icon_event_pathway.svg")
+@icon("res://_engine/scripts/icons/icon_event_small.png")
 
 signal battle_requested
 signal battle_engaged
@@ -62,7 +62,8 @@ func engage_battle(battle : BattleInstance):
 	is_in_battle = true
 	battle_instance = battle
 	
-	battle_instance.allies = Game.Data.data.party
+	if battle_instance.allies.is_empty():
+		battle_instance.allies = Game.Data.data.party
 	
 	Shell.printx("[Game::Battle] Engaging on a battle: " + str(battle))
 	

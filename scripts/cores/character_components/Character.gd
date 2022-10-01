@@ -13,7 +13,7 @@ class_name Character
 ##The character's display name.
 @export var name = "Unknown"
 ##A reference to the character's stats ([CharacterStats]). 
-@export var stats : Resource
+@export var stats : CharacterStats
 ##A reference to the node associated with this character.
 @export var world_node : Node2D
 
