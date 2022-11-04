@@ -9,6 +9,8 @@ enum MovementMode {
 
 @export_category("Movement")
 
+@export var controllable := false
+
 @export_group("Controls")
 @export var input_action_up := "move_up"
 @export var input_action_left := "move_left"
@@ -64,12 +66,13 @@ func _physics_process(delta):
 		return
 
 	# Get the input vector
-	input_vector = Input.get_vector(
-		input_action_left,
-		input_action_right,
-		input_action_up,
-		input_action_down
-	)
+	if controllable:
+		input_vector = Input.get_vector(
+			input_action_left,
+			input_action_right,
+			input_action_up,
+			input_action_down
+		)
 
 	if input_vector:
 		var a = facing_vector

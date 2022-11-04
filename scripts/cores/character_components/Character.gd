@@ -14,6 +14,8 @@ class_name Character
 @export var name = "Unknown"
 ##A reference to the character's stats ([CharacterStats]). 
 @export var stats : CharacterStats
+##A battler script for when this character engages in battle.
+@export var battler_script : Script
 ##A reference to the node associated with this character.
 @export var world_node : Node2D
 

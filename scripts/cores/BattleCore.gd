@@ -13,6 +13,10 @@ var battle_instance : BattleInstance
 ##READ; Returns true if currently in [b]battle[/b].
 var is_in_battle : bool = false
 
+@export_category("Battle UI")
+
+@export var ally_choices_menu_handler : Node
+
 ##The battle loop, where the battle routine plays out.
 func battle_loop():
 	#TODO: Animate characters into their formation.
@@ -29,6 +33,9 @@ func battle_loop():
 		
 		print("[Game::BattleCore] Executing the opponents' turns!")
 		await do_opponent_turns()
+		
+		# Break if the opponent's choices resulted in battle dismissal.
+		if not is_in_battle: break
 
 	print("[Game::BattleCore] Battle diffused!")
 	
@@ -50,6 +57,64 @@ func ask_ally_choices():
 ##Executes the aforementioned set of actions the allies were told to take.
 func do_ally_turns():
 	await get_tree().process_frame
+	
+	var _mh_parent = ally_choices_menu_handler.get_parent()
+	var _mh_sub = _mh_parent.get_node("SubMenu")
+	
+	var _m_allies
+	var all_ally_choices : Array[Menu] = []
+	
+	# For all the allies
+	for battle in battle_instance.allies:
+		# Create the menu for this ally.
+		var m_ally_choice : Menu
+		
+		# Create all the submenus.
+		
+		var m_attack = Menu.create(
+			["Firebolt", "Thunderstrike", "Waterhose"],
+			[],
+			true,
+			_mh_sub
+		);
+		
+		var m_skill = Menu.create(
+			["bubbles", "memoria_clavem", "amnesia"],
+			["Bubbles", "Memoria Clavem", "Amnesia"],
+			true,
+			_mh_sub
+		);
+		
+		var m_act = Menu.create(
+			battle_instance.get_ACTs_for(battle_instance.allies[0]).duplicate(),
+			[],
+			true,
+			_mh_sub
+		);
+		
+		# Assign all the submenus to the choice menu
+		m_ally_choice = Menu.create(
+			[m_attack, m_skill, m_act],
+			["ATTACK", "SKILL", "ACT", "ITEM"],
+			true,
+			ally_choices_menu_handler
+		);
+		
+		all_ally_choices.push_back(m_ally_choice)
+	
+	_m_allies = Menu.create(
+		all_ally_choices,
+		['Claire'],
+		false,
+		null
+	);
+	_m_allies.is_menu_array = true
+	
+	_m_allies.open()
+	
+	await _m_allies.choice_made
+	
+	await get_tree().create_timer(1.0).timeout
 
 ##Executes the opponent actions -- attacks, acts and spares.
 func do_opponent_turns():
@@ -62,8 +127,7 @@ func engage_battle(battle : BattleInstance):
 	is_in_battle = true
 	battle_instance = battle
 	
-	if battle_instance.allies.is_empty():
-		battle_instance.allies = Game.Data.data.party
+	battle_instance.setup()
 	
 	Shell.printx("[Game::Battle] Engaging on a battle: " + str(battle))
 	
@@ -78,6 +142,10 @@ func engage_battle(battle : BattleInstance):
 	
 	Game.Audio.battle_music_play()
 	battle_engaged.emit()
+	
+	await get_tree().process_frame
+	
+	battle_loop()
 
 @onready var _ally_formation := %AllyFormations
 

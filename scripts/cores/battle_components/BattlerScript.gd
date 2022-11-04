@@ -9,12 +9,15 @@ class_name BattlerScript
 ##A reference to the currently active battle!
 var battle : BattleInstance
 
+signal turn_finished
+
 ######### FIGHTER ACTIONS
 
 ##Virtual; executes a turn for this battler.
 func _do_turn(turn_index : int) -> void:
 	# Inherit with the response for character's action in this turn.
 	await get_tree().process_frame
+	turn_finished.emit()
 
 ##Virtual; executes an attack from this battler.
 func _attack(characters : Array[Character]):
@@ -24,7 +27,7 @@ func _attack(characters : Array[Character]):
 ######### RESPONSES TO ALLY ACTIONS
 
 ##Virtual; responds to an Ally's Action.
-func _do_ACT(character : Character, act_name : String) -> void:
+func _handle_ACT(character : Character, act_name : String) -> void:
 	# Inherit with the result of the used ACT.
 	await get_tree().process_frame
 

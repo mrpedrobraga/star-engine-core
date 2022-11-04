@@ -19,6 +19,7 @@ class_name Menu
 ##If one of the options is a Menu it will open it,
 ##pass the processing and await it to return.
 @export var options : Array = ["First"]
+@export var labels : Array = []
 ##The currently selected index.
 @export var selected_index := 0
 ##When [code]true[/code], when you get to the minimum/maximum
@@ -31,6 +32,16 @@ class_name Menu
 @export var parent: Node
 var level = 0
 
+@export_group("Procedural")
+
+@export var populate_on_open : bool = false
+@export var populate_function : Callable
+@export var menu_handler : Node
+
+##Emitted when the menu is opened
+signal opened
+##Emitted when the menu becomes current
+signal became_current
 ##Emitted when the selection is changed.
 signal selection_changed(index)
 ##Emitted when OK is pressed.
@@ -40,32 +51,12 @@ signal back_pressed()
 ##Emitted when a choice is made -- either something was selected
 ##or the user canceled.
 signal choice_made(type)
+var last_choice_type := CHOICE_OK
 
 enum {CHOICE_OK, CHOICE_BACK}
 
 func _ready():
 	set_process(false)
-
-##Chooses the currently selected option and returns.
-func choose():
-	var m = get_selected()
-	if m is NodePath:
-		m = get_node(m)
-	if m is Menu:
-		is_current = false
-		m.open(self, level+1)
-		await m.choice_made
-		choice_made.emit(CHOICE_OK)
-		ok_pressed.emit()
-		return
-	
-	var indent = ""; for i in range(level): indent += "\t"
-	print(indent, "- ", name, " : ", m)
-	
-	if parent:
-		close()
-		choice_made.emit(CHOICE_OK)
-		ok_pressed.emit()
 
 ##Selects the next option in the option list.
 func select_next():
@@ -93,6 +84,11 @@ func select_previous():
 func get_selected():
 	return options[selected_index]
 
+func get_selected_label():
+	if labels:
+		return labels[selected_index]
+	return str(get_selected())
+
 ##Opens the menu.
 ##@param: parent_ If this has a value, the current menu will be opened as a submenu.
 func open(parent_=null, level_=0):
@@ -100,42 +96,110 @@ func open(parent_=null, level_=0):
 		printerr("CyclicalReferenceWarning", "Cyclical/Redundant Menu Reference is discouraged.")
 	is_open = true
 	is_current = true
+	became_current.emit()
+	
+	if populate_on_open:
+		populate_function.call(self)
+	if menu_handler:
+		menu_handler.set_handling(self)
+	
+	opened.emit()
 	if parent_:
 		parent = parent_
 	level = level_
 	set_process(true)
+	
 	if is_menu_array:
 		iterate()
 
 ##When [member is_menu_array] is set to true, this function is called to iterate through all its submenus.
 func iterate():
 	var index = 0
+	var indent = ""; for i in range(level): indent += "\t"
+	
 	while index < options.size():
 		var m = options[index]
-		var indent = ""; for i in range(level): indent += "\t"
-		print(indent, "- ", index, " : ", m)
+		print(indent, "- ", index, " : ", labels[index])
 		if m is NodePath:
 			m = get_node(m)
 		if m is Menu:
 			is_current = false
 			m.open(self, level+1)
-			var status = await m.choice_made
-			if status == CHOICE_BACK:
-				index -= 2
-		index += 1
-	close()
+			var s = await m.choice_made
+			if m.last_choice_type == CHOICE_BACK:
+				if index > 0:
+					index -= 1
+			else:
+				index += 1
+	print(indent, 'Iterator Menu closed')
+	is_current = true
+	became_current.emit()
+	last_choice_type = CHOICE_OK
 	choice_made.emit(CHOICE_OK)
+	close()
 
 ##Closes the menu where it's at and doesn't return.
 func close():
 	is_open = false
-	is_current=false
+	is_current = false
 	set_process(false)
 
 ##Closes the menu and returns (if this Menu is a submenu).
 func back():
+	var indent = ""; for i in range(level): indent += "\t"
+	
+	if not allows_cancel:
+		return
 	if parent:
 		close()
-		parent.is_current = true
+		last_choice_type = CHOICE_BACK
+		print(indent, "<-")
 		choice_made.emit(CHOICE_BACK)
 		back_pressed.emit()
+		parent.is_current = true
+		parent.became_current.emit()
+		if menu_handler:
+			menu_handler.set_unhandling(self)
+
+##Chooses the currently selected option and returns.
+func choose():
+	var m = get_selected()
+	var lct = 0
+	
+	var indent = ""; for i in range(level): indent += "\t"
+	print(indent, "- ", name, " : ", get_selected_label())
+	
+	if m is NodePath:
+		m = get_node(m)
+	if m is Menu:
+		is_current = false
+		m.open(self, level+1)
+		lct = await m.choice_made
+		match lct:
+			CHOICE_OK:
+				last_choice_type = CHOICE_OK
+				choice_made.emit(CHOICE_OK)
+				ok_pressed.emit()
+	
+	if parent:
+		if not lct:
+			close()
+			last_choice_type = CHOICE_OK
+			choice_made.emit(CHOICE_OK)
+			ok_pressed.emit()
+
+
+static func create(
+	_options : Array,
+	_labels : Array = [],
+	_allows_cancel = false,
+	_menu_handler : Node = null
+) -> Menu:
+	var m = Menu.new()
+	
+	m.options = _options
+	m.labels = _labels
+	m.allows_cancel = _allows_cancel
+	if _menu_handler: m.menu_handler = _menu_handler
+	
+	return m
