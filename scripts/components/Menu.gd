@@ -14,7 +14,7 @@ class_name Menu
 ##When [code]true[/code], the menu plays a set of submenus in order
 ##(allowing the user to change their mind and come back to previous
 ##submenus.
-@export var is_menu_array := false
+@export var is_iterator := false
 ##The available options to be chosen from.
 ##If one of the options is a Menu it will open it,
 ##pass the processing and await it to return.
@@ -109,17 +109,17 @@ func open(parent_=null, level_=0):
 	level = level_
 	set_process(true)
 	
-	if is_menu_array:
+	if is_iterator:
 		iterate()
 
-##When [member is_menu_array] is set to true, this function is called to iterate through all its submenus.
+##When [member is_iterator] is set to true, this function is called to iterate through all its submenus.
 func iterate():
 	var index = 0
 	var indent = ""; for i in range(level): indent += "\t"
 	
 	while index < options.size():
 		var m = options[index]
-		print(indent, "- ", index, " : ", labels[index])
+#		print(indent, "- ", index, " : ", labels[index])
 		if m is NodePath:
 			m = get_node(m)
 		if m is Menu:
@@ -131,7 +131,7 @@ func iterate():
 					index -= 1
 			else:
 				index += 1
-	print(indent, 'Iterator Menu closed')
+#	print(indent, 'Iterator Menu closed')
 	is_current = true
 	became_current.emit()
 	last_choice_type = CHOICE_OK
@@ -153,7 +153,7 @@ func back():
 	if parent:
 		close()
 		last_choice_type = CHOICE_BACK
-		print(indent, "<-")
+#		print(indent, "<-")
 		choice_made.emit(CHOICE_BACK)
 		back_pressed.emit()
 		parent.is_current = true
@@ -167,7 +167,7 @@ func choose():
 	var lct = 0
 	
 	var indent = ""; for i in range(level): indent += "\t"
-	print(indent, "- ", name, " : ", get_selected_label())
+#	print(indent, "- ", name, " : ", get_selected_label())
 	
 	if m is NodePath:
 		m = get_node(m)
@@ -188,6 +188,32 @@ func choose():
 			choice_made.emit(CHOICE_OK)
 			ok_pressed.emit()
 
+func get_dict_repr() -> Dictionary:
+	var r
+	
+	if is_iterator:
+		r = {
+			"is_iterator": true,
+			"sub": []
+		}
+		for m in options:
+			var mm = m
+			if mm is Menu:
+				mm = mm.get_dict_repr()
+			r.sub.push_back(mm)
+	else:
+		r = {
+			"is_iterator": false,
+			"index": selected_index,
+			"label": get_selected_label()
+		}
+		var m = get_selected()
+		if m is Menu:
+			r.sub = m.get_dict_repr()
+		else:
+			r.value = m
+	
+	return r
 
 static func create(
 	_options : Array,

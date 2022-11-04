@@ -18,7 +18,6 @@ var turn_index := 0
 var turn_ally_choices : Array = []
 
 func setup():
-	print("Battle Instance was set up!")
 	if allies.is_empty():
 		allies = Game.Data.data.party
 	

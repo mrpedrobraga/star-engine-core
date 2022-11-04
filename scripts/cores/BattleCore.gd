@@ -22,23 +22,19 @@ func battle_loop():
 	#TODO: Animate characters into their formation.
 	
 	while is_in_battle:
-		print("[Game::BattleCore] Asking for ally choices!")
-		await ask_ally_choices()
-		
-		print("[Game::BattleCore] Executing the allies' turns!")
 		await do_ally_turns()
 		
 		# Break if the ally choices resulted in battle dismissal.
 		if not is_in_battle: break
 		
-		print("[Game::BattleCore] Executing the opponents' turns!")
 		await do_opponent_turns()
 		
 		# Break if the opponent's choices resulted in battle dismissal.
 		if not is_in_battle: break
+		
+		Shell.printx ("-------------------")
 
-	print("[Game::BattleCore] Battle diffused!")
-	
+	Shell.printx("-------------------", " BATTLE END!!! ")
 	#TODO: Put characters back on the overworld.
 
 ##A class that holds a single player choice for the what an ally will do in a battle.
@@ -50,20 +46,59 @@ class AllyBattleChoice:
 	###An array with all the targets of this choice
 	var targets : Array[Character] = []
 
-##Asks the player, one for one, what action the allies should execute.
-func ask_ally_choices():
-	await get_tree().process_frame
+enum {
+	ATTACK, SKILL, ACT, ITEM
+}
+
+var ally_choices : Dictionary
 
 ##Executes the aforementioned set of actions the allies were told to take.
 func do_ally_turns():
+	await ask_ally_choices()
+	await execute_ally_choices(ally_choices)
+	await get_tree().create_timer(1.0).timeout
+
+##Executes the opponent actions -- attacks, acts, items and spares.
+func execute_ally_choices(d : Dictionary):
+	# The dictrepr passed into this function must be written in a specific format.
+	# The main level is an iterator menu, which contains an array (sub) for all the character's actions.
+	var character_actions : Array = d.sub
+	
+	var ch_index = 0
+	for cha in character_actions:
+		# Each individual character action is encoded as such:
+		# index, label, sub
+		var ch_name = battle_instance.allies[ch_index].name
+		
+		### THIS IS ALL INCOMPLETE -- THERE'S NO NOTION OF TARGET!
+		match cha.index:
+			ATTACK:
+				# cha.sub.value stores the attack id
+				var attack = cha.sub.value
+				Shell.printx(" :: " + ch_name + " used attack " + cha.sub.label)
+			SKILL:
+				# cha.sub.value stores the skill id
+				var skill = cha.sub.value
+				Shell.printx(" :: " + ch_name + " used skill " + cha.sub.label)
+			ACT:
+				# cha.sub.value stores the act id
+				var act = cha.sub.value
+				Shell.printx(" :: " + ch_name + " used act " + cha.sub.label)
+			ITEM:
+				# cha.sub.value stores the item stack object
+				var item = cha.sub.value
+				Shell.printx(" :: " + ch_name + " used item " + cha.sub.label)
+		ch_index += 1
 	await get_tree().process_frame
+
+##Asks the player, one for one, what action the allies should execute.
+func ask_ally_choices():
+	### GENERATE THE MENU FOR THE PLAYER TO CHOOSE ##
 	
 	var _mh_parent = ally_choices_menu_handler.get_parent()
 	var _mh_sub = _mh_parent.get_node("SubMenu")
-	
 	var _m_allies
 	var all_ally_choices : Array[Menu] = []
-	
 	# For all the allies
 	for battle in battle_instance.allies:
 		# Create the menu for this ally.
@@ -92,9 +127,16 @@ func do_ally_turns():
 			_mh_sub
 		);
 		
+		var m_item = Menu.create(
+			["pepperoni_pizza", "apple", "macaron"],
+			["Pizza", "Apple", "Macaron"],
+			true,
+			_mh_sub
+		);
+		
 		# Assign all the submenus to the choice menu
 		m_ally_choice = Menu.create(
-			[m_attack, m_skill, m_act],
+			[m_attack, m_skill, m_act, m_item],
 			["ATTACK", "SKILL", "ACT", "ITEM"],
 			true,
 			ally_choices_menu_handler
@@ -108,13 +150,14 @@ func do_ally_turns():
 		false,
 		null
 	);
-	_m_allies.is_menu_array = true
+	_m_allies.is_iterator = true
+	
+	## OPEN THE MENU AND AWAIT FOR THE PLAYER TO COMMIT ##
 	
 	_m_allies.open()
-	
 	await _m_allies.choice_made
 	
-	await get_tree().create_timer(1.0).timeout
+	ally_choices = (_m_allies.get_dict_repr())
 
 ##Executes the opponent actions -- attacks, acts and spares.
 func do_opponent_turns():
@@ -129,7 +172,9 @@ func engage_battle(battle : BattleInstance):
 	
 	battle_instance.setup()
 	
-	Shell.printx("[Game::Battle] Engaging on a battle: " + str(battle))
+	Shell.printx("-------------------" + " BATTLE START!!! ")
+	Shell.printx(str(battle))
+	Shell.printx("-------------------\n")
 	
 	# Animate the battle transition!
 	battle_requested.emit()

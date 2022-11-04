@@ -1,10 +1,10 @@
-extends RichTextLabel
+extends Control
+class_name _MenuHandlerBase
 
+@export_category("MenuHandler")
 @export var menu : Node
 var menu_is_current := false
 var menu_was_current_last_frame := false
-
-const highlight_color := Color(0.7761344909668, 1, 0.34240281581879)
 
 func set_handling(m : Menu):
 	if menu:
@@ -19,7 +19,6 @@ func set_unhandling(m : Menu):
 		if m == menu:
 			if menu.became_current.is_connected(update):
 				menu.became_current.disconnect(update)
-		modulate = Color.WHITE
 
 func _ready():
 	if menu:
@@ -41,7 +40,6 @@ func _input(ev):
 		update()
 	if Input.is_action_just_pressed("OK"):
 		menu.choose()
-		modulate = Color.WHITE
 		menu_is_current = false
 		menu_was_current_last_frame = false
 	if Input.is_action_just_pressed("CANCEL"):
@@ -49,11 +47,8 @@ func _input(ev):
 		if menu.parent:
 			menu_is_current = false
 			menu_was_current_last_frame = false
-		modulate = Color.WHITE
 
 func update():
-	text = (menu.get_selected_label())
-	modulate = highlight_color
 	menu_is_current = true
 	await get_tree().process_frame
 	menu_was_current_last_frame = true
