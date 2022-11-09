@@ -53,6 +53,7 @@ func _input(ev):
 
 func update():
 	text = (menu.get_selected_label())
+	Shell.speak(menu.get_selected_label())
 	modulate = highlight_color
 	menu_is_current = true
 	await get_tree().process_frame

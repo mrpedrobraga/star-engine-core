@@ -24,6 +24,7 @@ func _ready():
 	if menu:
 		update()
 
+
 func _input(ev):
 	if not menu:
 		return
@@ -50,5 +51,6 @@ func _input(ev):
 
 func update():
 	menu_is_current = true
+	Shell.speak(menu.get_selected_label())
 	await get_tree().process_frame
 	menu_was_current_last_frame = true
