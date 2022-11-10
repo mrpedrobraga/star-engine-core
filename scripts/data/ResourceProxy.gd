@@ -2,6 +2,7 @@ extends Resource
 class_name ResourceProxy
 
 @export_file var path : String = ""
+@export_group("Runtime")
 @export var resource : Resource:
 	set(v):
 		resource = v
