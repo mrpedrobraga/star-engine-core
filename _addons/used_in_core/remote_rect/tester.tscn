@@ -1,0 +1,108 @@
+[gd_scene load_steps=3 format=3 uid="uid://ybfd88ucvccn"]
+
+[ext_resource type="Script" path="res://_engine/_addons/used_in_core/remote_rect/RemoteContainer.gd" id="1_i87wo"]
+
+[sub_resource type="GDScript" id="GDScript_8aqpf"]
+script/source = "extends Control
+
+@export var rrect1 : RemoteContainer
+@export var rrect2 : RemoteContainer
+
+var toggle := false
+
+func _on_pressed():
+	if toggle:
+		rrect1.move(rrect2)
+	
+	toggle = !toggle
+"
+
+[node name="tester" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_8aqpf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 104.0
+offset_right = 456.0
+offset_bottom = 610.0
+theme_override_constants/separation = 6
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+offset_right = 333.0
+offset_bottom = 31.0
+text = "Move"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+offset_top = 37.0
+offset_right = 333.0
+offset_bottom = 68.0
+text = "Hello"
+
+[node name="RemoteContainer" type="Container" parent="VBoxContainer"]
+custom_minimum_size = Vector2i(0, 64)
+layout_mode = 2
+offset_top = 74.0
+offset_right = 333.0
+offset_bottom = 138.0
+script = ExtResource("1_i87wo")
+
+[node name="Button" type="Button" parent="VBoxContainer/RemoteContainer"]
+layout_mode = 2
+offset_right = 333.0
+offset_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Third thing"
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+offset_top = 144.0
+offset_right = 333.0
+offset_bottom = 175.0
+text = "Hello"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 634.0
+offset_top = 242.0
+offset_right = 909.0
+offset_bottom = 521.0
+
+[node name="Button" type="Button" parent="VBoxContainer2"]
+layout_mode = 2
+offset_right = 275.0
+offset_bottom = 31.0
+text = "Hi"
+
+[node name="RemoteContainer" type="Container" parent="VBoxContainer2"]
+custom_minimum_size = Vector2i(0, 64)
+layout_mode = 2
+offset_top = 35.0
+offset_right = 275.0
+offset_bottom = 99.0
+script = ExtResource("1_i87wo")
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer2"]
+layout_mode = 2
+offset_top = 103.0
+offset_right = 275.0
+offset_bottom = 134.0
+text = "Oh shit"
+
+[node name="Button2" type="Button" parent="VBoxContainer2"]
+layout_mode = 2
+offset_top = 138.0
+offset_right = 275.0
+offset_bottom = 169.0
+text = "Hi 2"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_pressed"]
