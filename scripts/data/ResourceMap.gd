@@ -3,7 +3,7 @@ class_name ResourceMap
 
 signal resource_loaded(name)
 
-@export var _data = {}
+@export var _data := {}
 
 # TODO : Change instances of load() with a threaded, slow, but non-blocking ResourceLoader.
 
@@ -11,6 +11,19 @@ func add_entry(name : String, path : String) -> void:
 	_data[name] = ResourceProxy.create(path)
 
 func remove_entry(name : String) -> void:
+	if not _data.has(name): return
+	_data.erase(name)
+
+func new_dir(name : String) -> ResourceMap:
+	var d = ResourceMap.new()
+	_data[name] = d
+	return d
+
+func install_dir(name : String, rmap : ResourceMap) -> bool:
+	_data[name] = rmap
+	return true
+
+func remove_dir(name : String) -> void:
 	if not _data.has(name): return
 	_data.erase(name)
 
@@ -88,7 +101,15 @@ func get_formated_description() -> String:
 	
 	s += "[table=2]"
 	
-	for k in _data.keys():
+	var keys = _data.keys()
+	keys.sort_custom(
+		func(a, b):
+			var nameorder = a.naturalnocasecmp_to(b) < 0
+			var typeorder = (_data[a] is ResourceMap) and not (_data[b] is ResourceMap)
+			return typeorder# or nameorder
+	)
+	
+	for k in keys:
 		var v = _data[k]
 		s += "[cell]\"%s\"  [/cell][cell]%s[/cell]" % [str(k), v.get_formated_description()]
 	
