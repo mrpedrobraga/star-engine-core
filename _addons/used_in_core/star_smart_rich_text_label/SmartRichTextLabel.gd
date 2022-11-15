@@ -74,7 +74,7 @@ func write(_text):
 		with_bb_code = with_bb_code.replace(i, "")
 	parse_bbcode(with_bb_code)
 	
-	if tts_enabled: DisplayServer.tts_speak(get_parsed_text(), "")
+	#if tts_enabled: DisplayServer.tts_speak(get_parsed_text(), "")
 	
 	resumed.emit()
 	
