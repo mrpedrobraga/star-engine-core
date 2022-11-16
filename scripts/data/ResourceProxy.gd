@@ -8,7 +8,7 @@ class_name ResourceProxy
 		resource = v
 var loaded = false
 
-static func create(_path : String, _resource : Resource = null):
+static func create(_path : String, _resource : Resource = null) -> ResourceProxy:
 	var r = ResourceProxy.new() 
 	r.path = _path
 	r.resource = _resource
@@ -21,6 +21,7 @@ func get_resource():
 	return resource
 
 func preload_resource():
+	# TODO: Make this load it in steps instead of at once.
 	resource = load(path)
 	loaded = true
 

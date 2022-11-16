@@ -31,6 +31,11 @@ var States := {
 	&"Minigame" 	: null,
 }
 
+##A dictionary with references to all the characters
+var Characters := {
+	
+}
+
 ##Emitted when the game state changes.
 ##@param state The state to which the Game changed.
 signal state_changed(state)
@@ -38,6 +43,8 @@ var _current_state : StringName = &"Overworld"
 
 ##Sets the current game state.
 func set_state( state : StringName ) -> void:
+	if not States.has(state):
+		Shell.print_err.call_deferred("NullReference", "State " + str(state) + " does not exist.")
 	_current_state = state
 	emit_signal("state_changed", state)
 
@@ -59,6 +66,21 @@ func _input(ev) -> void:
 			#OS.window_fullscreen = not OS.window_fullscreen
 
 ##################### CONVENIENCE FUNCTIONS #####################
+
+## Changes the current room
+func change_room(r : PackedScene, position : Vector2 = Vector2.ZERO):
+	var rr = r.instantiate()
+	if not rr is Room:
+		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(r))
+		return
+	rr.name = "current_room"
+	var old_room = States[&"Overworld"].get_node_or_null("../current_room")
+	if old_room:
+		old_room.name = "old_room"
+		old_room.visible = false
+		old_room.queue_free()
+	States[&"Overworld"].add_sibling(rr)
+	rr.global_position = position
 
 ##Returns the current party as specified in your GameSaveData
 func get_party() -> Array[Character]:

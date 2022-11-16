@@ -19,5 +19,10 @@ class_name Character
 ##A reference to the node associated with this character.
 @export var world_node : Node2D
 
+enum Direction {
+	NORTH, NORTHEAST, EAST, SOUTHEAST,
+	SOUTH, SOUTHWEST, WEST, NORTHWEST
+}
+
 func _to_string():
 	return "[Character: "+str(name)+"]"

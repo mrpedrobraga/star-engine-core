@@ -53,12 +53,14 @@ func Nget_resource(name : PackedStringArray):
 	if not _data.has(name[0]): return ERR_DOES_NOT_EXIST
 
 	# If it is already loaded, simply return it.
-	var sub = _data[name[0]].get_resource()
+	var sub = _data[name[0]]
 	
 	# If the return value is a resource map, continue Ngetting from it.
 	if sub is ResourceMap:
 		name.remove_at(0)
 		return sub.Nget_resource(name)
+	if sub is ResourceProxy:
+		return sub.get_resource()
 	
 	# If not, return the resource.
 	return sub
@@ -99,8 +101,6 @@ func _to_string():
 func get_formated_description() -> String:
 	var s := ""
 	
-	s += "[table=2]"
-	
 	var keys = _data.keys()
 	keys.sort_custom(
 		func(a, b):
@@ -111,7 +111,6 @@ func get_formated_description() -> String:
 	
 	for k in keys:
 		var v = _data[k]
-		s += "[cell]\"%s\"  [/cell][cell]%s[/cell]" % [str(k), v.get_formated_description()]
+		s += "\"%s\":\n[indent]%s[/indent]\n---\n" % [str(k), v.get_formated_description()]
 	
-	s += "[/table]"
 	return s

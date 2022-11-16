@@ -17,6 +17,11 @@ signal dialog_requested
 ##Emitted whenever the game leaves a [b]dialog[/b].
 signal dialog_finished
 
+## A reference to the overworld (scene) camera
+var camera : Camera2D
+## A reference to the camera rack
+var camera_rack : OffsetStackRack
+
 ## The current zoom level for the scene camera
 signal camera_zoom_changed(new_zoom)
 var camera_zoom : float = 1.0:

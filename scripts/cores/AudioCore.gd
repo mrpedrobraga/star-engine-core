@@ -2,6 +2,16 @@ extends __GameplayCoreBase
 class_name AudioCore
 @icon("res://_engine/scripts/icons/icon_music.svg")
 
+## CORE class that handles audio.
+##
+## Assign this class to the 'Game' singleton for you to use it in the game.
+## See: [GameInstance].
+##
+## TODO : Make this load the audio files slowly
+## in a background thread by default,
+##
+## then quickly load when [member bgm_resume] is called.
+
 @onready var bgm_player : AudioStreamPlayer = $BGM
 var _bgm_back_buffer : AudioStream
 
@@ -16,9 +26,14 @@ func bgm_load_from_bank(bgm:String) -> void:
 	Shell.printx("[Game::AudioCore] Loading BGM from MUS/" + str(bgm))
 	_bgm_back_buffer = Game.Data.get_resource("MUS/" + bgm)
 
-func bgm_resume() -> void:
+func bgm_preload_from_bank(bgm:String) -> void:
+	Shell.printx("[Game::AudioCore] Preloading BGM from MUS/" + str(bgm))
+	Game.Data.preload_resource("MUS/" + bgm)
+
+
+func bgm_resume(restart = false) -> void:
 	bgm_player.stream = _bgm_back_buffer
-	if not bgm_player.playing:
+	if restart:
 		bgm_player.play()
 	bgm_player.stream_paused = false
 
