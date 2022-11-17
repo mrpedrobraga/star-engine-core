@@ -7,11 +7,6 @@ class_name OffsetStackRack2D
 		offset_stack = v
 		update_position()
 
-var t = 0
-func _process(_delta):
-	t += _delta
-	set_offset_at(0, 128 * Vector2(sin(t), cos(t)))
-
 func set_offset_at(index : int, value : Vector2):
 	# If the index is too big, quickly add more spaces.
 	while index >= offset_stack.size():
