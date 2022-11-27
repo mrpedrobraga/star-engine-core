@@ -1,6 +1,6 @@
 # ⭐ Star Engine
 
-> This repo is currently in development (using godot 4.0.beta 4)
+> This repo is currently in development (using godot 4.0.beta 6)
 > 
 > You can still use it on your game, but things might change at any moment.
 > So update at your own risk.
@@ -9,7 +9,7 @@
 
 A simple, modular, *cherry-pickable* framework for creating RPG-like games in [Godot Engine](https://godotengine.org/).
  
-Star Engine is the engine used in my ([@mrpedrobraga](https://twitter.com/mrpedrobraga) game *'Inner Voices'*.
+Star Engine is the engine used in my ([@mrpedrobraga](https://twitter.com/mrpedrobraga)'s game *'Inner Voices'*.
 It contains components backported from it but made to be completely agnostic to it.
 
 ## 🪧 The idea behind it
@@ -47,7 +47,7 @@ Its parser is wonderfully generic, so you can add your own commands, and it's so
 
 - First, you'll need Godot Engine and be basically acquainted to it.
 
-> Note that Star Engine is built for Godot 4 (currently at alpha 15).
+> Note that Star Engine is built for Godot 4 (currently at 4.0.beta 6).
 
 - You'll need to be learn GDScript.
 
