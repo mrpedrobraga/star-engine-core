@@ -1,6 +1,6 @@
 # ⭐ Star Engine
 
-> This repo is currently in development (using godot 4.0.beta 6)
+> This repo is currently in (rather early) development (using godot 4.0.beta 6)
 > 
 > You can still use it on your game, but things might change at any moment.
 > So update at your own risk.
@@ -10,18 +10,18 @@
 A simple, modular, *cherry-pickable* framework for creating RPG-like games in [Godot Engine](https://godotengine.org/).
  
 Star Engine is the engine used in my ([@mrpedrobraga](https://twitter.com/mrpedrobraga)'s game *'Inner Voices'*.
-It contains components backported from it but made to be completely agnostic to it.
+I develop the scripts for it, but they're written to be completely agnostic to it.
 
 ## 🪧 The idea behind it
 
-With Star Engine, you can use it entirely (with integration addons) OR cherry-pick which classes you want and copy those to your project -- many classes are built to work on their own, making this possible.
+With Star Engine, you can use it whole as a big package (with integration addons) OR cherry-pick which classes you want and copy those to your project -- many classes are built to work on their own, making this possible.
 
 The framework contains:
-- Classes for typically 'RPGish' things such as `DialogBox`, `SceneEvent`, `Character`, etc.
+- Classes for typically 'RPGish' things such as `SmartRichTextlabel`, `SceneEvent`, `Character`, etc.
 - General classes such for making games such as `Movement2D`, `ResourceMap`, `Menu`, `SpriteSheet`.
 - Core classes for handling several aspects of your game such as Audio, Progression and Save/Load.
 
-I created Star Engine inspired/in spite of RPG-making tools I used when I was little.
+I created Star Engine inspired by/in spite of RPG-making tools I used when I was little.
 I found myself **empowered by them, being able to create something I couldn't otherwise**...
 
 ...then, whenever I wanted to implemented something the engine wasn't specifically built for -- no hope.
@@ -31,14 +31,14 @@ Star Engine is **friendly** -- it gives you the possibility of making your game 
 
 **Ultimately, you have complete control of what happens in your game.**
 
-Star Engine also **doesn't enforce controls, memory usage, visual style**. Most classes won't even have a visual representation, not even for examples, instead, templates will be on their own repository -- to save space.
+Star Engine also **doesn't enforce controls, memory usage, visual style**. Most classes won't even have a visual representation, not even for examples, instead, templates will be on their own repository (soon!) -- to save space.
 
 You have classes and scenes for many cases, but you're not forced to use them.
 And if you want different ones, you can extend and/or modify their code -- in fact, Star Engine invites you to extend classes for it to even work.
 
-It is designed as a **Multi-level API**. This means you can choose to let Star do the work for you, but it's not ALL or nothing -- you can choose exactly how much and in which ways Star takes control. In programmin lingo, you have a steady chain from low-level to high-level that you can intercept anywhere.
+It is designed as a **Multi-level API**. This means you can choose to let Star do the work for you, but it's not ALL or nothing -- you can choose exactly how much and in which ways Star takes control. In programming lingo, you have a steady chain from low-level to high-level that you can intercept anywhere.
 
-And lastly, but not leastly(...?), it contains the beautiful StarScript -- a domain-specific language for writing dialogs for Star. 
+And lastly, but not leastly(...?), it contains the beautiful *StarScript* -- a domain-specific language for writing dialogs for Star. 
 Its parser is wonderfully generic, so you can add your own commands, and it's so easy to use that even Benichi can do so.
 
 # 🪧 How to use Star Engine
@@ -68,18 +68,17 @@ git submodule add https://github.com/mr-pedro-braga/star-engine-core.git <your_s
 > Please learn version control software.
 > 
 > You don't want to lose your game if your computer falls or gets wet.
-> 
-> This is the advice of someone who has been through many things...
+> > This is the advice of someone who has been through many things...
 
 ## 📓 What's in it?
 
-There are four types of additions that Star provies.
+There are three types of additions that Star provies.
 
-- Components :: Add them to the scene tree, set them up with hierarchy and signals or use them with code. They do something to extend another Node's capabilities.
+- ***Components*** :: Add them to the scene tree, set them up with hierarchy and signals or use them with code. They do something to extend another Node's capabilities.
   - For example, the `Movement2D` gives movement to a `CharacterBody2D` keeping the movement script and your character scripts properly separated.
-  - The `Menu` component, also, manages its own menu state and can be used to create menus easily -- but is visual-agnostic so you can create your own Menu handlers that use them.
-- Classes :: Normal classes that you can use in code for various purposes -- `GameSaveData`, `ResourceMap`, they have one use and you use them if you need to.
-- Cores :: Implementations of classes packaged together to create servers for typical situations -- `DialogCutsceneCore` handles calling Dialogs, `AudioCore` handles audio, etc.
+  - The `Menu` component, also, manages its own menu state and can be used to create menus easily -- but is visual-agnostic so you can create your own Menu handlers that use them.<br><br>
+- ***Classes*** :: Normal classes that you can use in code for various purposes -- `GameSaveData`, `ResourceMap`, they have one use and you use them if you need to.<br><br>
+- ***Cores*** :: Implementations of classes packaged together to create servers for typical situations -- `DialogCutsceneCore` handles calling Dialogs, `AudioCore` handles audio, etc.<br><br>
 
 You literally just pick which ones you want to use -> That's the meaning of *cherry-picking*.
 
@@ -95,7 +94,7 @@ That's it!
 
 I previously mentioned Star is a multi-level API. But what does that mean?
 
-Let's suppose you want to add dialogues to your game.
+Let's see one example: Suppose you want to add dialogues to your game.
 
 ### Level 0
 
@@ -145,8 +144,8 @@ Shell.execute_block(
 )
 ```
 
-This is very convenient... but, oh, yikes, this looks terrible. What a mouthful to write.
-I had to write this passage for this very readme and it took me, what, 5 minutes?
+This is very conveniently abstracted... but, oh, yikes, this looks terrible. What a mouthful to write.
+I had to write this passage for this very README and it took me, what, 5 minutes?
 
 ### Level 4
 
@@ -182,12 +181,12 @@ And since there's `StarScriptEvent` that calls a StarScript file when it's trigg
 # ❤️ Contributing
 
 You can contribute by opening issues, pull requests (for solving issues), proposals...
-You can also contribute by giving me money, with which I'll pay bills and be alive to make more things for Star Engine and other Star projects.
+You can also contribute by giving me money, with which I'll channel directly into funding Star Engine and other Star projects.
 
 <hr/>
-🔶 [Patreon not yet available]<br/>
 <a href='https://ko-fi.com/C0C4BRV1X' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 <hr/>
+<br><br><br>
 
 In another, stranger, way, you can also contributing by sharing what you've built with Star.
 
