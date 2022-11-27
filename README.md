@@ -9,7 +9,7 @@
 
 A simple, modular, *cherry-pickable* framework for creating RPG-like games in [Godot Engine](https://godotengine.org/).
  
-Star Engine is the engine used in my ([@mrpedrobraga](https://twitter.com/mrpedrobraga)'s game *'Inner Voices'*.
+Star Engine is the engine used in my ([@mrpedrobraga](https://twitter.com/mrpedrobraga)'s game *'Inner Voices'*).
 I develop the scripts for it, but they're written to be completely agnostic to it.
 
 ## 🪧 The idea behind it
