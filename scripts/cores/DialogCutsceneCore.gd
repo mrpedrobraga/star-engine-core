@@ -20,7 +20,7 @@ signal dialog_finished
 ## A reference to the overworld (scene) camera
 var camera : Camera2D
 ## A reference to the camera rack
-var camera_rack : OffsetStackRack
+var camera_rack : OffsetStackRack2D
 
 ## The current zoom level for the scene camera
 signal camera_zoom_changed(new_zoom)
