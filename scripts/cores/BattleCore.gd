@@ -201,6 +201,7 @@ func battle_engage_transition():
 	_ally_formation.battler_count = battle_instance.allies.size()
 	_ally_formation.reorganize(false)
 	
+	var b = battle_instance.allies
 	for chh in battle_instance.allies:
 		var ch : Node2D = chh.world_node
 		

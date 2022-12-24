@@ -2,7 +2,7 @@ extends Control
 class_name _MenuHandlerBase
 
 @export_category("MenuHandler")
-@export var menu : Node
+@export var menu : Menu
 var menu_is_current := false
 var menu_was_current_last_frame := false
 
@@ -50,6 +50,9 @@ func _input(ev):
 			menu_was_current_last_frame = false
 
 func update():
+	if not is_inside_tree():
+		return
+	
 	menu_is_current = true
 	Shell.speak(menu.get_selected_label())
 	await get_tree().process_frame
