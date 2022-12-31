@@ -39,16 +39,21 @@ var trigger_xform : Transform2D:
 
 func _ready():
 	if Engine.is_editor_hint():
+		modulate = Color.WHITE
 		return
 	
 	area_entered.connect(_on_area_enter)
 	area_exited.connect(_on_area_exit)
 	
+	collision_layer = 0b100
+	collision_mask = 0b100
+	
 	var a := CollisionShape2D.new()
-	add_child(a)
 	a.scale = Vector2(SCALE, SCALE)
 	var s := RectangleShape2D.new()
 	s.size = trigger_size * TILE_SIZE
+	a.shape = s
+	add_child(a)
 	
 
 var _areas : Array[EventProber] = []
@@ -80,6 +85,8 @@ func _trigger():
 	pass
 
 func _draw():
+	if not Engine.is_editor_hint():
+		return
 	
 	var b := Vector2(trigger_size) * SCALE * TILE_SIZE
 	var a := -b/2

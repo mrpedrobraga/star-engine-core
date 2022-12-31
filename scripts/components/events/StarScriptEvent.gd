@@ -7,7 +7,7 @@ class_name StarScriptEvent
 @export var event_key : String = ""
 
 func _init():
-	color = Color(0.87171185016632, 0.21420693397522, 0.2486332654953)
+	color = Color(0.70032769441605, 0.06332322955132, 0.27064934372902)
 
 func _trigger():
 	if Game.DC.is_in_cutscene:
@@ -28,6 +28,8 @@ func _trigger():
 var _icon = preload("res://_engine/scripts/icons/icon_dialogevent_small.png")
 
 func _draw():
+	if not Engine.is_editor_hint():
+		return
 	super()
 	
 	draw_set_transform(Vector2(), 0.0, Vector2(SCALE, SCALE))

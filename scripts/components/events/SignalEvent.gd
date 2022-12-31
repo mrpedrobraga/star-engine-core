@@ -16,6 +16,8 @@ func _trigger():
 var _icon = preload("res://_engine/scripts/icons/icon_event_small.png")
 
 func _draw():
+	if not Engine.is_editor_hint():
+		return
 	super()
 	
 	draw_set_transform(Vector2(), 0.0, Vector2(SCALE, SCALE))
