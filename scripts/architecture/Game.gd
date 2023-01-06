@@ -22,6 +22,26 @@ var Data : DataCore
 ##The DialogCutsceneCore for the game.
 var Battle : BattleCore
 
+const USER_INFO_PATH = "user://user_info.res"
+##The persistent user information.
+var user_info : UserInfo
+
+func load_user_info():
+	if FileAccess.file_exists(USER_INFO_PATH):
+		user_info = ResourceLoader.load(USER_INFO_PATH)
+	else:
+		user_info = UserInfo.new()
+		save_user_info()
+func save_user_info():
+	ResourceSaver.save(user_info, "user://user_info.res")
+func load_last_save_data(game_name = ""):
+	var save_file = user_info.save_file
+	if FileAccess.file_exists("user://saves/%s.tres" % save_file):
+		Game.Data.load_game(save_file)
+	else:
+		Game.Data.create_save_data(game_name)
+		Game.Data.save_game(user_info.save_file)
+
 ##################### STATES #####################
 
 ##A dictionary with all the current game states (__GameplayStateBase).

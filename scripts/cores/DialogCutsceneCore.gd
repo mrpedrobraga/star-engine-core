@@ -30,10 +30,8 @@ var camera_zoom : float = 1.0:
 		camera_zoom_changed.emit(v)
 var camera_target
 
-##NODE; The path to the dialog box that will execute any dialog.
-@export_node_path var dialog_box_path
 ##NODE; The dialog box that will execute any dialog.
-@onready var _dialog_box: SmartRichTextLabel = get_node(dialog_box_path)
+@export var _dialog_box: SmartRichTextLabel
 
 ##Executes a [b]dialog[/b] given a [i]StarScript[/i] [b]pool[/b] and a [b]key[/b].
 func dialog( pool : StarScript, key : String ) -> void:

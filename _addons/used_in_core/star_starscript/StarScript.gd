@@ -1,14 +1,10 @@
-#########################################
-#										#
-#		StarScript Resource 1.0.0 		#
-#			by Pedro Braga				#
-#										#
-#	Holds information like a dictionary	#
-#										#
-#########################################
-
 extends Resource
 class_name StarScript
+
+## An object containing a script written in StarScript.
+##
+## Scripts in StarScript are ran by [__Shell], and can make creating scenes,
+## movements and more easier.
 
 # content: the content of this object.
 #	It's a dictionary containing sequences of SObjects.

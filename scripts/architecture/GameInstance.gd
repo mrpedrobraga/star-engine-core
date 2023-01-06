@@ -11,10 +11,10 @@ class_name GameInstance
 ## probably [i]write your own[/i].
 
 @export_category("Cores")
-@export var audio_core : Node
-@export var dialog_cutscene_core : Node
-@export var data_core : Node
-@export var battle_core : Node
+@export var audio_core : AudioCore
+@export var dialog_cutscene_core : DialogCutsceneCore
+@export var data_core : DataCore
+@export var battle_core : BattleCore
 
 @export_category("Setup")
 @export var first_room : PackedScene

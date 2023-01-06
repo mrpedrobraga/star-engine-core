@@ -10,6 +10,7 @@ func _init():
 	color = Color(0.70032769441605, 0.06332322955132, 0.27064934372902)
 
 func _trigger():
+	
 	if Game.DC.is_in_cutscene:
 		return
 	await get_tree().process_frame

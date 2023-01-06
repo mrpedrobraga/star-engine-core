@@ -7,15 +7,26 @@ class_name DataCore
 signal on_saved(file)
 signal on_loaded(file)
 
-var data : GameSaveData = GameSaveData.new()
+var data : GameSaveData
 
-func save_game(file: String) -> int:
-	ResourceSaver.save(data, "res://"+file+".tres")
+## Creates a new save data with basic information.
+func create_save_data (game_name : String) -> GameSaveData:
+	var m = GameSaveData.new()
+	
+	m.game_name = game_name
+	m.facts = FactBase.new()
+	
+	data = m
+	return m
+
+## Saves the current game data to a file.
+func save_game(file: String = "save") -> int:
+	ResourceSaver.save(data, "user://saves/"+file+".tres")
 	print(data)
 	return OK
 
-func load_game(file: String) -> int:
-	var path ="res://"+file+".tres"
+func load_game(file: String = "save") -> int:
+	var path ="user://saves/"+file+".tres"
 	if not FileAccess.file_exists(path):
 		Shell.print_err(
 			"Missing Save File",

@@ -45,8 +45,8 @@ func _ready():
 	area_entered.connect(_on_area_enter)
 	area_exited.connect(_on_area_exit)
 	
-	collision_layer = 0b100
-	collision_mask = 0b100
+	collision_layer = 0b10
+	collision_mask = 0b10
 	
 	var a := CollisionShape2D.new()
 	a.scale = Vector2(SCALE, SCALE)
@@ -61,7 +61,6 @@ var _areas : Array[EventProber] = []
 func _on_area_enter(area):
 	if area is EventProber:
 		_areas.push_back(area)
-		
 		if trigger_condition == TriggerCondition.ON_TOUCH:
 			if Game.get_state() == required_game_state:
 				_trigger()
@@ -72,9 +71,10 @@ func _input(ev):
 	
 	if not trigger_condition == TriggerCondition.ON_INTERACT:
 		return
-	if Input.is_action_just_pressed(interaction_action) and _areas.size() > 0:
-		if Game.get_state() == required_game_state:
-			_trigger()
+	if _areas.size() > 0:
+		if Input.is_action_just_pressed(interaction_action):
+			if Game.get_state() == required_game_state:
+				_trigger()
 
 func _on_area_exit(area):
 	if area is EventProber:
