@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dq04wlt3drr30"]
+
+[ext_resource type="Script" path="res://_engine/scripts/architecture/Bootloader.gd" id="1_5du8l"]
+[ext_resource type="FontFile" uid="uid://bsjbflerayuri" path="res://_engine/fonts/Steelflight.ttf" id="2_7u315"]
+
+[node name="Bootloader" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_5du8l")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_7u315")
+theme_override_font_sizes/normal_font_size = 32

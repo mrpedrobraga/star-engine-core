@@ -6,7 +6,7 @@ func _enter_tree():
 		"SmartRichTextLabel",
 		"RichTextLabel",
 		preload("SmartRichTextLabel.gd"),
-		preload("addonicon_smart_rich_text_label.png")
+		preload("icon_smart_rich_text_label.png")
 	)
 
 func _exit_tree():
