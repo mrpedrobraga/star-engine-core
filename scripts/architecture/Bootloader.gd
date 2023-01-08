@@ -19,21 +19,33 @@ func _ready():
 	
 	d = DirAccess.open("res://packs")
 	
+	#printx(get_dir_tree("res://packs", 2))
+	#return
+	
 	printx("Checking out packs.")
 	# Checkout all the newly loaded packs!
 	for pack in d.get_directories():
 		var pd = DirAccess.open("res://packs/"+pack)
-		if not pd.file_exists('pack.tres'):
+		if not pd:
+			print(pd.get_open_error())
+		
+		var gp = load_safe("res://packs/%s/pack.tres" % pack)
+		if not gp:
+			printx(" - No 'pack.tres' found for '%s'." % pack)
 			continue
-		var gp : GamePack = load("res://packs/%s/pack.tres" % pack)
+		
 		gp._setup()
-		printx("\t - found " + str(gp))
+		printx(" - Found " + str(gp))
 		packs.push_back ({
 			"name": pack,
 			"priority": gp.priority
 		})
 		if gp.is_core:
 			core_packs.push_back(gp)
+			gp._output = text
+			gp._tree = get_tree()
+			
+		await get_tree().process_frame
 	
 	var pack_to_boot : GamePack
 	
@@ -45,15 +57,48 @@ func _ready():
 		pack_to_boot = core_packs[0]
 	
 	printx("Booting into " + str(pack_to_boot) + ".")
+	
+	await get_tree().process_frame
 	pack_to_boot._boot()
 
+
+func get_dir_tree(path, max_level = -1, level = 0):
+	if level == max_level: return ''
+	
+	var dir : DirAccess = DirAccess.open(path)
+	var text = ''
+	
+	text += "[indent]"
+	
+	for d in dir.get_directories():
+		text += d + '\n'
+		text += get_dir_tree(path + '/' + d, max_level, level + 1)
+	for f in dir.get_files():
+		text +=  f + "\n"
+	
+	text += "[/indent]"
+	
+	return text
 
 
 func printx(message):
 	text.text += str(message) + "\n"
 	print_rich(message)
 
+func load_safe(path : String):
+	if not FileAccess.file_exists(path):
+		var np = path + '.remap'
+		if not FileAccess.file_exists(np):
+			return null
+		return load(get_path_of_remap(np))
+	
+	return load(path)
 
+func get_path_of_remap(path : String):
+	var remap = ConfigFile.new()
+	var err = remap.load(path)
+	if err != OK: return
+	return remap.get_value('remap', 'path')
 
 func _input(ev):
 	if Input.is_action_just_pressed("ui_fullscreen"):

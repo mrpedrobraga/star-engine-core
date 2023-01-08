@@ -15,6 +15,13 @@ class_name GamePack
 @export var priority = 0
 @export var version = "0.0.0"
 
+var _output : RichTextLabel
+func printx(message):
+	message = "[%s] "%bundle_id + message
+	_output.text += str(message) + "\n"
+	print_rich(message)
+var _tree : SceneTree
+
 ## Prepare whatever when this pack is loaded into the engine.
 func _setup():
 	pass

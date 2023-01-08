@@ -20,11 +20,14 @@ func dict_op(dictionary : Dictionary, path : NodePath, function : Callable):
 				dict[n] = next_dict
 				dict = next_dict
 
+## Sets a fact to hold a value.
 func set_fact(fact : NodePath, value=false):
 	dict_op(_data, fact, (func(d, n): d[n] = value))
 
+## Returns the value of a fact.
 func get_fact(fact : NodePath):
 	return dict_op(_data, fact, (func(d, n): return d[n]))
 
+## Checks whether a certain fact exists.
 func is_fact(fact : NodePath):
 	return dict_op(_data, fact, (func(d, n): return d.has(n)))
