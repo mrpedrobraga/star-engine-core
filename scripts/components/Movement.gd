@@ -86,7 +86,7 @@ func _physics_process(delta):
 			move_free(delta)
 
 	# Juicy Effects
-	if animation_squash_and_stretch_active:
+	if animation_squash_and_stretch_active and controllable:
 		if not animation_visual_sprite:
 			printerr("Movement2D has no visual sprite associated and can't animate.")
 			return
@@ -108,7 +108,7 @@ func move_free(delta):
 		parent.velocity.x = move_toward(parent.velocity.x, input_vector.x * motion_maximum_speed, motion_acceleration * delta)
 		parent.velocity += motion_gravity_direction * motion_gravity_magnitude * delta
 		parent.move_and_slide()
-		if parent.is_on_floor() and Input.is_action_pressed(input_action_up) and motion_jump_active:
+		if controllable and parent.is_on_floor() and Input.is_action_pressed(input_action_up) and motion_jump_active:
 			parent.velocity.y = - motion_gravity_magnitude * motion_jump_strength
 	else:
 		parent.velocity = parent.velocity.move_toward(
@@ -130,7 +130,7 @@ func move_free(delta):
 			if animation_squash_and_stretch_active:
 				animation_visual_sprite.scale.x = target_scale.x * 2.0
 				animation_visual_sprite.scale.y = target_scale.y * 0.5
-		if position_z == 0 and Input.is_action_pressed(input_action_jump) and motion_jump_active:
+		if controllable and position_z == 0 and Input.is_action_pressed(input_action_jump) and motion_jump_active:
 			vz = motion_gravity_magnitude * motion_jump_strength
 			if animation_squash_and_stretch_active:
 				animation_visual_sprite.scale.x = target_scale.x * 0.5

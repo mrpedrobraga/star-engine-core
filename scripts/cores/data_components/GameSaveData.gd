@@ -13,6 +13,7 @@ class_name GameSaveData
 
 # Character PROPERTIES
 var current_vessel := "unknown"
+var current_vessel_scene : PackedScene
 var party : Array[Character] = []
 
 # SWITCHES / GAME PROGRESSION

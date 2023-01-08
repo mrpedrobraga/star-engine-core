@@ -19,7 +19,7 @@ var turn_ally_choices : Array = []
 
 func setup():
 	if allies.is_empty():
-		allies = Game.Data.data.party
+		allies = Game.get_party()
 	
 	opponent_scripts = []
 	for opp in opponents:

@@ -14,4 +14,4 @@ class_name Room
 
 @export var room_name : String = "Unknown Room"
 @export var is_valid_resume_area : bool = false
-@export var resume_hotspot : Node
+@export var resume_hotspot : Marker2D

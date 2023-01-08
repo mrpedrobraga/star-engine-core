@@ -87,12 +87,15 @@ func _input(ev) -> void:
 
 ##################### CONVENIENCE FUNCTIONS #####################
 
+var current_room : Room
+
 ## Changes the current room
 func change_room(r : PackedScene, position : Vector2 = Vector2.ZERO):
 	var rr = r.instantiate()
 	if not rr is Room:
 		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(r))
 		return
+	current_room = rr
 	rr.name = "current_room"
 	var old_room = States[&"Overworld"].get_node_or_null("../current_room")
 	if old_room:
@@ -101,6 +104,15 @@ func change_room(r : PackedScene, position : Vector2 = Vector2.ZERO):
 		old_room.queue_free()
 	States[&"Overworld"].add_sibling(rr)
 	rr.global_position = position
+	
+	## Add the character in the scene.
+	
+	for i in get_party():
+		var n = i.world_node
+		rr.add_child(n)
+		
+		if rr.resume_hotspot:
+			n.global_position = rr.resume_hotspot.global_position
 
 ##Returns the current party as specified in your GameSaveData
 func get_party() -> Array[Character]:
