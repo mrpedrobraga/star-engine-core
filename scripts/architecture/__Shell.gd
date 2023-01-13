@@ -118,12 +118,7 @@ func _execute(command):
 			return_value = e.execute()
 			print(return_value)
 		"if":
-			var params := StarScriptParser.split_params(command.params)
-			var cond = {"key":params.pop_front(), "params":""}
-			for i in params.size():
-				if i > 0:
-					cond.params += " "
-				cond.params += params[i]
+			var cond = make_command(command.params)
 			
 			await execute(cond)
 			if return_value:
@@ -157,13 +152,25 @@ func printx(message, _options={}):
 
 ##Speaks a message out loud via TTS
 func speak(m : String):
-	#OS.create_process("espeak", ['"' + m +'"'])
+	OS.create_process("espeak", ['"' + m +'"'])
 	print("[TTS] :: " + m)
 
 func to_valid_speech(m : String) -> String:
+	m = m.trim_prefix("* ")
+	m = m.trim_prefix("- ")
+	
 	var r_bb := RegEx.create_from_string("\\[[\\s\\S]*?\\]")
 	m = r_bb.sub(m, "", true)
 	return m
+
+func make_command(txt : String) -> Dictionary:
+	var params := StarScriptParser.split_params(txt)
+	var cmd = {"key":params.pop_front(), "params":""}
+	for i in params.size():
+		if i > 0:
+			cmd.params += " "
+		cmd.params += params[i]
+	return cmd
 
 ##Prints an error to the (real and in-game) consoles.
 ##You can also pass options, such as 'suggestion'.

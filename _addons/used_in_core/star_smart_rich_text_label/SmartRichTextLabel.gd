@@ -99,29 +99,36 @@ func write(_text):
 				beep()
 				await get_tree().create_timer(0.1).timeout
 				char_written.emit()
-			FormatCharacters.WAIT:
-				await get_tree().create_timer(text_delay * 4.0).timeout
-			FormatCharacters.INPUT:
-				paused.emit()
-				is_emitting_physical_sound = false
-				is_typing = false
-				show_input_request(true)
-				await self.ok_pressed
-				show_input_request(false)
-				is_emitting_physical_sound = true
-				resumed.emit()
-				is_typing = true
 			" ":
 				visible_characters += 1
 			"	":
 				visible_characters += 1
-			FormatCharacters.SKIP:
-				clear()
-				resumed.emit()
-				completed.emit()
-				is_emitting_physical_sound = false
-				show_input_request(false)
-				return
+			FormatCharacters.GENERIC:
+				print('Generic point hit.')
+				
+				var evt = special_buffer.pop_front()
+				
+				match evt.type:
+					"skip":
+						clear()
+						resumed.emit()
+						completed.emit()
+						is_emitting_physical_sound = false
+						show_input_request(false)
+						return
+					"input":
+						paused.emit()
+						is_emitting_physical_sound = false
+						is_typing = false
+						show_input_request(true)
+						await self.ok_pressed
+						show_input_request(false)
+						is_emitting_physical_sound = true
+						resumed.emit()
+						is_typing = true
+					"pause":
+						print('-- ', evt.params.to_int())
+						await get_tree().create_timer(text_delay * 4.0 * evt.params.to_int()).timeout
 			_:
 				beep()
 				char_written.emit()
@@ -157,23 +164,42 @@ func cancel_write():
 		visible_ratio = 0.99999
 
 const FormatCharacters : Dictionary = {
-	SKIP = "¹",
-	INPUT = "§",
-	WAIT = "¢",
+	GENERIC = "§"
 }
 
+var _last_processed_string : String = ""
+
+var special_buffer : Array = [
+	
+]
+
 func special_format(input : String):
-	input = input.replace("[skip]", FormatCharacters.SKIP)
-	input = input.replace("[input]", FormatCharacters.INPUT)
+	special_buffer.clear()
+	
 	input = input.replace("\\n", "\n")
 	input = input.replace("[br]", "\n")
 	
-	var r = RegEx.new()
-	r.compile("\\[pause=(?<amt>\\d+)\\]")
-	var m : Array[RegExMatch] = r.search_all(input)
-	
-	for mm in m :
-		var n = (mm.strings[mm.names.amt])
-		input = r.sub(input, FormatCharacters.WAIT.repeat(n.to_int()))
-	
+	var r_expr = RegEx.new()
+	r_expr.compile("\\[(?<key>\\w+)(?<params> .*?)?\\]")
+	var m_expr : Array[RegExMatch] = r_expr.search_all(input)
+	for mm in m_expr:
+		match mm.get_string(&"key"):
+			"expr":
+				var e = Expression.new()
+				e.parse(mm.get_string(&"params"))
+				var result = e.execute()
+				input = input.replace(mm.get_string(), str(result))
+			_:
+				input = input.replace(mm.get_string(), FormatCharacters.GENERIC)
+				special_buffer.append(
+					{
+						"type": mm.get_string(&"key"),
+						"params": mm.get_string(&"params").trim_prefix(" ")
+					}
+				)
+	_last_processed_string = input
 	return input
+
+#* Hey.[input] You're so cool!
+#* pot[pause 3]pourri
+#* I have [expr 3 + 3] items.

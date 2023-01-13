@@ -18,9 +18,9 @@ signal dialog_requested
 signal dialog_finished
 
 ## A reference to the overworld (scene) camera
-var camera : Camera2D
+@export var camera : Camera2D
 ## A reference to the camera rack
-var camera_rack : OffsetStackRack2D
+@export var camera_rack : OffsetStackRack2D
 
 ## The current zoom level for the scene camera
 signal camera_zoom_changed(new_zoom)
@@ -28,7 +28,7 @@ var camera_zoom : float = 1.0:
 	set(v):
 		camera_zoom = v
 		camera_zoom_changed.emit(v)
-var camera_target
+var camera_target : CanvasItem
 
 ##NODE; The dialog box that will execute any dialog.
 @export var _dialog_box: SmartRichTextLabel
@@ -54,3 +54,12 @@ func enter_cutscene():
 func exit_cutscene():
 	is_in_cutscene = false
 	cutscene_finished.emit()
+
+################################
+
+func _physics_process(delta):
+	if camera_target:
+		var off := Vector2.ZERO
+		if camera_target is CharacterVessel2D:
+			off += camera_target.camera_offset
+		camera_rack.set_offset_at(0, camera_target.global_position + off)

@@ -1,4 +1,5 @@
 extends Node
+class_name Bootloader
 
 @onready var text = $RichTextLabel
 
@@ -27,7 +28,7 @@ func _ready():
 	for pack in d.get_directories():
 		var pd = DirAccess.open("res://packs/"+pack)
 		if not pd:
-			print(pd.get_open_error())
+			print(DirAccess.get_open_error())
 		
 		var gp = load_safe("res://packs/%s/pack.tres" % pack)
 		if not gp:
@@ -66,19 +67,19 @@ func get_dir_tree(path, max_level = -1, level = 0):
 	if level == max_level: return ''
 	
 	var dir : DirAccess = DirAccess.open(path)
-	var text = ''
+	var t = ''
 	
-	text += "[indent]"
+	t += "[indent]"
 	
 	for d in dir.get_directories():
-		text += d + '\n'
-		text += get_dir_tree(path + '/' + d, max_level, level + 1)
+		t += d + '\n'
+		t += get_dir_tree(path + '/' + d, max_level, level + 1)
 	for f in dir.get_files():
-		text +=  f + "\n"
+		t +=  f + "\n"
 	
-	text += "[/indent]"
+	t += "[/indent]"
 	
-	return text
+	return t
 
 
 func printx(message):
@@ -95,10 +96,10 @@ func load_safe(path : String):
 	return load(path)
 
 func get_path_of_remap(path : String):
-	var remap = ConfigFile.new()
-	var err = remap.load(path)
+	var remapper = ConfigFile.new()
+	var err = remapper.load(path)
 	if err != OK: return
-	return remap.get_value('remap', 'path')
+	return remapper.get_value('remap', 'path')
 
 func _input(ev):
 	if Input.is_action_just_pressed("ui_fullscreen"):

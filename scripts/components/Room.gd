@@ -15,3 +15,7 @@ class_name Room
 @export var room_name : String = "Unknown Room"
 @export var is_valid_resume_area : bool = false
 @export var resume_hotspot : Marker2D
+
+func spawn(ch : Node2D, pos : Vector2):
+	add_child(ch)
+	ch.global_position = pos
