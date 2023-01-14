@@ -98,5 +98,3 @@ func _draw():
 	
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
-func _get_configuration_warnings():
-	return [""]

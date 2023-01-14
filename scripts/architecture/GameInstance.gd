@@ -1,6 +1,6 @@
 extends Control
 class_name GameInstance
-@icon("res://_engine/scripts/icons/icon_dialogevent.png")
+@icon("res://_engine/scripts/icons/icon_core_game.png")
 
 ## Class that encapsulates an instance of a game,.
 ##

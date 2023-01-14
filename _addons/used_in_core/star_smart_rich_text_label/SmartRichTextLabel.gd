@@ -104,7 +104,6 @@ func write(_text):
 			"	":
 				visible_characters += 1
 			FormatCharacters.GENERIC:
-				print('Generic point hit.')
 				
 				var evt = special_buffer.pop_front()
 				
@@ -127,7 +126,6 @@ func write(_text):
 						resumed.emit()
 						is_typing = true
 					"pause":
-						print('-- ', evt.params.to_int())
 						await get_tree().create_timer(text_delay * 4.0 * evt.params.to_int()).timeout
 			_:
 				beep()
