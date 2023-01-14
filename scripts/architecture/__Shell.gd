@@ -18,14 +18,19 @@ signal command_finished
 ## Emitted when all the commands queried in an [member execute_block] is finished.
 signal sequence_finished
 
+var current_line : Array[int] = []
+
 ##Executes a block of commands in [StarScript] dictionary format.
 ##It does accept a string, which will be parsed by [StarScriptParser].
 func execute_block(commands):
 	if commands is String:
 		commands = StarScriptParser.parse(commands).content
-	for command in commands:
-		execute(command)
-		await command_finished
+	if commands is Array:
+		current_line.append(0)
+		while current_line[-1] < commands.size():
+			execute(commands[current_line[-1]])
+			await command_finished
+			current_line[-1] += 1
 	sequence_finished.emit()
 
 ## The return value of the last command.
@@ -152,12 +157,13 @@ func printx(message, _options={}):
 
 ##Speaks a message out loud via TTS
 func speak(m : String):
-	OS.create_process("espeak", ['"' + m +'"'])
+	#OS.create_process("espeak", ['"' + m +'"'])
 	print("[TTS] :: " + m)
 
 func to_valid_speech(m : String) -> String:
 	m = m.trim_prefix("* ")
 	m = m.trim_prefix("- ")
+	m = m.replace("§", " ")
 	
 	var r_bb := RegEx.create_from_string("\\[[\\s\\S]*?\\]")
 	m = r_bb.sub(m, "", true)
