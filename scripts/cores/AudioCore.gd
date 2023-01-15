@@ -1,6 +1,6 @@
 extends __GameplayCoreBase
 class_name AudioCore
-@icon("res://_engine/scripts/icons/icon_music.svg")
+@icon("res://_engine/scripts/icons/icon_core_audio.png")
 
 ## CORE class that handles audio.
 ##

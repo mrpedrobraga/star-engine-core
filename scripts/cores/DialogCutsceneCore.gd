@@ -1,7 +1,7 @@
 ##CORE class that handles matters related to dialogs and cutscenes.
 extends __GameplayCoreBase
 class_name DialogCutsceneCore
-@icon("res://_engine/scripts/icons/icon_dialogevent_small.png")
+@icon("res://_engine/scripts/icons/icon_core_dc.png")
 
 ##READ; True if the game is currently in a [b]cutscene[/b].
 var is_in_cutscene := false

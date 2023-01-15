@@ -1,6 +1,7 @@
 @tool
 extends Component
 class_name Menu
+@icon("res://_engine/scripts/icons/icon_component_menu.png")
 
 ##Class for creating complex menus in code or in a tree.
 ##
