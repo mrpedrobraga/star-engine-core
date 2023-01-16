@@ -23,6 +23,8 @@ var current_line : Array[int] = []
 ##Executes a block of commands in [StarScript] dictionary format.
 ##It does accept a string, which will be parsed by [StarScriptParser].
 func execute_block(commands):
+	if current_line.size() >= 1: return
+	
 	if commands is String:
 		commands = StarScriptParser.parse(commands).content
 	if commands is Array:
@@ -32,6 +34,7 @@ func execute_block(commands):
 			await command_finished
 			current_line[-1] += 1
 	sequence_finished.emit()
+	current_line.pop_back()
 
 ## The return value of the last command.
 var return_value = null
@@ -66,11 +69,11 @@ func _execute(command):
 			#speak(to_valid_speech(command.params))
 			# Say something as a character
 		"-":
-			if not command.has("content"):
+			if not command.has("message"):
 				printx("Invalid Dialog!")
 				return
-			printx("- " + command.content)
-			#speak(to_valid_speech(command.content))
+			printx("- " + command.message)
+			speak(to_valid_speech(command.content))
 		## Waits for a set amount of seconds.
 		"wait":
 			if command.params.is_valid_float():
@@ -113,6 +116,8 @@ func _execute(command):
 				print_err("Shell Error", str(output_message))
 			else:
 				printx(str(output_message))
+		"call":
+			printx(command.params)
 		"true":
 			return_value = true
 		"false":

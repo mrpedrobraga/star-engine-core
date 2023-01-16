@@ -2,7 +2,7 @@
 ##Abstract class that handles events caused by some trigger --
 ##i.e. EventProbers touching/interacting, the start of the scene,
 ##or every tick.
-extends Area2D
+extends Control
 class_name __EventBase
 @icon("res://_engine/scripts/icons/icon_event_small.png")
 
@@ -10,17 +10,24 @@ enum TriggerCondition {
 	ON_TOUCH, ON_INTERACT, ON_SCENE_START, EVERY_TICK
 }
 
+@export_category("Trigger")
+
 ##The trigger condition for the event.
 @export var trigger_condition : TriggerCondition
-
-@export_group("Trigger")
-
-@export var trigger_size : Vector2i = Vector2i(4, 2):
+@export var trigger_with_raycast : bool = false:
 	set(v):
-		trigger_size = v
+		trigger_with_raycast = v
+		if(trigger_with_raycast):
+			_area.collision_layer = raycast_layer | 0b10
+			_area.collision_mask = raycast_layer | 0b10
+		else:
+			_area.collision_layer = 0b10
+			_area.collision_mask = 0b10
+@export_range(0.0, 256.0, 2.0) var icon_offset : float = 0.0:
+	set(v):
+		icon_offset = v
 		queue_redraw()
-const SCALE := 6
-const TILE_SIZE := 16
+
 @export var color = Color.WHITE:
 	set(v):
 		color = v
@@ -30,31 +37,55 @@ var trigger_xform : Transform2D:
 		trigger_xform = v
 		queue_redraw()
 
-@export_group("")
+@export_group("Meta")
+@export var raycast_layer := 0b100
 
 ##The action that triggers this event if trigger_condition is [code]ON_INTERACT[/code].
 @export var interaction_action : String = "OK"
 ##The game state in which this event can be triggered.
 @export var required_game_state : StringName = &"Overworld"
 
+var _mouse_over := false
+var _area := Area2D.new()
+var _shape := CollisionShape2D.new()
+var _col_rect := RectangleShape2D.new()
+
+var _SCALE := 6
+
+func _init():
+	layout_direction = Control.LAYOUT_DIRECTION_LTR
+
 func _ready():
 	if Engine.is_editor_hint():
 		modulate = Color.WHITE
 		return
 	
-	area_entered.connect(_on_area_enter)
-	area_exited.connect(_on_area_exit)
+	_area.area_entered.connect(_on_area_enter)
+	_area.area_exited.connect(_on_area_exit)
+	mouse_entered.connect((func ():
+		_mouse_over = true
+	))
+	mouse_exited.connect((func ():
+		_mouse_over = false
+	))
 	
-	collision_layer = 0b10
-	collision_mask = 0b10
+	_area.collision_layer = _area.collision_layer | 0b10
+	_area.collision_mask = _area.collision_mask | 0b10
 	
-	var a := CollisionShape2D.new()
-	a.scale = Vector2(SCALE, SCALE)
-	var s := RectangleShape2D.new()
-	s.size = trigger_size * TILE_SIZE
-	a.shape = s
-	add_child(a)
-	
+	_area.add_child(_shape)
+	add_child(_area)
+	_shape.shape = _col_rect
+	_area.visible = false
+	_area.position = size/2
+	_col_rect.size = size
+	queue_redraw()
+
+func _notification(what):
+	match what:
+		NOTIFICATION_RESIZED:
+			queue_redraw()
+			pivot_offset = size/2
+			_col_rect.size = size
 
 var _areas : Array[EventProber] = []
 
@@ -65,8 +96,13 @@ func _on_area_enter(area):
 			if Game.get_state() == required_game_state:
 				_trigger()
 
+var _activated := false
+
 func _input(ev):
 	if Engine.is_editor_hint():
+		return
+		
+	if _activated:
 		return
 	
 	if not trigger_condition == TriggerCondition.ON_INTERACT:
@@ -74,7 +110,9 @@ func _input(ev):
 	if _areas.size() > 0:
 		if Input.is_action_just_pressed(interaction_action):
 			if Game.get_state() == required_game_state:
+				_activated = true
 				_trigger()
+				set_deferred("_activated", false)
 
 func _on_area_exit(area):
 	if area is EventProber:
@@ -88,13 +126,5 @@ func _draw():
 	if not Engine.is_editor_hint():
 		return
 	
-	var b := Vector2(trigger_size) * SCALE * TILE_SIZE
-	var a := -b/2
-	
-	draw_set_transform_matrix(trigger_xform)
-	
-	draw_rect(Rect2(a, b), Color(color, 0.5), true)
-	draw_rect(Rect2(a, b), color, false, 1.0 * SCALE)
-	
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-
+	draw_rect(Rect2(Vector2(), size), Color(color, 0.2), true)
+	draw_rect(Rect2(Vector2(), size), color, false, 6.0)

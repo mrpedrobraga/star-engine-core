@@ -20,5 +20,6 @@ func _draw():
 		return
 	super()
 	
-	draw_set_transform(Vector2(), 0.0, Vector2(SCALE, SCALE))
-	draw_texture(_icon, - _icon.get_size()/2)
+	draw_set_transform(Vector2(size/2) + Vector2.UP * icon_offset, 0.0, Vector2(float(_SCALE), float(_SCALE)))
+	draw_texture(_icon, 0.5 * (-_icon.get_size()))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)

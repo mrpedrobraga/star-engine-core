@@ -56,6 +56,10 @@ func exit_cutscene():
 	cutscene_finished.emit()
 
 ################################
+func _ready():
+	camera_zoom_changed.connect((func(new_zoom):
+		camera.zoom = Vector2(new_zoom, new_zoom)
+	))
 
 func _physics_process(delta):
 	if camera_target:

@@ -1,6 +1,7 @@
 @tool
 extends Marker2D
 class_name SMarker2D
+@icon("res://_engine/scripts/icons/icon_marker_balloon.png")
 
 @export_category("Marker")
 
@@ -23,6 +24,8 @@ func _ready():
 		return
 
 func _draw():
+	if not Engine.is_editor_hint(): return
+	
 	draw_set_transform(Vector2(), 0, Vector2.ONE * 6)
 	draw_texture(base_texture, Vector2(-12, -20))
 	draw_texture(balloon_texture, Vector2(-6, -13 - balloon_offset))

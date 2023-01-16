@@ -33,7 +33,7 @@ func bgm_preload_from_bank(bgm:String) -> void:
 
 func bgm_resume(restart = false) -> void:
 	bgm_player.stream = _bgm_back_buffer
-	if restart:
+	if restart or not bgm_player.playing:
 		bgm_player.play()
 	bgm_player.stream_paused = false
 
