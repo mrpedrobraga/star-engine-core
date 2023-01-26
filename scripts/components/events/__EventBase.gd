@@ -2,9 +2,9 @@
 ##Abstract class that handles events caused by some trigger --
 ##i.e. EventProbers touching/interacting, the start of the scene,
 ##or every tick.
+@icon("res://_engine/scripts/icons/icon_event_small.png")
 extends Control
 class_name __EventBase
-@icon("res://_engine/scripts/icons/icon_event_small.png")
 
 enum TriggerCondition {
 	ON_TOUCH, ON_INTERACT, ON_SCENE_START, EVERY_TICK
@@ -32,6 +32,7 @@ enum TriggerCondition {
 	set(v):
 		color = v
 		queue_redraw()
+@export var draw_always : bool = false
 var trigger_xform : Transform2D:
 	set(v):
 		trigger_xform = v
@@ -123,8 +124,5 @@ func _trigger():
 	pass
 
 func _draw():
-	if not Engine.is_editor_hint():
-		return
-	
 	draw_rect(Rect2(Vector2(), size), Color(color, 0.2), true)
 	draw_rect(Rect2(Vector2(), size), color, false, 6.0)

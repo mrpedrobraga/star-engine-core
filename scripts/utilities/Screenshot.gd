@@ -1,6 +1,6 @@
+@icon("res://core/scripts/icons/icon_console.svg")
 extends Node
 class_name Screenshot
-@icon("res://core/scripts/icons/icon_console.svg")
 
 # Screenshots without hiccups using threads.
 # Attach the script to a Node, start your game and hit F11

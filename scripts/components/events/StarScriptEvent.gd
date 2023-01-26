@@ -1,7 +1,7 @@
 @tool
+@icon("res://_engine/scripts/icons/icon_dialogevent_small.png")
 extends __EventBase
 class_name StarScriptEvent
-@icon("res://_engine/scripts/icons/icon_dialogevent_small.png")
 
 @export var event_pool : StarScript:
 	set(v):

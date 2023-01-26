@@ -13,7 +13,7 @@ grow_vertical = 2
 script = ExtResource("1_5du8l")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-anchors_preset = -1
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0

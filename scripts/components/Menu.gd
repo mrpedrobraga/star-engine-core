@@ -1,7 +1,7 @@
 @tool
+@icon("res://_engine/scripts/icons/icon_component_menu.png")
 extends Component
 class_name Menu
-@icon("res://_engine/scripts/icons/icon_component_menu.png")
 
 ##Class for creating complex menus in code or in a tree.
 ##
@@ -20,7 +20,7 @@ class_name Menu
 ##If one of the options is a Menu it will open it,
 ##pass the processing and await it to return.
 @export var options : Array = ["First"]
-@export var labels : Array = []
+@export var labels : Array[String] = []
 ##The currently selected index.
 @export var selected_index := 0
 ##When [code]true[/code], when you get to the minimum/maximum
@@ -87,7 +87,8 @@ func get_selected():
 
 func get_selected_label():
 	if labels:
-		return labels[selected_index]
+		if labels.size() >= options.size():
+			return labels[selected_index]
 	return str(get_selected())
 
 ##Opens the menu.
@@ -112,6 +113,9 @@ func open(parent_=null, level_=0):
 	
 	if is_iterator:
 		iterate()
+	
+	if menu_handler:
+		menu_handler.update()
 
 ##When [member is_iterator] is set to true, this function is called to iterate through all its submenus.
 func iterate():
@@ -144,6 +148,9 @@ func close():
 	is_open = false
 	is_current = false
 	set_process(false)
+	
+	if menu_handler:
+		menu_handler.update()
 
 ##Closes the menu and returns (if this Menu is a submenu).
 func back():
@@ -152,6 +159,7 @@ func back():
 	if not allows_cancel:
 		return
 	if parent:
+		print('cancelling')
 		close()
 		last_choice_type = CHOICE_BACK
 #		print(indent, "<-")
@@ -165,7 +173,6 @@ func back():
 ##Chooses the currently selected option and returns.
 func choose():
 	var m = get_selected()
-	var lct = 0
 	
 	var indent = ""; for i in range(level): indent += "\t"
 #	print(indent, "- ", name, " : ", get_selected_label())
@@ -175,19 +182,24 @@ func choose():
 	if m is Menu:
 		is_current = false
 		m.open(self, level+1)
-		lct = await m.choice_made
-		match lct:
+		await m.choice_made
+		match m.last_choice_type:
 			CHOICE_OK:
 				last_choice_type = CHOICE_OK
 				choice_made.emit(CHOICE_OK)
 				ok_pressed.emit()
+				return
+			CHOICE_BACK:
+				last_choice_type = CHOICE_BACK
+				choice_made.emit(CHOICE_BACK)
+				back_pressed.emit()
+				return
 	
 	if parent:
-		if not lct:
-			close()
-			last_choice_type = CHOICE_OK
-			choice_made.emit(CHOICE_OK)
-			ok_pressed.emit()
+		close()
+		last_choice_type = CHOICE_OK
+		choice_made.emit(CHOICE_OK)
+		ok_pressed.emit()
 
 func get_dict_repr() -> Dictionary:
 	var r
@@ -227,6 +239,8 @@ static func create(
 	m.options = _options
 	m.labels = _labels
 	m.allows_cancel = _allows_cancel
-	if _menu_handler: m.menu_handler = _menu_handler
+	if _menu_handler:
+		m.menu_handler = _menu_handler
+		_menu_handler.menu = m
 	
 	return m

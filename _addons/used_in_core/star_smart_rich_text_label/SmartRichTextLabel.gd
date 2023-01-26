@@ -1,9 +1,9 @@
 ##A Label that supports BBCode and simple prosody typewriting.
 
 @tool
+@icon("icon_smart_rich_text_label.png")
 extends RichTextLabel
 class_name SmartRichTextLabel
-@icon("icon_smart_rich_text_label.png")
 
 ##################################################################
 #

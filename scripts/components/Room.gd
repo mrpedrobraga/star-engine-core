@@ -1,6 +1,6 @@
+@icon("res://_engine/scripts/icons/icon_room.png")
 extends Node2D
 class_name Room
-@icon("res://_engine/scripts/icons/icon_room.png")
 
 ## Class for Rooms -- scenes where characters can walk in.
 ##

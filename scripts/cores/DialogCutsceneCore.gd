@@ -1,7 +1,7 @@
 ##CORE class that handles matters related to dialogs and cutscenes.
+@icon("res://_engine/scripts/icons/icon_core_dc.png")
 extends __GameplayCoreBase
 class_name DialogCutsceneCore
-@icon("res://_engine/scripts/icons/icon_core_dc.png")
 
 ##READ; True if the game is currently in a [b]cutscene[/b].
 var is_in_cutscene := false
@@ -62,8 +62,9 @@ func _ready():
 	))
 
 func _physics_process(delta):
-	if camera_target:
-		var off := Vector2.ZERO
-		if camera_target is CharacterVessel2D:
-			off += camera_target.camera_offset
-		camera_rack.set_offset_at(0, camera_target.global_position + off)
+	if Game.get_state() == &"Overworld":
+		if camera_target:
+			var off := Vector2.ZERO
+			if camera_target is CharacterVessel2D:
+				off += camera_target.camera_offset
+			camera_rack.set_offset_at(0, camera_target.global_position + off)

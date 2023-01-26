@@ -1,7 +1,7 @@
 @tool
+@icon("res://_engine/scripts/icons/icon_marker_balloon.png")
 extends Marker2D
 class_name SMarker2D
-@icon("res://_engine/scripts/icons/icon_marker_balloon.png")
 
 @export_category("Marker")
 

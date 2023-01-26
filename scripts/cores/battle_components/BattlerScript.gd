@@ -21,7 +21,7 @@ func _do_turn(turn_index : int) -> void:
 
 ##Virtual; executes an attack from this battler.
 func _attack(characters : Array[Character]):
-	BattleCore.battle_instance.current_targets = characters
+	#BattleCore.battle_instance.current_targets = characters
 	await get_tree().process_frame
 
 ######### RESPONSES TO ALLY ACTIONS
@@ -35,4 +35,4 @@ func _handle_ACT(character : Character, act_name : String) -> void:
 func _get_ACTs(character_name : String) -> Array[String]:
 	# Inherit with the currently available ACTs
 	# for the given character.
-	return ['wait']
+	return ['none']

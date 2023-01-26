@@ -162,7 +162,12 @@ func printx(message, _options={}):
 
 ##Speaks a message out loud via TTS
 func speak(m : String):
-	#OS.create_process("espeak", ['"' + m +'"'])
+#	OS.execute(
+#		"spd-say",
+#		[
+#			m
+#		]
+#	)
 	print("[TTS] :: " + m)
 
 func to_valid_speech(m : String) -> String:

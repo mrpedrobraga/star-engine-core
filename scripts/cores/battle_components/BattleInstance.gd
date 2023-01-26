@@ -25,15 +25,7 @@ func setup():
 	for opp in opponents:
 		var n = opp.battler_script.new()
 		opponent_scripts.append(n)
+		Game.Battle.add_child(n)
 
 func _to_string():
 	return "{" + str(allies) + " v.s. " + str(opponents) +  "}"
-
-func get_ACTs_for(c : Character):
-	var r := []
-	for s in opponent_scripts:
-		var sr = s._get_ACTs(c.name)
-		for srr in sr:
-			if not r.has(srr):
-				r.push_back(srr)
-	return r

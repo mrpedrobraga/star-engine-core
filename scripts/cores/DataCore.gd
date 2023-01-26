@@ -1,6 +1,6 @@
+@icon("res://_engine/scripts/icons/icon_core_data.png")
 extends __GameplayCoreBase
 class_name DataCore
-@icon("res://_engine/scripts/icons/icon_core_data.png")
 
 ### Game SAVE and LOAD ###
 
@@ -60,4 +60,4 @@ func preload_resource(path_string : String):
 	
 	print("[Game::DataCore] Preloading resource from " + str(path))
 	
-	return _resource_banks.Npreload_resource(path)
+	_resource_banks.Npreload_resource(path)
