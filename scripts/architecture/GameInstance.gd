@@ -20,6 +20,10 @@ class_name GameInstance
 @export var first_room : PackedScene
 
 func _ready():
+	if CustomRunner.is_custom_running():
+		var scene := load(CustomRunner.get_variable("scene"))
+		first_room = scene
+		print("Starting game at %s." % scene.resource_path)
 	
 	# Set up the Cores in [Game]
 	

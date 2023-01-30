@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckffhqpda0jdl"]
+[gd_scene load_steps=10 format=3]
 
-[ext_resource type="PackedScene" uid="uid://ce6ihx3ibnffq" path="res://packs/invo_CORE/assets/battle/battle_screen_bgs/BBG_Citrus.res" id="1_a2fua"]
+[ext_resource type="PackedScene" uid="uid://ce6ihx3ibnffq" path="res://packs/invo_SHARED/assets/sprites/battle/battle_screen_bgs/BBG_Citrus.res" id="1_a2fua"]
 [ext_resource type="Script" path="res://_engine/_addons/used_in_core/runtime_inspector/RuntimeInspector.gd" id="1_t0pdc"]
-[ext_resource type="Texture2D" uid="uid://jsqigu8xswb5" path="res://packs/invo_CORE/assets/battle/battle_screen_bgs/bbg_fancy_food.png" id="2_agf45"]
-[ext_resource type="Texture2D" uid="uid://g0aahqucjm53" path="res://packs/invo_CORE/assets/characters/ch_bruno/icon_A.png" id="4_0pkv6"]
+[ext_resource type="Texture2D" uid="uid://jsqigu8xswb5" path="res://packs/invo_SHARED/assets/sprites/battle/battle_screen_bgs/bbg_fancy_food.png" id="2_agf45"]
+[ext_resource type="Texture2D" uid="uid://g0aahqucjm53" path="res://packs/invo_SHARED/assets/characters/ch_bruno/icon_A.png" id="4_0pkv6"]
 
 [sub_resource type="Theme" id="Theme_tu18t"]
 default_font_size = 32

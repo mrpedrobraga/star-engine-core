@@ -36,8 +36,6 @@ func _trigger():
 var _icon = preload("res://_engine/scripts/icons/icon_dialogevent_small.png")
 
 func _draw():
-	if not Engine.is_editor_hint():
-		return
 	super()
 	
 	draw_set_transform(Vector2(size/2) + Vector2.UP * icon_offset, 0.0, Vector2(float(_SCALE), float(_SCALE)))

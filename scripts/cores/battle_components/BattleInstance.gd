@@ -24,6 +24,7 @@ func setup():
 	opponent_scripts = []
 	for opp in opponents:
 		var n = opp.battler_script.new()
+		n.battle = self
 		opponent_scripts.append(n)
 		Game.Battle.add_child(n)
 

@@ -2,7 +2,7 @@
 
 [ext_resource type="AudioStream" uid="uid://nr8myeqb7fev" path="res://_engine/audio/sounds/ui_default_typewriter.wav" id="1_23fss"]
 [ext_resource type="Script" path="res://_engine/scripts/components/accessibility/SightlessRadarAnchor.gd" id="2_601uk"]
-[ext_resource type="Texture2D" uid="uid://dlm05wq0d1c2" path="res://packs/invo_CORE/characters/chs_stars/sprite_nya_heart.png" id="3_gbcpl"]
+[ext_resource type="Texture2D" uid="uid://dlm05wq0d1c2" path="res://packs/invo_SHARED/assets/characters/chs_stars/sprite_nya_heart.png" id="3_gbcpl"]
 
 [sub_resource type="Animation" id="Animation_03gy7"]
 length = 0.001
