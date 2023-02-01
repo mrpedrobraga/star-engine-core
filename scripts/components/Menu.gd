@@ -94,8 +94,8 @@ func get_selected_label():
 ##Opens the menu.
 ##@param: parent_ If this has a value, the current menu will be opened as a submenu.
 func open(parent_=null, level_=0):
-	if is_open:
-		printerr("CyclicalReferenceWarning", "Cyclical/Redundant Menu Reference is discouraged.")
+	#if is_open:
+	#	printerr("CyclicalReferenceWarning", "Cyclical/Redundant Menu Reference is discouraged.")
 	is_open = true
 	is_current = true
 	became_current.emit()
