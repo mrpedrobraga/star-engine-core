@@ -168,7 +168,8 @@ func speak(m : String):
 #			m
 #		]
 #	)
-	print("[TTS] :: " + m)
+#	print("[TTS] :: " + m)
+	pass
 
 func to_valid_speech(m : String) -> String:
 	m = m.trim_prefix("* ")
