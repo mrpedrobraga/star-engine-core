@@ -13,7 +13,7 @@ static func create(
 	var m = IconMenu.new()
 	
 	m.options = _options
-	m.labels = _labels
+	m.labels.assign(_labels)
 	m.allows_cancel = _allows_cancel
 	m.icons = _icons
 	if _menu_handler:

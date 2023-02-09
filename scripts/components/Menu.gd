@@ -237,7 +237,7 @@ static func create(
 	var m = Menu.new()
 	
 	m.options = _options
-	m.labels = _labels
+	m.labels.assign(_labels)
 	m.allows_cancel = _allows_cancel
 	if _menu_handler:
 		m.menu_handler = _menu_handler

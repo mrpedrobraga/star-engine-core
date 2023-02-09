@@ -32,7 +32,7 @@ func _ready():
 		
 		var gp = load_safe("res://packs/%s/pack.tres" % pack)
 		if not gp:
-			printx(" - No 'pack.tres' found for '%s'." % pack)
+			#printx(" - No 'pack.tres' found for '%s'." % pack)
 			continue
 		
 		gp._setup()

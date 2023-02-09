@@ -51,17 +51,19 @@ func _update_props():
 	
 	InputMap.load_from_project_settings()
 	var actions : Array[String]
-	actions.typed_assign(InputMap.get_actions())
+	actions.assign(InputMap.get_actions())
 	actions.sort()
 	PROPERTY ("Listening To Inputs", &"listening_to_input", TYPE_BOOL, PROPERTY_HINT_NONE, "", true)
 	PROPERTY ("Required State", &"required_state", TYPE_STRING_NAME)
 	
-	PROPERTY ("Input/LEFT", &"input_action_left", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, join_commas(actions))
-	PROPERTY ("Input/RIGHT", &"input_action_right", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, join_commas(actions))
-	PROPERTY ("Input/UP", &"input_action_up", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, join_commas(actions))
-	PROPERTY ("Input/DOWN", &"input_action_down", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, join_commas(actions))
-	PROPERTY ("Input/JUMP", &"input_action_jump", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, join_commas(actions))
-	PROPERTY ("Input/SPECIAL", &"input_action_OK", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, join_commas(actions))
+	var a_s := join_commas(actions)
+	
+	PROPERTY ("Input/LEFT", &"input_action_left", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, )
+	PROPERTY ("Input/RIGHT", &"input_action_right", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, a_s)
+	PROPERTY ("Input/UP", &"input_action_up", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, a_s)
+	PROPERTY ("Input/DOWN", &"input_action_down", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, a_s)
+	PROPERTY ("Input/JUMP", &"input_action_jump", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, a_s)
+	PROPERTY ("Input/SPECIAL", &"input_action_OK", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, a_s)
 	PROPERTY ("Input/Transform", &"input_transform", TYPE_TRANSFORM2D)
 	
 	PROPERTY ("Motion/Mode", &"motion_mode", TYPE_INT, PROPERTY_HINT_ENUM, motion_modes)
@@ -141,10 +143,65 @@ func move_free(delta):
 		motion_acceleration * delta
 	)
 	
+	parent.motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	collided = parent.move_and_slide()
+	
+	if input_vector:
+		var a = facing_vector
+		facing_vector = input_vector.normalized()
+		if facing_vector != a:
+			direction_changed.emit(facing_vector)
 
 func move_sidescroller(delta):
-	pass
+	var jump_action := input_action_up
+	var gravity_direction := Vector2.DOWN
+	
+	match motion_jump_direction:
+		"Up":
+			parent.velocity.x = move_toward(
+				parent.velocity.x,
+				input_vector.x * motion_maximum_speed,
+				motion_acceleration * delta
+			)
+			jump_action = input_action_up
+			gravity_direction = Vector2.DOWN
+		"Down":
+			parent.velocity.x = move_toward(
+				parent.velocity.x,
+				input_vector.x * motion_maximum_speed,
+				motion_acceleration * delta
+			)
+			jump_action = input_action_down
+			gravity_direction = Vector2.UP
+		"Left":
+			parent.velocity.y = move_toward(
+				parent.velocity.y,
+				input_vector.y * motion_maximum_speed,
+				motion_acceleration * delta
+			)
+			jump_action = input_action_left
+			gravity_direction = Vector2.RIGHT
+		"Right":
+			parent.velocity.y = move_toward(
+				parent.velocity.y,
+				input_vector.y * motion_maximum_speed,
+				motion_acceleration * delta
+			)
+			jump_action = input_action_right
+			gravity_direction = Vector2.LEFT
+
+	parent.motion_mode = CharacterBody2D.MOTION_MODE_GROUNDED
+	parent.up_direction = -gravity_direction
+
+	if motion_gravity_active:
+		parent.velocity += gravity_direction * motion_gravity_magnitude * delta
+	
+	if Input.is_action_pressed(jump_action) and parent.is_on_floor():
+		parent.velocity += motion_maximum_speed * motion_jump_strength * -gravity_direction
+	
+	collided = parent.move_and_slide()
+	
+
 func move_discrete(delta):
 	pass
 

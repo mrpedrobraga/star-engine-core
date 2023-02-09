@@ -7,5 +7,9 @@ class_name Usable
 @export var display_name : String = "Unknown"
 @export var icon : Texture2D
 
-func _use(character):
+@export_category("Meta")
+
+@export var tags : Array[StringName] = [&"inner_voices"]
+
+func _use(character : Character):
 	pass

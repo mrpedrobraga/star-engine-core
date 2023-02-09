@@ -22,7 +22,7 @@ class_name SpriteSheetSprite2D
 @export var current_frame_coords : Vector2 = Vector2(0,0):
 	set(v):
 		current_frame_coords = v
-		frame_coords = clamp(current_frame_coords, Vector2.ZERO, Vector2(hframes, vframes))
+		frame_coords = clamp(current_frame_coords, Vector2.ZERO, Vector2(hframes-1, vframes-1))
 
 ##Updates the texture (re-gathers it from the sprite sheet pool).
 func update_texture():

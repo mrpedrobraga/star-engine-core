@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name ItemStack
 
@@ -5,9 +6,18 @@ class_name ItemStack
 ##
 ## It's used internally by Inventory to group like item entries.
 
-@export var item : Item
-@export_range(1, 1024) var amount : int = 1
-@export var metadata : Dictionary = {}
+@export var item : Item:
+	set(v):
+		item = v
+		emit_changed()
+@export_range(1, 1024) var amount : int = 1:
+	set(v):
+		amount = v
+		emit_changed()
+@export var metadata : Dictionary = {}:
+	set(v):
+		metadata = v
+		emit_changed()
 
 ## The maximum [member amount] of items in an [ItemStack].
 var stack_limit = 16

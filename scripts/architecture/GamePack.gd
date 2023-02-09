@@ -20,6 +20,7 @@ func printx(message):
 	message = "[%s] "%bundle_id + message
 	_output.text += str(message) + "\n"
 	print_rich(message)
+@warning_ignore("unused_variable")
 var _tree : SceneTree
 
 ## Prepare whatever when this pack is loaded into the engine.

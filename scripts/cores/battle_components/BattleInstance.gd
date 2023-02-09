@@ -8,6 +8,8 @@ class_name BattleInstance
 ##An array containing the opponent Characters.
 @export var opponents : Array[Character] = []
 var opponent_scripts : Array[BattlerScript]
+##Useful array containing both the allies and opponents.
+var battlers : Array[Character] = []
 ##An array containing the current targets of the last executed action.
 var current_targets := []
 
@@ -27,6 +29,8 @@ func setup():
 		n.battle = self
 		opponent_scripts.append(n)
 		Game.Battle.add_child(n)
+	
+	battlers.assign(allies + opponents)
 
 func _to_string():
 	return "{" + str(allies) + " v.s. " + str(opponents) +  "}"

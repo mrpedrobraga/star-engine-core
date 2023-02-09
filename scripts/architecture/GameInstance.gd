@@ -47,7 +47,7 @@ func start():
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED
 func _input(ev):
 	if Input.is_action_just_pressed("ui_fullscreen"):
-		var w := get_tree().root
+		var w : Window = get_tree().root
 		if w.mode == Window.MODE_FULLSCREEN:
 			w.mode = _window_mode_before_fullscreen
 		else:

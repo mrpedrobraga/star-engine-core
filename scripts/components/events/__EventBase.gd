@@ -51,6 +51,7 @@ var _area := Area2D.new()
 var _shape := CollisionShape2D.new()
 var _col_rect := RectangleShape2D.new()
 
+@warning_ignore("unused_variable")
 var _SCALE := 6
 
 func _init():
@@ -80,6 +81,9 @@ func _ready():
 	_area.position = size/2
 	_col_rect.size = size
 	queue_redraw()
+	
+	if trigger_condition == TriggerCondition.ON_SCENE_START:
+		_trigger()
 
 func _notification(what):
 	match what:
