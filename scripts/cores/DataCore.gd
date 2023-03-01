@@ -19,10 +19,14 @@ func create_save_data (game_name : String) -> GameSaveData:
 	data = m
 	return m
 
+func _ready():
+	var userdir := DirAccess.open("user://")
+	if not userdir.dir_exists("saves"):
+		userdir.make_dir("saves")
+
 ## Saves the current game data to a file.
 func save_game(file: String = "save") -> int:
 	ResourceSaver.save(data, "user://saves/"+file+".tres")
-	print(data)
 	return OK
 
 func load_game(file: String = "save") -> int:

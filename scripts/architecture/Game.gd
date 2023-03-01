@@ -92,6 +92,7 @@ var current_room : Room
 
 ## Changes the current room
 func change_room(r : PackedScene, position : Vector2 = Vector2.ZERO):
+	
 	var rr = r.instantiate()
 	if not rr is Room:
 		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(r))

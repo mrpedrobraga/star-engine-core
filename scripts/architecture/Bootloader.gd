@@ -4,6 +4,7 @@ class_name Bootloader
 @onready var text = $RichTextLabel
 
 func _ready():
+	
 	printx("Booting Star engine...")
 	var exe_dir = OS.get_executable_path().get_base_dir()
 	var d = DirAccess.open(exe_dir)
