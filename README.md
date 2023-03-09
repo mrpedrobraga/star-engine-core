@@ -1,6 +1,6 @@
 # ⭐ Star Engine
 
-> This repo is currently in (rather early) development (using godot 4.0.beta 7)
+> This repo is currently in (rather early) development (using godot release 4.0)
 > 
 > You can still use it on your game, but things might change at any moment.
 > So update at your own risk.
