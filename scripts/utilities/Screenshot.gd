@@ -1,4 +1,3 @@
-@icon("res://core/scripts/icons/icon_console.svg")
 extends Node
 class_name Screenshot
 

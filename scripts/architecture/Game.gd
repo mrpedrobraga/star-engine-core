@@ -98,6 +98,10 @@ func change_room(r : PackedScene, position : Vector2 = Vector2.ZERO):
 		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(r))
 		return
 	else:
+		for i in get_party():
+			if i.world_node.is_inside_tree():
+				i.world_node.get_parent().remove_child(i.world_node)
+		
 		current_room = rr
 		current_room.name = "current_room"
 		var old_room = States[&"Overworld"].get_node_or_null("../current_room")

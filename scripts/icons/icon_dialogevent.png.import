@@ -16,9 +16,9 @@ dest_files=["res://.godot/imported/icon_dialogevent.png-0c7a82d42414be72b8f5c3b5
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false

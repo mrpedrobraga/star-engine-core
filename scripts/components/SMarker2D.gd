@@ -31,3 +31,4 @@ func _draw():
 	draw_texture(balloon_texture, Vector2(-6, -13 - balloon_offset))
 	if icon:
 		draw_texture(icon, Vector2(0-5, -7-5 - balloon_offset))
+	draw_set_transform(Vector2(), 0, Vector2.ONE)
