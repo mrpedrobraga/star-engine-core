@@ -1,21 +1,36 @@
+@icon("res://_engine/scripts/icons/icon_core_data.png")
 extends __GameplayCoreBase
 class_name DataCore
-@icon("res://_engine/scripts/icons/icon_pathwayevent_small.png")
 
 ### Game SAVE and LOAD ###
 
 signal on_saved(file)
 signal on_loaded(file)
 
-var data : GameSaveData = GameSaveData.new()
+var data : GameSaveData
 
-func save_game(file: String) -> int:
-	ResourceSaver.save(data, "res://"+file+".tres")
-	print(data)
+## Creates a new save data with basic information.
+func create_save_data (game_name : String) -> GameSaveData:
+	var m = GameSaveData.new()
+	
+	m.game_name = game_name
+	m.facts = FactBase.new()
+	
+	data = m
+	return m
+
+func _ready():
+	var userdir := DirAccess.open("user://")
+	if not userdir.dir_exists("saves"):
+		userdir.make_dir("saves")
+
+## Saves the current game data to a file.
+func save_game(file: String = "save") -> int:
+	ResourceSaver.save(data, "user://saves/"+file+".tres")
 	return OK
 
-func load_game(file: String) -> int:
-	var path ="res://"+file+".tres"
+func load_game(file: String = "save") -> int:
+	var path ="user://saves/"+file+".tres"
 	if not FileAccess.file_exists(path):
 		Shell.print_err(
 			"Missing Save File",
@@ -49,4 +64,4 @@ func preload_resource(path_string : String):
 	
 	print("[Game::DataCore] Preloading resource from " + str(path))
 	
-	return _resource_banks.Npreload_resource(path)
+	_resource_banks.Npreload_resource(path)

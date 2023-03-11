@@ -3,6 +3,7 @@
 extends Node2D
 class_name SightlessRadarPulseEmitter
 
+## The action that this emitter will listen to for emitting its pulse.
 @export var action : StringName = "sightless_pulse_radar_emit"
 
 func _input(event):

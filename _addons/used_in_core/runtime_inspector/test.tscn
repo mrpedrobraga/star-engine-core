@@ -1,0 +1,107 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" uid="uid://ce6ihx3ibnffq" path="res://packs/invo_SHARED/assets/sprites/battle/battle_screen_bgs/BBG_Citrus.res" id="1_a2fua"]
+[ext_resource type="Script" path="res://_engine/_addons/used_in_core/runtime_inspector/RuntimeInspector.gd" id="1_t0pdc"]
+[ext_resource type="Texture2D" uid="uid://jsqigu8xswb5" path="res://packs/invo_SHARED/assets/sprites/battle/battle_screen_bgs/bbg_fancy_food.png" id="2_agf45"]
+[ext_resource type="Texture2D" uid="uid://g0aahqucjm53" path="res://packs/invo_SHARED/assets/characters/ch_bruno/icon_A.png" id="4_0pkv6"]
+
+[sub_resource type="Theme" id="Theme_tu18t"]
+default_font_size = 32
+
+[sub_resource type="GDScript" id="GDScript_w338o"]
+script/source = "extends Control
+
+@onready var ri : RuntimeInspector = $ColorRect/RuntimeInspector
+
+func _ready():
+	ri.register_category(\"TextEdit\")
+	ri.register_property($Label, &\"text\", &\"string\")
+	ri.register_property($Label, &\"position\", &\"vector2\")
+	ri.register_property($Label, &\"size\", &\"vector2\", \"SIZE!!! \")
+	ri.register_property($Label, &\"rotation\", &\"int\")
+	
+	ri.register_category(\"Node\")
+	ri.register_property($TextureRect, &\"position\", &\"vector2\")
+	ri.register_property($TextureRect, &\"size\", &\"vector2\")
+	
+	ri.register_category(\"Other\")
+	ri.register_property($AnimatedSprite2D, &\"position\", &\"vector2\", \"position\")
+	ri.register_property($AnimatedSprite2D, &\"playing\", &\"vector2\", \"anim_playing\")
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cxg0"]
+atlas = ExtResource("4_0pkv6")
+region = Rect2(0, 0, 15, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i61wx"]
+atlas = ExtResource("4_0pkv6")
+region = Rect2(15, 0, 15, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_op8bb"]
+animations = [{
+"frames": [SubResource("AtlasTexture_2cxg0"), SubResource("AtlasTexture_i61wx")],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="test" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource("Theme_tu18t")
+script = SubResource("GDScript_w338o")
+
+[node name="BattleBG" parent="." instance=ExtResource("1_a2fua")]
+layout_mode = 1
+
+[node name="Label" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 337.0
+offset_bottom = 434.0
+text = "Hello there my friend."
+wrap_mode = 1
+caret_type = 1
+caret_blink = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 806.0
+offset_top = 638.0
+offset_right = 1588.0
+offset_bottom = 886.0
+color = Color(0, 0, 0, 0.768627)
+metadata/_edit_group_ = true
+
+[node name="RuntimeInspector" type="ScrollContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t0pdc")
+accent_color = Color(0.929412, 0.411765, 0.745098, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 86.0
+offset_top = 466.0
+offset_right = 492.0
+offset_bottom = 762.0
+texture = ExtResource("2_agf45")
+stretch_mode = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(492, 399.875)
+scale = Vector2(11.9667, 11.7167)
+frames = SubResource("SpriteFrames_op8bb")
+playing = true

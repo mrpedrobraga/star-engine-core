@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="PackedScene" uid="uid://dgvfqs6ivxn77" path="res://packs/invo_SHARED/_game_data/rooms/room_benchmark.tscn" id="1_qrm2p"]
+[ext_resource type="PackedScene" uid="uid://bi1m64wmtj43d" path="res://packs/invo_E01/_game_data/rooms/room_twisted_school_A.tscn" id="2_y41h6"]
+[ext_resource type="PackedScene" uid="uid://htupgdwhe26e" path="res://packs/invo_E01/_game_data/rooms/room_starfall_e01.tscn" id="3_pj2wt"]
+[ext_resource type="PackedScene" uid="uid://c303yax07komj" path="res://packs/invo_E01/_game_data/rooms/room_claire_house_prologue.tscn" id="4_m3ym6"]
+[ext_resource type="PackedScene" uid="uid://cfquswfnqri0n" path="res://packs/invo_E01/_game_data/rooms/room_nightmare_school_entrance_prologue.tscn" id="6_jwi15"]
+[ext_resource type="PackedScene" uid="uid://oyx8fpnjqghm" path="res://packs/invo_E02/_game_data/rooms/room_outside_A.tscn" id="7_ckctw"]
+[ext_resource type="PackedScene" uid="uid://lsrxcshkibqr" path="res://packs/invo_E03/assets/rooms/room_sam_world_test.tscn" id="8_gkke0"]
+[ext_resource type="PackedScene" uid="uid://ds3v3n8ko1k4w" path="res://packs/invo_SHARED/_game_data/rooms/room_new_horizon_test.tscn" id="9_rfd3n"]
+[ext_resource type="PackedScene" uid="uid://cctrvs410j4au" path="res://packs/__tests/scenes/_stest_battle.tscn" id="10_fjdaa"]
+
+[sub_resource type="GDScript" id="GDScript_wc5bo"]
+script/source = "extends CanvasLayer
+
+var t := 0.
+
+# TODO: Remove this section on release!
+var FEEDBACK : GameFeedback
+
+@export var rooms : Array[PackedScene]
+var current_room_index := 0
+
+func _ready():
+	FEEDBACK = GameFeedback.new()
+	FEEDBACK.gather_data()
+
+func _on_timer_timeout():
+	$Control/VBoxContainer/Label.text = \"FPS: %d\" % Engine.get_frames_per_second()
+
+func _input(ev):
+	if ev is InputEventKey:
+		if ev.is_echo() or not ev.pressed: return
+		match ev.keycode:
+			KEY_F3:
+				FEEDBACK.gather_data()
+				FEEDBACK.export()
+				FEEDBACK.FPS_stack.clear()
+			KEY_ESCAPE:
+				FEEDBACK.gather_data()
+				FEEDBACK.export()
+				get_tree().quit()
+			KEY_F5:
+				current_room_index -= 1
+				current_room_index = wrapi(current_room_index, 0, rooms.size())
+				
+				Game.change_room(rooms[current_room_index])
+			KEY_F6:
+				current_room_index += 1
+				current_room_index = wrapi(current_room_index, 0, rooms.size())
+				
+				Game.change_room(rooms[current_room_index])
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_jehgb"]
+font_size = 8
+
+[node name="debug" type="CanvasLayer"]
+layer = 10
+script = SubResource("GDScript_wc5bo")
+rooms = Array[PackedScene]([ExtResource("2_y41h6"), ExtResource("1_qrm2p"), ExtResource("3_pj2wt"), ExtResource("4_m3ym6"), ExtResource("6_jwi15"), ExtResource("7_ckctw"), ExtResource("8_gkke0"), ExtResource("9_rfd3n"), ExtResource("10_fjdaa")])
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "FPS: 60.0"
+label_settings = SubResource("LabelSettings_jehgb")
+
+[node name="Timer" type="Timer" parent="Control"]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Control/Timer" to="." method="_on_timer_timeout"]

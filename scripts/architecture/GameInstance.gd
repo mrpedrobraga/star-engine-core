@@ -1,6 +1,6 @@
+@icon("res://_engine/scripts/icons/icon_core_game.png")
 extends Control
 class_name GameInstance
-@icon("res://_engine/scripts/icons/icon_dialogevent.png")
 
 ## Class that encapsulates an instance of a game,.
 ##
@@ -11,15 +11,19 @@ class_name GameInstance
 ## probably [i]write your own[/i].
 
 @export_category("Cores")
-@export var audio_core : Node
-@export var dialog_cutscene_core : Node
-@export var data_core : Node
-@export var battle_core : Node
+@export var audio_core : AudioCore
+@export var dialog_cutscene_core : DialogCutsceneCore
+@export var data_core : DataCore
+@export var battle_core : BattleCore
 
 @export_category("Setup")
 @export var first_room : PackedScene
 
 func _ready():
+	if CustomRunner.is_custom_running():
+		var scene := load(CustomRunner.get_variable("scene"))
+		first_room = scene
+		print("Starting game at %s." % scene.resource_path)
 	
 	# Set up the Cores in [Game]
 	
@@ -43,7 +47,7 @@ func start():
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED
 func _input(ev):
 	if Input.is_action_just_pressed("ui_fullscreen"):
-		var w := get_tree().root
+		var w : Window = get_tree().root
 		if w.mode == Window.MODE_FULLSCREEN:
 			w.mode = _window_mode_before_fullscreen
 		else:

@@ -10,14 +10,17 @@ class_name Character
 ##In order to create a custom character for yourself,
 ##extend this script.
 
+@export_category("Info")
 ##The character's display name.
 @export var name = "Unknown"
 ##A reference to the character's stats ([CharacterStats]). 
 @export var stats : CharacterStats
-##A battler script for when this character engages in battle.
-@export var battler_script : Script
 ##A reference to the node associated with this character.
 @export var world_node : Node2D
+
+@export_category("Battle")
+##A battler script for when this character engages in battle.
+@export var battler_script : Script
 
 enum Direction {
 	NORTH, NORTHEAST, EAST, SOUTHEAST,

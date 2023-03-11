@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dky2a1qn7p8oj"]
+
+[ext_resource type="Script" path="res://_engine/scripts/cores/data_components/ItemStack.gd" id="1_fxmok"]
+
+[resource]
+script = ExtResource("1_fxmok")
+amount = 1
+metadata = null

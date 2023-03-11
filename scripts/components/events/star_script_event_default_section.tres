@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://fxfkv3ohlsmt"]
+
+[ext_resource type="Script" path="res://_engine/_addons/used_in_core/star_starscript/StarScriptSection.gd" id="1_ciwtu"]
+
+[resource]
+script = ExtResource("1_ciwtu")
+section_key = ""

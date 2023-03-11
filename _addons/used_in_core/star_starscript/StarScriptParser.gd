@@ -13,7 +13,7 @@ class_name StarScriptParser
 
 # Some cool RegExs for parsing things
 const regex_sobj_text = "(?mJ)^(?<colon>--)?(?<key>(?:\\w+|-|\\*)) *(?<colon>:)? *(?<params>.*)?(?<block>(?:\\n\\t.*)*)?"
-const regex_dialog_text = "(?<speaker>[\\w_]+)(?:\\s*,\\s*(?<options>[\\w ,]*))*\\s*:\\s*(?<content>.*)"
+const regex_dialog_text = "(?<speaker>[\\w_]+)(?:\\s*,\\s*(?<options>[\\w ,]*))*\\s*:\\s*(?<message>.*)"
 
 # Loads 
 static func load_sson(path):
@@ -91,7 +91,7 @@ static func parse(raw, top_level=true):
 							print("(!) DIALOG INVALID: ", r.params)
 							continue
 						r.speaker = mm.get_string("speaker")
-						r.content = mm.get_string("content")
+						r.message = mm.get_string("message")
 						if mm.names.has("options"):
 							r.params  = mm.get_string("options").split(",")
 							for i in range(r.params.size()): r.params[i] = r.params[i].strip_edges()
@@ -138,11 +138,8 @@ static func preformat(source:String):
 	var r_new_line = RegEx.new()
 	r_new_line.compile("\\[newline\\]")
 	
-	var r_skip = RegEx.new()
-	r_skip.compile("\\[skip\\]")
 	
 	source = r_multi_break.sub(source, "\n", true)
 	source = r_new_line.sub(source, "\n", true)
-	source = r_skip.sub(source, "¹", true)
 	
 	return source

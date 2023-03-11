@@ -1,9 +1,9 @@
 ##A Label that supports BBCode and simple prosody typewriting.
 
 @tool
+@icon("icon_smart_rich_text_label.png")
 extends RichTextLabel
 class_name SmartRichTextLabel
-@icon("icon_smart_rich_text_label.png")
 
 ##################################################################
 #
@@ -34,10 +34,12 @@ var is_typing := false
 var is_emitting_physical_sound := false
 
 @export var text_delay:float = 0.05
+var _text_delay_scale := 1.0
+var wait_for_text_delay:bool = true
 @export var text_ok_action = ""
 @export var text_cancel_action = ""
 
-@export var text_action_prompt_node_path : NodePath
+@export var text_action_prompt_node : CanvasItem
 
 @export var tts_enabled : bool = false
 
@@ -53,11 +55,12 @@ func _input(event):
 			emit_signal("cancel_pressed")
 func _gui_input(event):
 	if event is InputEventMouseButton:
-		match event.button_index:
-			MOUSE_BUTTON_LEFT:
-				emit_signal("ok_pressed")
-			MOUSE_BUTTON_RIGHT:
-				emit_signal("cancel_pressed")
+		if event.is_pressed():
+			match event.button_index:
+				MOUSE_BUTTON_LEFT:
+					ok_pressed.emit()
+				MOUSE_BUTTON_RIGHT:
+					cancel_pressed.emit()
 
 func write(_text):
 	is_typing = true
@@ -99,33 +102,45 @@ func write(_text):
 				beep()
 				await get_tree().create_timer(0.1).timeout
 				char_written.emit()
-			FormatCharacters.WAIT:
-				await get_tree().create_timer(text_delay * 4.0).timeout
-			FormatCharacters.INPUT:
-				paused.emit()
-				is_emitting_physical_sound = false
-				is_typing = false
-				show_input_request(true)
-				await self.ok_pressed
-				show_input_request(false)
-				is_emitting_physical_sound = true
-				resumed.emit()
-				is_typing = true
 			" ":
 				visible_characters += 1
 			"	":
 				visible_characters += 1
-			FormatCharacters.SKIP:
-				clear()
-				resumed.emit()
-				completed.emit()
-				is_emitting_physical_sound = false
-				show_input_request(false)
-				return
+			FormatCharacters.GENERIC:
+				
+				var evt = special_buffer.pop_front()
+				
+				match evt.type:
+					"speed":
+						_text_delay_scale = 1. / evt.params.to_int()
+					"no_tw":
+						wait_for_text_delay = false
+					"tw":
+						wait_for_text_delay = true
+					"skip":
+						clear()
+						resumed.emit()
+						completed.emit()
+						is_emitting_physical_sound = false
+						show_input_request(false)
+						return
+					"input":
+						paused.emit()
+						is_emitting_physical_sound = false
+						is_typing = false
+						show_input_request(true)
+						await self.ok_pressed
+						show_input_request(false)
+						is_emitting_physical_sound = true
+						resumed.emit()
+						is_typing = true
+					"pause":
+						await get_tree().create_timer(_text_delay_scale * text_delay * 4.0 * evt.params.to_int()).timeout
 			_:
 				beep()
 				char_written.emit()
-				await get_tree().create_timer(text_delay).timeout
+				if wait_for_text_delay:
+					await get_tree().create_timer(_text_delay_scale * text_delay).timeout
 				visible_characters += 1
 		char_tick.emit()
 		queue_redraw()
@@ -144,12 +159,11 @@ func beep():
 		get_node(^"beep").play()
 
 func show_input_request(value):
-	if text_action_prompt_node_path == null:
+	if text_action_prompt_node == null:
 		return
-	var ir = get_node(text_action_prompt_node_path)
-	ir.visible = value
-	if value and ir.has_node("anim"):
-		ir.get_node("anim").play("bounce")
+	text_action_prompt_node.visible = value
+	if value and text_action_prompt_node.has_node("anim"):
+		text_action_prompt_node.get_node("anim").play("bounce")
 
 func cancel_write():
 	if is_typing:
@@ -157,23 +171,40 @@ func cancel_write():
 		visible_ratio = 0.99999
 
 const FormatCharacters : Dictionary = {
-	SKIP = "¹",
-	INPUT = "§",
-	WAIT = "¢",
+	GENERIC = "§"
 }
 
+var _last_processed_string : String = ""
+
+var special_buffer : Array = [
+	
+]
+
+@export var tw_tags := [
+	"pause", "speed", "skip", "no_tw", "tw", "portrait", "input"
+]
+
 func special_format(input : String):
-	input = input.replace("[skip]", FormatCharacters.SKIP)
-	input = input.replace("[input]", FormatCharacters.INPUT)
+	special_buffer.clear()
+	
 	input = input.replace("\\n", "\n")
 	input = input.replace("[br]", "\n")
 	
-	var r = RegEx.new()
-	r.compile("\\[pause=(?<amt>\\d+)\\]")
-	var m : Array[RegExMatch] = r.search_all(input)
-	
-	for mm in m :
-		var n = (mm.strings[mm.names.amt])
-		input = r.sub(input, FormatCharacters.WAIT.repeat(n.to_int()))
-	
+	var r_expr = RegEx.new()
+	r_expr.compile("\\[(?<key>\\w+)(?<params> .*?)?\\]")
+	var m_expr : Array[RegExMatch] = r_expr.search_all(input)
+	for mm in m_expr:
+		if mm.get_string(1) in tw_tags:
+			input = input.replace(mm.get_string(), FormatCharacters.GENERIC)
+			special_buffer.append(
+				{
+					"type": mm.get_string(1),
+					"params": mm.get_string(2).trim_prefix(" ")
+				}
+			)
+	_last_processed_string = input
 	return input
+
+#* Hey.[input] You're so cool!
+#* pot[pause 3]pourri
+#* I have [expr 3 + 3] items.

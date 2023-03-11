@@ -1,41 +1,123 @@
+@tool
 ##Abstract class that handles events caused by some trigger --
 ##i.e. EventProbers touching/interacting, the start of the scene,
 ##or every tick.
-extends Area2D
-class_name __EventBase
 @icon("res://_engine/scripts/icons/icon_event_small.png")
+extends Control
+class_name __EventBase
 
 enum TriggerCondition {
 	ON_TOUCH, ON_INTERACT, ON_SCENE_START, EVERY_TICK
 }
 
+@export_category("Trigger")
+
 ##The trigger condition for the event.
 @export var trigger_condition : TriggerCondition
+@export var trigger_with_raycast : bool = false:
+	set(v):
+		trigger_with_raycast = v
+		if(trigger_with_raycast):
+			_area.collision_layer = raycast_layer | 0b10
+			_area.collision_mask = raycast_layer | 0b10
+		else:
+			_area.collision_layer = 0b10
+			_area.collision_mask = 0b10
+@export_range(0.0, 64.0, 2.0) var icon_offset : float = 0.0:
+	set(v):
+		icon_offset = v
+		queue_redraw()
+
+@export var color = Color.WHITE:
+	set(v):
+		color = v
+		queue_redraw()
+@export var draw_always : bool = false
+var trigger_xform : Transform2D:
+	set(v):
+		trigger_xform = v
+		queue_redraw()
+
+@export_group("Meta")
+@export var raycast_layer := 0b100
+
 ##The action that triggers this event if trigger_condition is [code]ON_INTERACT[/code].
 @export var interaction_action : String = "OK"
 ##The game state in which this event can be triggered.
 @export var required_game_state : StringName = &"Overworld"
 
+var _mouse_over := false
+var _area := Area2D.new()
+var _shape := CollisionShape2D.new()
+var _col_rect := RectangleShape2D.new()
+
+@warning_ignore("unused_variable")
+var _SCALE := 1
+
+func _init():
+	layout_direction = Control.LAYOUT_DIRECTION_LTR
+
 func _ready():
-	area_entered.connect(_on_area_enter)
-	area_exited.connect(_on_area_exit)
+	if Engine.is_editor_hint():
+		modulate = Color.WHITE
+		return
+	
+	_area.area_entered.connect(_on_area_enter)
+	_area.area_exited.connect(_on_area_exit)
+	mouse_entered.connect((func ():
+		_mouse_over = true
+	))
+	mouse_exited.connect((func ():
+		_mouse_over = false
+	))
+	
+	_area.collision_layer = _area.collision_layer | 0b10
+	_area.collision_mask = _area.collision_mask | 0b10
+	
+	_area.add_child(_shape)
+	add_child(_area)
+	_shape.shape = _col_rect
+	_area.visible = false
+	_area.position = size/2
+	_col_rect.size = size
+	queue_redraw()
+	
+	if trigger_condition == TriggerCondition.ON_SCENE_START:
+		_trigger()
+
+func _notification(what):
+	match what:
+		NOTIFICATION_RESIZED:
+			queue_redraw()
+			pivot_offset = size/2
+			_col_rect.size = size
 
 var _areas : Array[EventProber] = []
 
 func _on_area_enter(area):
 	if area is EventProber:
 		_areas.push_back(area)
-		
 		if trigger_condition == TriggerCondition.ON_TOUCH:
 			if Game.get_state() == required_game_state:
 				_trigger()
 
+var _activated := false
+
 func _input(ev):
+	if Engine.is_editor_hint():
+		return
+		
+	if _activated:
+		return
+	
 	if not trigger_condition == TriggerCondition.ON_INTERACT:
 		return
-	if Input.is_action_just_pressed(interaction_action) and _areas.size() > 0:
-		if Game.get_state() == required_game_state:
-			_trigger()
+	if _areas.size() > 0:
+		if Input.is_action_just_pressed(interaction_action):
+			if Game.get_state() == required_game_state:
+				_activated = true
+				_trigger()
+				set_deferred("_activated", false)
 
 func _on_area_exit(area):
 	if area is EventProber:
@@ -44,3 +126,7 @@ func _on_area_exit(area):
 ##Virtual function to be overriden by subclasses -- it's where the magic happens.
 func _trigger():
 	pass
+
+func _draw():
+	draw_rect(Rect2(Vector2(), size), Color(color, 0.2), true)
+	draw_rect(Rect2(Vector2(), size), color, false, _SCALE)
