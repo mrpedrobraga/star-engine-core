@@ -23,7 +23,7 @@ enum TriggerCondition {
 		else:
 			_area.collision_layer = 0b10
 			_area.collision_mask = 0b10
-@export_range(0.0, 256.0, 2.0) var icon_offset : float = 0.0:
+@export_range(0.0, 64.0, 2.0) var icon_offset : float = 0.0:
 	set(v):
 		icon_offset = v
 		queue_redraw()
@@ -52,7 +52,7 @@ var _shape := CollisionShape2D.new()
 var _col_rect := RectangleShape2D.new()
 
 @warning_ignore("unused_variable")
-var _SCALE := 6
+var _SCALE := 1
 
 func _init():
 	layout_direction = Control.LAYOUT_DIRECTION_LTR
@@ -129,4 +129,4 @@ func _trigger():
 
 func _draw():
 	draw_rect(Rect2(Vector2(), size), Color(color, 0.2), true)
-	draw_rect(Rect2(Vector2(), size), color, false, 6.0)
+	draw_rect(Rect2(Vector2(), size), color, false, _SCALE)

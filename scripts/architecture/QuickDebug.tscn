@@ -1,11 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://b6b6nuw6uewtu"]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" uid="uid://dgvfqs6ivxn77" path="res://packs/invo_SHARED/_game_data/rooms/room_benchmark.tscn" id="1_qrm2p"]
 [ext_resource type="PackedScene" uid="uid://bi1m64wmtj43d" path="res://packs/invo_E01/_game_data/rooms/room_twisted_school_A.tscn" id="2_y41h6"]
 [ext_resource type="PackedScene" uid="uid://htupgdwhe26e" path="res://packs/invo_E01/_game_data/rooms/room_starfall_e01.tscn" id="3_pj2wt"]
 [ext_resource type="PackedScene" uid="uid://c303yax07komj" path="res://packs/invo_E01/_game_data/rooms/room_claire_house_prologue.tscn" id="4_m3ym6"]
 [ext_resource type="PackedScene" uid="uid://cfquswfnqri0n" path="res://packs/invo_E01/_game_data/rooms/room_nightmare_school_entrance_prologue.tscn" id="6_jwi15"]
-[ext_resource type="PackedScene" uid="uid://oyx8fpnjqghm" path="res://packs/invo_E02/assets/rooms/lilyworld/room_outside_A.tscn" id="7_ckctw"]
+[ext_resource type="PackedScene" uid="uid://oyx8fpnjqghm" path="res://packs/invo_E02/_game_data/rooms/room_outside_A.tscn" id="7_ckctw"]
 [ext_resource type="PackedScene" uid="uid://lsrxcshkibqr" path="res://packs/invo_E03/assets/rooms/room_sam_world_test.tscn" id="8_gkke0"]
 [ext_resource type="PackedScene" uid="uid://ds3v3n8ko1k4w" path="res://packs/invo_SHARED/_game_data/rooms/room_new_horizon_test.tscn" id="9_rfd3n"]
 [ext_resource type="PackedScene" uid="uid://cctrvs410j4au" path="res://packs/__tests/scenes/_stest_battle.tscn" id="10_fjdaa"]
@@ -25,12 +25,8 @@ func _ready():
 	FEEDBACK = GameFeedback.new()
 	FEEDBACK.gather_data()
 
-func _process(delta):
-	FEEDBACK.FPS_stack.push_back(1./delta)
-
 func _on_timer_timeout():
-	$Control/VBoxContainer/Label.text = \"FPS: %d\" % FEEDBACK.get_average_FPS()
-	FEEDBACK.FPS_stack.clear()
+	$Control/VBoxContainer/Label.text = \"FPS: %d\" % Engine.get_frames_per_second()
 
 func _input(ev):
 	if ev is InputEventKey:
@@ -57,7 +53,7 @@ func _input(ev):
 "
 
 [sub_resource type="LabelSettings" id="LabelSettings_jehgb"]
-font_size = 32
+font_size = 8
 
 [node name="debug" type="CanvasLayer"]
 layer = 10
