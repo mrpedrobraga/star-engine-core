@@ -3,6 +3,12 @@
 extends Marker2D
 class_name SMarker2D
 
+## A simple markers to be placed inside [Room].
+##
+## They are essentially Vector2 variables but edited visually.
+## They can be interacted with from [StarScript], without
+## hardcoding magic numbers.
+
 @export_category("Marker")
 
 const base_texture : Texture2D = preload("res://_engine/scripts/icons/icon_marker_base.res")

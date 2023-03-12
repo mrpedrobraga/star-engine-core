@@ -2,11 +2,21 @@
 extends __GameplayCoreBase
 class_name DataCore
 
-### Game SAVE and LOAD ###
+## Core class that handles game data.
+##
+## Assign this class to the 'Game' singleton for you to use it in the game.
+## See: [GameInstance].[br][br]
+##
+## Saving and Loading? Resources? It's this class.
 
+#--------- Game SAVE and LOAD ---------#
+
+## Emitted when saving. [param file] is not the file path, but the save identifier.
 signal on_saved(file)
+## Emitted when loaded. [param file] is not the file path, but the save identifier.
 signal on_loaded(file)
 
+## The current game save data.
 var data : GameSaveData
 
 ## Creates a new save data with basic information.
@@ -25,10 +35,13 @@ func _ready():
 		userdir.make_dir("saves")
 
 ## Saves the current game data to a file.
+## [param file] is not the file path, but the save identifier.
 func save_game(file: String = "save") -> int:
 	ResourceSaver.save(data, "user://saves/"+file+".tres")
 	return OK
 
+## Saves the current game data from a file.
+## [param file] is not the file path, but the save identifier.
 func load_game(file: String = "save") -> int:
 	var path ="user://saves/"+file+".tres"
 	if not FileAccess.file_exists(path):
@@ -50,8 +63,13 @@ func load_game(file: String = "save") -> int:
 
 @export_category("Resources")
 
+## The loaded resource banks.
+## Resource banks are bases of similar resources.
+## You can have a bank for music, one for dialogues,
+## and one for rooms, etc.
 @export var _resource_banks : ResourceMap
 
+## Gets a resource given a path.
 func get_resource(path_string : String):
 	var path = path_string.split("/")
 	
@@ -59,6 +77,7 @@ func get_resource(path_string : String):
 	
 	return _resource_banks.Nget_resource(path)
 
+## Preloads the resource at a path.
 func preload_resource(path_string : String):
 	var path = path_string.split("/")
 	

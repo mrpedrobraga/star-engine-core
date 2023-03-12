@@ -4,11 +4,13 @@ class_name __Shell
 
 ## A helper class that handles quick commands for convenience.
 ##
+## This class will soon be replaced when StarScript 2.0 releases.[br][br]
+##
 ## This class can be extended for any game that uses the engine,
 ## and with it you can interpret commands to do whatever you want
-## as you make it a singleton named "Shell".
+## as you make it a singleton named "Shell".[br][br]
 ##
-## The commands you send to the shell are written in [StarScript].
+## The commands you send to the shell are written in [StarScript].[br][br]
 
 # The environment variables for the shell.
 @export var ENV := {}

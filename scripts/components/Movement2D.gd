@@ -3,6 +3,10 @@
 extends Component
 class_name Movement2D
 
+## Component class that handles movement in two dimensions.
+##
+## TODO: Better document this class (and implement more movement modes).
+
 var listening_to_input := false
 
 var input_action_up := "move_up"

@@ -1,6 +1,8 @@
 extends Control
 class_name JoypadTypingListener
 
+## Class that listens to JoyType-like input.
+
 @export var active = false
 
 signal event(type)

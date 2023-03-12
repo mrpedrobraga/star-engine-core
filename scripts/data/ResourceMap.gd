@@ -1,6 +1,11 @@
 extends Resource
 class_name ResourceMap
 
+## Class that allows storing [ResourceProxy]s in a neat tree.
+##
+## Resource proxies can be loaded from a neat path that is not the path
+## of the real resources in the filesystem.
+
 signal resource_loaded(name)
 
 @export var _data := {}

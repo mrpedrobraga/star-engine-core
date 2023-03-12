@@ -1,4 +1,9 @@
 extends RichTextLabel
+class_name SimpleMenuHandler
+
+## Simple menu handler, useful for testing.
+##
+## Use it to learn how to set up Menu Handlers.
 
 @export var menu : Node
 var menu_is_current := false

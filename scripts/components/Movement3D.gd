@@ -3,6 +3,11 @@
 extends Component
 class_name Movement3D
 
+## Component class that handles movement in three dimensions.
+##
+## TODO: Better document this class (and implement more movement modes).
+## Make sure to keep parity with [Movement2D] for easy transitions into 2D!
+
 var listening_to_input := false
 
 var input_action_x_pos := "move_right"
@@ -51,7 +56,7 @@ func _update_props():
 	
 	InputMap.load_from_project_settings()
 	var actions : Array[String]
-	actions.typed_assign(InputMap.get_actions())
+	actions.assign(InputMap.get_actions())
 	actions.sort()
 	PROPERTY ("Listening To Inputs", &"listening_to_input", TYPE_BOOL, PROPERTY_HINT_NONE, "", true)
 	PROPERTY ("Required State", &"required_state", TYPE_STRING_NAME)

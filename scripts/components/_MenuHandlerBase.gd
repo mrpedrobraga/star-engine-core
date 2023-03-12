@@ -1,6 +1,12 @@
 extends Control
 class_name _MenuHandlerBase
 
+## The menu handler base class.
+## 
+## Implement your own drawing.
+## TODO: Merge this class with menu icon functionality,
+## and make [Chooser] extend this.
+
 @export_category("MenuHandler")
 @export var menu : Menu:
 	set(v):

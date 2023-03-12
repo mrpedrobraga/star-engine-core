@@ -31,12 +31,20 @@ class_name Menu
 
 ##The path to the parent menu (if this menu is a submenu)
 @export var parent: Node
-var level = 0
+var _level = 0
 
 @export_group("Procedural")
 
+## A menu can be marked to only generate its contents
+## after it has been opened.[br][br]
+##
+## This is so in an iterator menu, previous choices
+## can interfere on others.
 @export var populate_on_open : bool = false
+## The function used to populate the menu.
 @export var populate_function : Callable
+
+## The current [MenuHandler] handling this Menu.
 @export var menu_handler : Node
 
 ##Emitted when the menu is opened
@@ -52,7 +60,7 @@ signal back_pressed()
 ##Emitted when a choice is made -- either something was selected
 ##or the user canceled.
 signal choice_made(type)
-var last_choice_type := CHOICE_OK
+var _last_choice_type := CHOICE_OK
 
 enum {CHOICE_OK, CHOICE_BACK}
 
@@ -85,6 +93,7 @@ func select_previous():
 func get_selected():
 	return options[selected_index]
 
+##Gets the text associated with the currently selected option.
 func get_selected_label():
 	if labels:
 		if labels.size() >= options.size():
@@ -93,7 +102,7 @@ func get_selected_label():
 
 ##Opens the menu.
 ##@param: parent_ If this has a value, the current menu will be opened as a submenu.
-func open(parent_=null, level_=0):
+func open(parent_=null, _level_=0):
 	#if is_open:
 	#	printerr("CyclicalReferenceWarning", "Cyclical/Redundant Menu Reference is discouraged.")
 	is_open = true
@@ -108,7 +117,7 @@ func open(parent_=null, level_=0):
 	opened.emit()
 	if parent_:
 		parent = parent_
-	level = level_
+	_level = _level_
 	set_process(true)
 	
 	if is_iterator:
@@ -120,7 +129,7 @@ func open(parent_=null, level_=0):
 ##When [member is_iterator] is set to true, this function is called to iterate through all its submenus.
 func iterate():
 	var index = 0
-	var indent = ""; for i in range(level): indent += "\t"
+	var indent = ""; for i in range(_level): indent += "\t"
 	
 	while index < options.size():
 		var m = options[index]
@@ -129,9 +138,9 @@ func iterate():
 			m = get_node(m)
 		if m is Menu:
 			is_current = false
-			m.open(self, level+1)
+			m.open(self, _level+1)
 			var s = await m.choice_made
-			if m.last_choice_type == CHOICE_BACK:
+			if m._last_choice_type == CHOICE_BACK:
 				if index > 0:
 					index -= 1
 			else:
@@ -139,7 +148,7 @@ func iterate():
 #	print(indent, 'Iterator Menu closed')
 	is_current = true
 	became_current.emit()
-	last_choice_type = CHOICE_OK
+	_last_choice_type = CHOICE_OK
 	choice_made.emit(CHOICE_OK)
 	close()
 
@@ -154,14 +163,14 @@ func close():
 
 ##Closes the menu and returns (if this Menu is a submenu).
 func back():
-	var indent = ""; for i in range(level): indent += "\t"
+	var indent = ""; for i in range(_level): indent += "\t"
 	
 	if not allows_cancel:
 		return
 	if parent:
 		print('cancelling')
 		close()
-		last_choice_type = CHOICE_BACK
+		_last_choice_type = CHOICE_BACK
 #		print(indent, "<-")
 		choice_made.emit(CHOICE_BACK)
 		back_pressed.emit()
@@ -174,33 +183,34 @@ func back():
 func choose():
 	var m = get_selected()
 	
-	var indent = ""; for i in range(level): indent += "\t"
+	var indent = ""; for i in range(_level): indent += "\t"
 #	print(indent, "- ", name, " : ", get_selected_label())
 	
 	if m is NodePath:
 		m = get_node(m)
 	if m is Menu:
 		is_current = false
-		m.open(self, level+1)
+		m.open(self, _level+1)
 		await m.choice_made
-		match m.last_choice_type:
+		match m._last_choice_type:
 			CHOICE_OK:
-				last_choice_type = CHOICE_OK
+				_last_choice_type = CHOICE_OK
 				choice_made.emit(CHOICE_OK)
 				ok_pressed.emit()
 				return
 			CHOICE_BACK:
-				last_choice_type = CHOICE_BACK
+				_last_choice_type = CHOICE_BACK
 				choice_made.emit(CHOICE_BACK)
 				back_pressed.emit()
 				return
 	
 	if parent:
 		close()
-		last_choice_type = CHOICE_OK
+		_last_choice_type = CHOICE_OK
 		choice_made.emit(CHOICE_OK)
 		ok_pressed.emit()
 
+## Returns the dictionary representation of this menu's tree.
 func get_dict_repr() -> Dictionary:
 	var r
 	
@@ -228,6 +238,8 @@ func get_dict_repr() -> Dictionary:
 	
 	return r
 
+## Creates a new menu easily, by passing only options,
+## or optionally some extra data.
 static func create(
 	_options : Array,
 	_labels : Array = [],

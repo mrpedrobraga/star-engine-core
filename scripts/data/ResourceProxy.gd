@@ -1,6 +1,8 @@
 extends Resource
 class_name ResourceProxy
 
+## Class that allows keeping a reference to a resource without loading it.
+
 @export_file var path : String = ""
 @export_group("Runtime")
 @export var resource : Resource:

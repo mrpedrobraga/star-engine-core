@@ -3,6 +3,8 @@
 extends __EventBase
 class_name StarScriptEvent
 
+## Class that executes a [StarScript] when interacted with.
+
 @export var event_pool : StarScript:
 	set(v):
 		event_pool = v

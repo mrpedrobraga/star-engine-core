@@ -5,12 +5,13 @@ class_name AudioCore
 ## CORE class that handles audio.
 ##
 ## Assign this class to the 'Game' singleton for you to use it in the game.
-## See: [GameInstance].
+## See: [GameInstance].[br][br]
 ##
 ## TODO : Make this load the audio files slowly
 ## in a background thread by default,
+## then quickly load when [member bgm_resume] is called.[br][br]
 ##
-## then quickly load when [member bgm_resume] is called.
+## TODO : Add BGM stacking support.
 
 @onready var bgm_player : AudioStreamPlayer = $BGM
 var _bgm_back_buffer : AudioStream

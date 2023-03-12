@@ -11,7 +11,11 @@
 ## 'Game'.
 extends Node
 
-##################### SINGLETONS #####################
+
+#--------- SINGLETONS & SETUP ---------#
+
+# These references are how you should trigger things in your game,
+# calling Game.Audio.play_bgm or Game.Data.save_game, etc.
 
 ##The AudioCore for this game.
 var Audio : AudioCore
@@ -26,32 +30,48 @@ const USER_INFO_PATH = "user://user_info.res"
 ##The persistent user information.
 var user_info : UserInfo
 
+## Loads the [UserInfo] resource if it exists.
+## If it doesn't (because it's the first time this game has loaded,
+## or someone deleted it) it saves a new one there.
 func load_user_info():
 	if FileAccess.file_exists(USER_INFO_PATH):
 		user_info = ResourceLoader.load(USER_INFO_PATH)
 	else:
 		user_info = UserInfo.new()
 		save_user_info()
+
+## Saves the user info to a file so it can be loaded afterwards.
 func save_user_info():
 	ResourceSaver.save(user_info, "user://user_info.res")
+
+## Loads the save data from user_info.
+## This is for games who don't implement a save select screen.
 func load_last_save_data(game_name = ""):
 	var save_file = user_info.save_file
+	
+	# Listen carefully, the save file is not stored in user_info,
+	# it's a string with the name of the save file.
+	# It then calls [member Data] to load the save file from the name.
+	
 	if FileAccess.file_exists("user://saves/%s.tres" % save_file):
 		Game.Data.load_game(save_file)
 	else:
+		# If a save file with that name doesn't exist,
+		# it creates a brand new one.
 		Game.Data.create_save_data(game_name)
 		Game.Data.save_game(user_info.save_file)
 
-##################### STATES #####################
+#--------- STATES ---------#
 
 ##A dictionary with all the current game states (__GameplayStateBase).
+##Those are supposed to be Nodes, so they can be set to process or not.
 var States := {
 	&"Overworld" 	: null,
 	&"Battle" 		: null,
 	&"Minigame" 	: null,
 }
 
-##A dictionary with references to all the characters
+##A dictionary with string references to all the characters in the map.
 var Characters := {
 	
 }
@@ -76,49 +96,44 @@ func get_state() -> StringName:
 func process_states() -> void:
 	(States[_current_state] as __GameplayStateBase)._update()
 
-##################### MAIN FUNCTIONS #####################
 
-func _input(ev) -> void:
-	# Handle fullscreen in desktops!
-	if ev is InputEventKey:
-		if ev.pressed and (ev.keycode == KEY_F4 or ev.keycode == KEY_F11):
-			pass
-			#OS.window_fullscreen = not OS.window_fullscreen
-
-##################### CONVENIENCE FUNCTIONS #####################
+#--------- Convenient Functions ---------#
 
 ## The current room loaded in the game.
 var current_room : Room
 
 ## Changes the current room
-func change_room(r : PackedScene, position : Vector2 = Vector2.ZERO):
-	
-	var rr = r.instantiate()
-	if not rr is Room:
-		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(r))
+func change_room(room_scene : PackedScene, position : Vector2 = Vector2.ZERO):
+	var room_node = room_scene.instantiate()
+	if not room_node is Room:
+		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(room_scene))
 		return
 	else:
 		for i in get_party():
 			if i.world_node.is_inside_tree():
 				i.world_node.get_parent().remove_child(i.world_node)
 		
-		current_room = rr
-		current_room.name = "current_room"
+		Characters.clear()
+		
+		# TODO: transitions
 		var old_room = States[&"Overworld"].get_node_or_null("../current_room")
 		if old_room:
 			old_room.name = "old_room"
 			old_room.visible = false
 			old_room.queue_free()
-		States[&"Overworld"].add_sibling(rr)
+		# New room is now the current one.
+		current_room = room_node
+		current_room.name = "current_room"
+		States[&"Overworld"].add_sibling(current_room)
 		current_room.global_position = position
 		
-		## Add the character in the scene.
-		
+		## Add the party characters in the scene.
 		for i in get_party():
 			print(i)
 			var n = i.world_node
 			current_room.spawn(n, Vector2.ZERO)
 			
+			## TODO: Move this to [Room], perhaps?
 			if current_room.resume_hotspot:
 				n.global_position = current_room.resume_hotspot.global_position
 
@@ -148,7 +163,8 @@ func remove_from_party(character : Character) -> void:
 func clear_party() -> void:
 	Data.data.party.clear()
 
-##################### CUTE UNICODE ART #####################
+
+#--------- CUTE UNICODE ART ---------#
 
 #░░░░░░░▀▄░░░░▄▀░░░░░░░░
 #░░░░░░▄█▀████▀█▄░░░░░░░

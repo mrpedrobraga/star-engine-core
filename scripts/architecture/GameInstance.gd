@@ -5,21 +5,29 @@ class_name GameInstance
 ## Class that encapsulates an instance of a game,.
 ##
 ## It loads Core nodes from the scene tree plus
-## handle some things.
+## handle some things.[br][br]
 ##
 ## Instead of instantiating this class, you should
-## probably [i]write your own[/i].
+## probably [i]write your own[/i]. It can extend this one,
+## though.
 
 @export_category("Cores")
+## A reference to an audio core.
 @export var audio_core : AudioCore
+## A reference to an dialog/cutscene core.
 @export var dialog_cutscene_core : DialogCutsceneCore
+## A reference to an data core.
 @export var data_core : DataCore
+## A reference to an battle core.
 @export var battle_core : BattleCore
 
 @export_category("Setup")
+## The room this game instance will load into given there are no save files.
 @export var first_room : PackedScene
 
+## Assigns the cores to the Game singleton and calls start on the next frame.
 func _ready():
+	## Utility to run into a scene instead of into the default scene.
 	if CustomRunner.is_custom_running():
 		var scene := load(CustomRunner.get_variable("scene"))
 		first_room = scene
@@ -38,11 +46,14 @@ func _ready():
 	
 	start.call_deferred()
 
+## Loads the game world so you can play.
+## TODO: instead of calling it automatically, perhaps, it should be called from a main menu.
 func start():
 	print ("Setting up game.")
 	
 	# Load the first game room (or the main menu)
 	Game.change_room(first_room)
+
 
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED
 func _input(ev):

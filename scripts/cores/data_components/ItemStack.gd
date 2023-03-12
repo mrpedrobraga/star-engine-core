@@ -5,6 +5,8 @@ class_name ItemStack
 ## Class that represents a group of items.
 ##
 ## It's used internally by Inventory to group like item entries.
+## Item stacks can actually be passed around and held by players in-game.[br]
+## An ItemStack can, yes, have an amount of 1.
 
 @export var item : Item:
 	set(v):

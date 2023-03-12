@@ -1,6 +1,10 @@
 extends Menu
 class_name IconMenu
 
+## [Menu], but also has icons.
+##
+## Check [Menu] for a good documentation.
+
 @export var icons : Array[Texture2D] = []
 
 static func create(

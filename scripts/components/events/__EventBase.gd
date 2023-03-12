@@ -1,10 +1,10 @@
 @tool
-##Abstract class that handles events caused by some trigger --
-##i.e. EventProbers touching/interacting, the start of the scene,
-##or every tick.
 @icon("res://_engine/scripts/icons/icon_event_small.png")
 extends Control
 class_name __EventBase
+##Abstract class that handles events caused by some trigger --
+##i.e. EventProbers touching/interacting, the start of the scene,
+##or every tick.
 
 enum TriggerCondition {
 	ON_TOUCH, ON_INTERACT, ON_SCENE_START, EVERY_TICK
@@ -23,26 +23,30 @@ enum TriggerCondition {
 		else:
 			_area.collision_layer = 0b10
 			_area.collision_mask = 0b10
+##The offset of the icon, in pixels.
 @export_range(0.0, 64.0, 2.0) var icon_offset : float = 0.0:
 	set(v):
 		icon_offset = v
 		queue_redraw()
-
+##The colour of the event's rectangle in the scene.
 @export var color = Color.WHITE:
 	set(v):
 		color = v
 		queue_redraw()
-@export var draw_always : bool = false
+##Also draw in the game (not only in the editor)?
+@export var draw_on_game_also : bool = false
+## The transform of the trigger area (the bounding box).
 var trigger_xform : Transform2D:
 	set(v):
 		trigger_xform = v
 		queue_redraw()
 
 @export_group("Meta")
-@export var raycast_layer := 0b100
+## The layer where the event will look for raycast [EventProber]s.
+@export_flags_2d_physics var raycast_layer := 0b100
 
 ##The action that triggers this event if trigger_condition is [code]ON_INTERACT[/code].
-@export var interaction_action : String = "OK"
+@export var interaction_action : StringName = &"OK"
 ##The game state in which this event can be triggered.
 @export var required_game_state : StringName = &"Overworld"
 

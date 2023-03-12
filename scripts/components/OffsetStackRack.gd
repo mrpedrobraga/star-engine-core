@@ -2,6 +2,11 @@
 extends Node2D
 class_name OffsetStackRack2D
 
+##A class that holds a stack of independent 2D vectors.
+##
+##When reading from this class, all the values will be reduced,
+##but you can still edit each "component" of the stack independently.
+
 ##A packed array that contains the stack of [Vector2] offsets.
 @export var offset_stack : PackedVector2Array = [Vector2.ZERO]:
 	set(v):

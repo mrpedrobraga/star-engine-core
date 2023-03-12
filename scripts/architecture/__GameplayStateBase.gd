@@ -1,15 +1,7 @@
-#########################################
-#										#
-#		Gameplay State Base 1.0.0		#
-#			by Pedro Braga				#
-#										#
-#	Abstract class to be inherited  	#
-#	by gameplay states.					#
-#										#
-#########################################
-
 extends Node
 class_name __GameplayStateBase
+
+## Abstract class for gameplay states.
 
 var state_handler = Game
 
@@ -22,7 +14,12 @@ func _update():
 func _exit():
 	pass
 
-#
+func _change_to(new_state):
+	pass
+
+func _receive_change_from(old_state):
+	pass
+
 #	DIAGRAM OF FINITE STATE MACHINES (Nice ASCII art)
 #
 #      ┌──────────────────────┐
