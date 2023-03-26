@@ -35,7 +35,6 @@ func bgm_preload_from_bank(bgm:String) -> void:
 	Shell.printx("[Game::AudioCore] Preloading BGM from MUS/" + str(bgm))
 	Game.Data.preload_resource("MUS/" + bgm)
 
-
 func bgm_resume(restart = false) -> void:
 	bgm_player.stream = _bgm_back_buffer
 	if restart or not bgm_player.playing:
@@ -44,6 +43,9 @@ func bgm_resume(restart = false) -> void:
 
 func battle_music_play() -> void:
 	battle_player.play()
+
+func battle_music_set(mus : AudioStream) -> void:
+	battle_player.stream = mus
 
 func battle_music_stop() -> void:
 	battle_player.stop()

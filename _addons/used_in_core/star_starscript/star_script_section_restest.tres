@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://_engine/_addons/used_in_core/star_starscript/StarScriptSection.gd" id="1_f0a8i"]
-[ext_resource type="Resource" uid="uid://vkmnfoapvbp7" path="res://packs/TEST_FILES/newtest.ssh" id="1_huav4"]
+[ext_resource type="Resource" uid="uid://vkmnfoapvbp7" path="res://packs/__tests/newtest.ssh" id="1_huav4"]
 
 [resource]
 script = ExtResource("1_f0a8i")

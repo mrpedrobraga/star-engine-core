@@ -103,7 +103,7 @@ func process_states() -> void:
 var current_room : Room
 
 ## Changes the current room
-func change_room(room_scene : PackedScene, position : Vector2 = Vector2.ZERO):
+func change_room(room_scene : PackedScene, position : Vector2 = Vector2.ZERO, is_first_room : bool = false):
 	var room_node = room_scene.instantiate()
 	if not room_node is Room:
 		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(room_scene))
@@ -136,6 +136,8 @@ func change_room(room_scene : PackedScene, position : Vector2 = Vector2.ZERO):
 			## TODO: Move this to [Room], perhaps?
 			if current_room.resume_hotspot:
 				n.global_position = current_room.resume_hotspot.global_position
+		
+		current_room.initialize(is_first_room)
 
 ##Returns the player's controlled character
 func get_player_vessel() -> Character:

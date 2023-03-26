@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=12 format=3 uid="uid://cs0crptgvsnto"]
 
 [ext_resource type="PackedScene" uid="uid://dgvfqs6ivxn77" path="res://packs/invo_SHARED/_game_data/rooms/room_benchmark.tscn" id="1_qrm2p"]
 [ext_resource type="PackedScene" uid="uid://bi1m64wmtj43d" path="res://packs/invo_E01/_game_data/rooms/room_twisted_school_A.tscn" id="2_y41h6"]
@@ -50,10 +50,15 @@ func _input(ev):
 				current_room_index = wrapi(current_room_index, 0, rooms.size())
 				
 				Game.change_room(rooms[current_room_index])
+			KEY_F11:
+				if get_window().mode == Window.MODE_FULLSCREEN:
+					get_window().mode = Window.MODE_WINDOWED
+				else:
+					get_window().mode = Window.MODE_FULLSCREEN
 "
 
 [sub_resource type="LabelSettings" id="LabelSettings_jehgb"]
-font_size = 8
+font_size = 6
 
 [node name="debug" type="CanvasLayer"]
 layer = 10
@@ -68,6 +73,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Disclaimer" type="Label" parent="Control"]
+modulate = Color(0.964706, 0.141176, 0.352941, 1)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -12.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Development Footage; Will change before release."
+label_settings = SubResource("LabelSettings_jehgb")
+horizontal_alignment = 1
+
 [node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 0
@@ -75,6 +97,7 @@ offset_right = 200.0
 offset_bottom = 40.0
 
 [node name="Label" type="Label" parent="Control/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "FPS: 60.0"
 label_settings = SubResource("LabelSettings_jehgb")

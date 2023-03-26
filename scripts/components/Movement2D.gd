@@ -60,7 +60,7 @@ func _update_props():
 	PROPERTY ("Listening To Inputs", &"listening_to_input", TYPE_BOOL, PROPERTY_HINT_NONE, "", true)
 	PROPERTY ("Required State", &"required_state", TYPE_STRING_NAME)
 	
-	var a_s := join_commas(actions)
+	var a_s := _join_commas(actions)
 	
 	PROPERTY ("Input/LEFT", &"input_action_left", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, )
 	PROPERTY ("Input/RIGHT", &"input_action_right", TYPE_STRING, PROPERTY_HINT_ENUM_SUGGESTION, a_s)

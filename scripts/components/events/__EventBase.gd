@@ -7,13 +7,13 @@ class_name __EventBase
 ##or every tick.
 
 enum TriggerCondition {
-	ON_TOUCH, ON_INTERACT, ON_SCENE_START, EVERY_TICK
+	ON_TOUCH, ON_INTERACT, ON_SCENE_START, EVERY_TICK, NEVER
 }
 
 @export_category("Trigger")
 
 ##The trigger condition for the event.
-@export var trigger_condition : TriggerCondition
+@export var trigger := TriggerCondition.ON_TOUCH
 @export var trigger_with_raycast : bool = false:
 	set(v):
 		trigger_with_raycast = v
@@ -86,7 +86,7 @@ func _ready():
 	_col_rect.size = size
 	queue_redraw()
 	
-	if trigger_condition == TriggerCondition.ON_SCENE_START:
+	if trigger == TriggerCondition.ON_SCENE_START:
 		_trigger()
 
 func _notification(what):
@@ -101,7 +101,7 @@ var _areas : Array[EventProber] = []
 func _on_area_enter(area):
 	if area is EventProber:
 		_areas.push_back(area)
-		if trigger_condition == TriggerCondition.ON_TOUCH:
+		if trigger == TriggerCondition.ON_TOUCH:
 			if Game.get_state() == required_game_state:
 				_trigger()
 
@@ -114,7 +114,7 @@ func _input(ev):
 	if _activated:
 		return
 	
-	if not trigger_condition == TriggerCondition.ON_INTERACT:
+	if not trigger == TriggerCondition.ON_INTERACT:
 		return
 	if _areas.size() > 0:
 		if Input.is_action_just_pressed(interaction_action):
