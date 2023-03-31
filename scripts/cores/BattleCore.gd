@@ -18,7 +18,7 @@ var battle_instance : BattleInstance
 ##READ; Returns true if currently in [b]battle[/b].
 var is_in_battle : bool = false
 
-@export_category("Battle UI")
+@export_category("UI")
 
 @export var ally_choices_menu_handler : _MenuHandlerBase
 

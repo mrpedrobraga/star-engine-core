@@ -7,13 +7,18 @@ class_name _MenuHandlerBase
 ## TODO: Merge this class with menu icon functionality,
 ## and make [Chooser] extend this.
 
-@export_category("MenuHandler")
+@export_category("Menu")
 @export var menu : Menu:
 	set(v):
 		menu = v
 		queue_redraw()
 var menu_is_current := false
 var menu_was_current_last_frame := false
+
+@export_category("Input Setup")
+
+@export var action_next : StringName = &"ui_right"
+@export var action_previous : StringName = &"ui_left"
 
 @export_group("Sound")
 @export var stream_player_select : AudioStreamPlayer
@@ -50,29 +55,35 @@ func _input(ev):
 	if menu.is_iterator:
 		return
 	
-	if Input.is_action_just_pressed("ui_right"):
+	if Input.is_action_just_pressed(action_next):
 		menu.select_next()
 		update()
 		if stream_player_select:
 			stream_player_select.play()
-	if Input.is_action_just_pressed("ui_left"):
+	if Input.is_action_just_pressed(action_previous):
 		menu.select_previous()
 		update()
 		if stream_player_select:
 			stream_player_select.play()
 	if Input.is_action_just_pressed("OK"):
+		queue_redraw()
 		menu.choose()
-		menu_is_current = false
-		menu_was_current_last_frame = false
-		if stream_player_OK:
-			stream_player_OK.play()
-	if Input.is_action_just_pressed("CANCEL"):
-		menu.back()
-		if menu.parent:
+		if menu.is_option_valid(menu._safe_selected_index):
 			menu_is_current = false
 			menu_was_current_last_frame = false
-		if stream_player_cancel:
-			stream_player_cancel.play()
+			if stream_player_OK:
+				stream_player_OK.play()
+		else:
+			# TODO: Invalid option sound.
+			pass
+	if Input.is_action_just_pressed("CANCEL"):
+		menu.back()
+		if menu.allows_cancel:
+			if menu.parent:
+				menu_is_current = false
+				menu_was_current_last_frame = false
+			if stream_player_cancel:
+				stream_player_cancel.play()
 
 func update():
 	if not is_inside_tree():

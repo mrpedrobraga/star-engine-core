@@ -75,4 +75,4 @@ func partially_merge(other : ItemStack, amt_limit : int = stack_limit):
 		amount = total - amt_limit
 
 func _to_string():
-	return "%sx %s" % [amount, item.resource_name]
+	return "%sx %s" % [amount, item.display_name]

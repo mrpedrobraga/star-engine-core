@@ -21,8 +21,15 @@ class_name Menu
 ##pass the processing and await it to return.
 @export var options : Array = ["First"]
 @export var labels : Array[String] = []
+@export var options_validity : Array[bool] = []
 ##The currently selected index.
 @export var selected_index := 0
+var _safe_selected_index : int:
+	get:
+		return posmod(selected_index, options.size())
+##When [code]true[/code], when you get to the minimum/maximum
+##of the menu, its index will either wrap around or be clamped.
+@export var bind_selection := true
 ##When [code]true[/code], when you get to the minimum/maximum
 ##of the menu, its index will wrap around.
 @export var wrap_selection := true
@@ -71,10 +78,11 @@ func _ready():
 func select_next():
 	var cache = selected_index
 	selected_index += 1
-	if wrap_selection:
-		selected_index = posmod(selected_index, options.size())
-	else:
-		selected_index = clamp(selected_index, 0, options.size() - 1)
+	if bind_selection:
+		if wrap_selection:
+			selected_index = posmod(selected_index, options.size())
+		else:
+			selected_index = clamp(selected_index, 0, options.size() - 1)
 	if cache != selected_index:
 		emit_signal("selection_changed", selected_index)
 
@@ -82,23 +90,30 @@ func select_next():
 func select_previous():
 	var cache = selected_index
 	selected_index -= 1
-	if wrap_selection:
-		selected_index = posmod(selected_index, options.size())
-	else:
-		selected_index = clamp(selected_index, 0, options.size() - 1)
+	if bind_selection:
+		if wrap_selection:
+			selected_index = posmod(selected_index, options.size())
+		else:
+			selected_index = clamp(selected_index, 0, options.size() - 1)
 	if cache != selected_index:
 		emit_signal("selection_changed", selected_index)
 
 ##Returns the currently selected option.
 func get_selected():
-	return options[selected_index]
+	return options[_safe_selected_index]
 
 ##Gets the text associated with the currently selected option.
 func get_selected_label():
 	if labels:
 		if labels.size() >= options.size():
-			return labels[selected_index]
+			return labels[_safe_selected_index]
 	return str(get_selected())
+
+## Returns whether the selected option is valid.
+func is_option_valid(index : int):
+	if options_validity:
+		return options_validity[index]
+	return true
 
 ##Opens the menu.
 ##@param: parent_ If this has a value, the current menu will be opened as a submenu.
@@ -186,6 +201,11 @@ func choose():
 	var indent = ""; for i in range(_level): indent += "\t"
 #	print(indent, "- ", name, " : ", get_selected_label())
 	
+	if not is_option_valid(_safe_selected_index):
+		# [DEBUG]
+		print("[Menu] Invalid Option.")
+		return
+	
 	if m is NodePath:
 		m = get_node(m)
 	if m is Menu:
@@ -249,6 +269,9 @@ static func create(
 	var m = Menu.new()
 	
 	m.options = _options
+	m.options_validity.assign([])
+	m.options_validity.resize(m.options.size())
+	m.options_validity.fill(true)
 	m.labels.assign(_labels)
 	m.allows_cancel = _allows_cancel
 	if _menu_handler:
