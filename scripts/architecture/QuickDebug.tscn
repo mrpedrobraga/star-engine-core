@@ -1,14 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cs0crptgvsnto"]
-
-[ext_resource type="PackedScene" uid="uid://dgvfqs6ivxn77" path="res://packs/invo_SHARED/_game_data/rooms/room_benchmark.tscn" id="1_qrm2p"]
-[ext_resource type="PackedScene" uid="uid://bi1m64wmtj43d" path="res://packs/invo_E01/_game_data/rooms/room_twisted_school_A.tscn" id="2_y41h6"]
-[ext_resource type="PackedScene" uid="uid://htupgdwhe26e" path="res://packs/invo_E01/_game_data/rooms/room_starfall_e01.tscn" id="3_pj2wt"]
-[ext_resource type="PackedScene" uid="uid://c303yax07komj" path="res://packs/invo_E01/_game_data/rooms/room_claire_house_prologue.tscn" id="4_m3ym6"]
-[ext_resource type="PackedScene" uid="uid://cfquswfnqri0n" path="res://packs/invo_E01/_game_data/rooms/room_nightmare_school_entrance_prologue.tscn" id="6_jwi15"]
-[ext_resource type="PackedScene" uid="uid://oyx8fpnjqghm" path="res://packs/invo_E02/_game_data/rooms/room_outside_A.tscn" id="7_ckctw"]
-[ext_resource type="PackedScene" uid="uid://lsrxcshkibqr" path="res://packs/invo_E03/assets/rooms/room_sam_world_test.tscn" id="8_gkke0"]
-[ext_resource type="PackedScene" uid="uid://ds3v3n8ko1k4w" path="res://packs/invo_SHARED/_game_data/rooms/room_new_horizon_test.tscn" id="9_rfd3n"]
-[ext_resource type="PackedScene" uid="uid://cctrvs410j4au" path="res://packs/__tests/scenes/_stest_battle.tscn" id="10_fjdaa"]
+[gd_scene load_steps=3 format=3 uid="uid://cs0crptgvsnto"]
 
 [sub_resource type="GDScript" id="GDScript_wc5bo"]
 script/source = "extends CanvasLayer
@@ -63,19 +53,9 @@ font_size = 6
 [node name="debug" type="CanvasLayer"]
 layer = 10
 script = SubResource("GDScript_wc5bo")
-rooms = Array[PackedScene]([ExtResource("2_y41h6"), ExtResource("1_qrm2p"), ExtResource("3_pj2wt"), ExtResource("4_m3ym6"), ExtResource("6_jwi15"), ExtResource("7_ckctw"), ExtResource("8_gkke0"), ExtResource("9_rfd3n"), ExtResource("10_fjdaa")])
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Disclaimer" type="Label" parent="Control"]
+[node name="Control@Disclaimer" type="Label" parent="."]
 modulate = Color(0.964706, 0.141176, 0.352941, 1)
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -90,20 +70,16 @@ text = "Development Footage; Will change before release."
 label_settings = SubResource("LabelSettings_jehgb")
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+[node name="Control@VBoxContainer" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(200, 0)
-layout_mode = 0
 offset_right = 200.0
 offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="Control/VBoxContainer"]
+[node name="Control@VBoxContainer@Label" type="Label" parent="."]
 visible = false
-layout_mode = 2
 text = "FPS: 60.0"
 label_settings = SubResource("LabelSettings_jehgb")
 
-[node name="Timer" type="Timer" parent="Control"]
+[node name="Control@Timer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
-
-[connection signal="timeout" from="Control/Timer" to="." method="_on_timer_timeout"]

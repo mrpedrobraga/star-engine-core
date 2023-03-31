@@ -21,17 +21,14 @@ class_name GameInstance
 ## A reference to an battle core.
 @export var battle_core : BattleCore
 
-@export_category("Setup")
-## The room this game instance will load into given there are no save files.
-@export var first_room : PackedScene
-
 ## Assigns the cores to the Game singleton and calls start on the next frame.
 func _ready():
 	## Utility to run into a scene instead of into the default scene.
 	if CustomRunner.is_custom_running():
 		var scene := load(CustomRunner.get_variable("scene"))
-		first_room = scene
-		print("Starting game at %s." % scene.resource_path)
+		Game.game_setup_save.first_room = scene
+		# [DEBUG]
+		print("[GameInstance] Starting game at %s." % scene.resource_path)
 	
 	# Set up the Cores in [Game]
 	
@@ -52,7 +49,7 @@ func start():
 	print ("Setting up game.")
 	
 	# Load the first game room (or the main menu)
-	Game.change_room(first_room)
+	Game.change_room(Game.game_setup_save.first_room)
 
 
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED

@@ -29,6 +29,8 @@ var Battle : BattleCore
 const USER_INFO_PATH = "user://user_info.res"
 ##The persistent user information.
 var user_info : UserInfo
+##The initial [GameSetup]::[GameSaveData] used to set up this [Game].
+var game_setup_save : GameSaveData
 
 ## Loads the [UserInfo] resource if it exists.
 ## If it doesn't (because it's the first time this game has loaded,
@@ -53,12 +55,17 @@ func load_last_save_data(game_name = ""):
 	# it's a string with the name of the save file.
 	# It then calls [member Data] to load the save file from the name.
 	
-	if FileAccess.file_exists("user://saves/%s.tres" % save_file):
+	# [DEBUG]
+	print("[Game] Overriding Save File Loading.")
+	if FileAccess.file_exists("user://saves/%s.tres" % save_file) and false:
 		Game.Data.load_game(save_file)
 	else:
 		# If a save file with that name doesn't exist,
 		# it creates a brand new one.
-		Game.Data.create_save_data(game_name)
+		Game.Data.default_save_data = game_setup_save
+		Game.Data.data = Game.Data.create_save_data(game_name)
+		# [DEBUG]
+		print("[Game] Created New Save File:\n\n" + str(Game.Data.data))
 		Game.Data.save_game(user_info.save_file)
 
 #--------- STATES ---------#

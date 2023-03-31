@@ -11,10 +11,12 @@ class_name ItemStack
 @export var item : Item:
 	set(v):
 		item = v
+		resource_name = _to_string()
 		emit_changed()
 @export_range(1, 1024) var amount : int = 1:
 	set(v):
 		amount = v
+		resource_name = _to_string()
 		emit_changed()
 @export var metadata : Dictionary = {}:
 	set(v):
@@ -71,3 +73,6 @@ func partially_merge(other : ItemStack, amt_limit : int = stack_limit):
 		var total = amount + other.amount
 		other.amount = amt_limit
 		amount = total - amt_limit
+
+func _to_string():
+	return "%sx %s" % [amount, item.resource_name]

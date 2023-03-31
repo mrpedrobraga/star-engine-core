@@ -19,15 +19,17 @@ signal on_loaded(file)
 ## The current game save data.
 var data : GameSaveData
 
+@export_category("Save Data")
+var default_save_data : GameSaveData
+
 ## Creates a new save data with basic information.
 func create_save_data (game_name : String) -> GameSaveData:
-	var m = GameSaveData.new()
-	
-	m.game_name = game_name
-	m.facts = FactBase.new()
-	
-	data = m
-	return m
+#	var m = GameSaveData.new()
+#	m.game_name = game_name
+#	m.facts = FactBase.new()
+#	data = m
+#	return m
+	return default_save_data.duplicate()
 
 func _ready():
 	var userdir := DirAccess.open("user://")
@@ -52,6 +54,8 @@ func load_game(file: String = "save") -> int:
 		); return ERR_FILE_NOT_FOUND
 	
 	data = load(path)
+	# [DEBUG]
+	print("[Game.Data] Loaded save file from " + path + ".")
 	
 	return OK
 	

@@ -19,7 +19,7 @@ static func create(
 	m.options = _options
 	m.labels.assign(_labels)
 	m.allows_cancel = _allows_cancel
-	m.icons = _icons
+	m.icons.assign(_icons)
 	if _menu_handler:
 		m.menu_handler = _menu_handler
 		_menu_handler.menu = m

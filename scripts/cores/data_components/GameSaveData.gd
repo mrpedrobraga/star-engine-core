@@ -1,4 +1,4 @@
-extends Resource
+extends GameSetup
 class_name GameSaveData
 
 ##Class for saving your game's information easily.
@@ -19,7 +19,7 @@ class_name GameSaveData
 #--------- RESUME HOTSPOT ---------#
 
 ## The room to resume to when loading this save.
-@export var resume_room = "__tests/scenes/_stest_battle_patterns.tscn"
+@export var resume_room : PackedScene
 ## The anchor to resume to when loading this save.
 @export var resume_anchor = "reload_point"
 
@@ -46,4 +46,17 @@ var party : Array[Character] = []
 @export var inventories : Dictionary = {}
 
 func _to_string():
-	return str(game_name) + "\n" + "Version: " + str(game_version) + "\n\n" + JSON.stringify(facts._data, "\t")
+	var result := ""
+	
+	result += str(game_name) + "\n"
+	result += "Version: " + str(game_version) + "\n\n"
+	
+	result += "FACTS\n"
+	result += JSON.stringify(facts._data, "\t") + "\n\n"
+	
+	result += "ITEMS\n"
+	for i in inventories.keys():
+		result += str(i) + ":\n" + str(inventories[i])
+	result += "\n"
+	
+	return result

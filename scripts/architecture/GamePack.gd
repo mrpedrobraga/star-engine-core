@@ -13,7 +13,7 @@ class_name GamePack
 ## Do not use this class directly to create your [code]pack.tres[/code],
 ## instead, extend this script and implement [method _boot].
 
-@export_category("GamePack")
+@export_category("Game Pack")
 ## The bundle id of this pack.
 @export var bundle_id = "unnamed_pack"
 @export var name = "Unnamed Pack"
@@ -27,6 +27,9 @@ class_name GamePack
 @export var priority = 0
 ## The version of this pack, for versioning reasons.
 @export var version = "0.0.0"
+
+@export_category("Game Setup")
+@export var setup_save_data : GameSaveData
 
 var _output : RichTextLabel
 
