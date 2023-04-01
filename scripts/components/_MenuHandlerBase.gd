@@ -26,11 +26,10 @@ var menu_was_current_last_frame := false
 @export var stream_player_cancel : AudioStreamPlayer
 
 func set_handling(m : Menu):
-	if menu:
-		if menu.became_current.is_connected(update):
-			menu.became_current.disconnect(update)
+	set_unhandling(menu)
 	menu = m
 	menu.became_current.connect(update)
+	_became_current()
 	#update()
 
 func set_unhandling(m : Menu):
@@ -44,6 +43,8 @@ func _ready():
 	if menu:
 		update()
 
+func _became_current():
+	pass
 
 func _input(ev):
 	if Engine.is_editor_hint(): return

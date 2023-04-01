@@ -45,6 +45,19 @@ var party : Array[Character] = []
 
 @export var inventories : Dictionary = {}
 
+## Patches the content of an other [GameSaveData]
+func patch_with(next_episode_setup : GameSaveData):
+	var patch_properties = [
+		&"game_version", &"save_file_version",
+		&"resume_room", &"resume_anchor",
+		&"current_vessel", &"current_vessel_scene",
+		&"party"
+	]
+	
+	for prop in patch_properties:
+		if not next_episode_setup.get(prop) in [null, ""]:
+			self.set(prop, next_episode_setup.get(prop))
+
 func _to_string():
 	var result := ""
 	

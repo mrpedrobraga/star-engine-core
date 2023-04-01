@@ -9,9 +9,6 @@ class_name GameSetup
 @export_category("State")
 @export var initial_game_state : StringName = &"Overworld"
 
-@export_category("Scene")
-@export var first_room : PackedScene
-
 @export_category("Character")
 @export var character : Resource
 @export var character_vessel_scene : PackedScene

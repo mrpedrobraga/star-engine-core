@@ -26,7 +26,7 @@ func _ready():
 	## Utility to run into a scene instead of into the default scene.
 	if CustomRunner.is_custom_running():
 		var scene := load(CustomRunner.get_variable("scene"))
-		Game.game_setup_save.first_room = scene
+		Game.game_setup_save.resume_room = scene
 		# [DEBUG]
 		print("[GameInstance] Starting game at %s." % scene.resource_path)
 	
@@ -49,7 +49,7 @@ func start():
 	print ("Setting up game.")
 	
 	# Load the first game room (or the main menu)
-	Game.change_room(Game.game_setup_save.first_room)
+	Game.change_room(Game.game_setup_save.resume_room)
 
 
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED

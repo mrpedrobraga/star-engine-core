@@ -9,6 +9,11 @@ class_name BattlerScript
 ##A reference to the currently active battle!
 var battle : BattleInstance
 
+## Some default icons
+const icon_wait = preload("res://packs/invo_SHARED/_game_data/choices/icon_wait.tres")
+const icon_talk = preload("res://packs/invo_SHARED/_game_data/choices/icon_talk.tres")
+const icon_spare = preload("res://packs/invo_SHARED/_game_data/choices/icon_spare.tres")
+
 signal turn_finished
 
 ######### FIGHTER ACTIONS
@@ -36,3 +41,15 @@ func _get_ACTs(character_name : String) -> Array[String]:
 	# Inherit with the currently available ACTs
 	# for the given character.
 	return ['none']
+
+##Virtual; returns the list of labels for the available ACTs for the given character.
+func _get_ACT_labels(character_name : String) -> Array[String]:
+	# Inherit with the currently available ACTs
+	# for the given character.
+	return ['None']
+
+##Virtual; returns the list of icons for the available ACTs for the given character.
+func _get_ACT_icons(character_name : String) -> Array[Texture2D]:
+	# Inherit with the currently available ACTs
+	# for the given character.
+	return []

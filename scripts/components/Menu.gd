@@ -183,7 +183,6 @@ func back():
 	if not allows_cancel:
 		return
 	if parent:
-		print('cancelling')
 		close()
 		_last_choice_type = CHOICE_BACK
 #		print(indent, "<-")
