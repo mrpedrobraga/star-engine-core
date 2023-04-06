@@ -1,0 +1,7 @@
+--first_section
+	* pedro : Hello world!
+	* Hello there...
+	* How are you?
+	* I'm fine, thanks.
+	print Hello
+	{3 + 3}

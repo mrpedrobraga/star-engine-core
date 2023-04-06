@@ -33,6 +33,9 @@ func update_texture():
 		return
 	var sh := p.pool[current_sheet] as SpriteSheet
 	
+	if not sh:
+		print(p); return
+	
 	texture = sh.texture
 	hframes = texture.get_width()  / sh.frame_size.x
 	vframes = texture.get_height() / sh.frame_size.y

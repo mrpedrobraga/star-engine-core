@@ -7,6 +7,8 @@ class_name Movement2D
 ##
 ## TODO: Better document this class (and implement more movement modes).
 
+@export var enabled : bool = false
+
 var listening_to_input := false
 
 var input_action_up := "move_up"
@@ -123,6 +125,7 @@ func _physics_process(delta):
 	if Engine.is_editor_hint():return
 	if not Game.get_state() == required_state:return
 	if not parent: return
+	if not enabled: return
 
 	# Get the input vector
 	if listening_to_input:

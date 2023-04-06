@@ -1,0 +1,10 @@
+print Hello World.
+print Hello\ World.
+
+::label::
+
+--greet nearest|all <greeting>
+	- Hello my friend.
+	* How are you?
+	- I'm fine.
+	* viktor : I'm glad you are.

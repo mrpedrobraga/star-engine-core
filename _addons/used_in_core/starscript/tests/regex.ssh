@@ -1,0 +1,12 @@
+
+--head
+	title Mr Pedro Braga's Website
+	meta
+		charset: utf8
+
+--body
+	h1 Welcome to my website!
+	p
+		* This website is made for you, the viewer,
+		* to enjoy while you sip a cup of tea...
+	br * 3

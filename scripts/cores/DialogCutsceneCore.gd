@@ -41,15 +41,11 @@ var camera_target : CanvasItem
 
 ##Executes a [b]dialog[/b] given a [i]StarScript[/i] [b]pool[/b] and a [b]key[/b].
 func dialog( pool : StarScript, key : String ) -> void:
-	var pd = pool.data
-	if pd.data.has(key):
-		_dialog_from_SSON(pd.data[key])
+	var pd = pool.sections
+	if pd.has(key):
+		await Shell.x_section(pd[key])
 	else:
-		Shell.print_err("Invalid Dialog Key", "The provided key \""+key+"\" does not exist within the given dialog pool.")
-
-##Executes a [b]dialog[/b] from an object in [i]StarScript[/i] dictionary format.
-func _dialog_from_SSON( ssobj ):
-	Shell.execute_block( ssobj.content )
+		Shell.r_err("Invalid Dialog Key", "The provided key \""+key+"\" does not exist within the given dialog pool.")
 
 ##Enters [b]cutscene[/b] mode.
 func enter_cutscene():

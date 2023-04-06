@@ -53,5 +53,5 @@ func spawn(ch : Node2D, pos : Vector2):
 ##
 ## [param first_scene] will be true if this is the 
 ## first room to be loaded after a game load.
-func initialize(first_scene:bool=false):
+func initialize(first_scene : bool = false):
 	Shell.execute_block("zoom %s" % 0.8)

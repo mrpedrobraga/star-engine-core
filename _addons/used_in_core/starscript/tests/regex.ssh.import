@@ -1,0 +1,15 @@
+[remap]
+
+importer="star.starscript"
+type="Resource"
+uid="uid://bcnoijg0t6jdm"
+path="res://.godot/imported/regex.ssh-bcb6a9e022e868258f0cd854f5dce631.res"
+
+[deps]
+
+source_file="res://_engine/_addons/used_in_core/starscript/tests/regex.ssh"
+dest_files=["res://.godot/imported/regex.ssh-bcb6a9e022e868258f0cd854f5dce631.res"]
+
+[params]
+
+keep_source_code=true

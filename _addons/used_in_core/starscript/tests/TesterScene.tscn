@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://b43uv8frxd7vg"]
+
+[ext_resource type="Resource" uid="uid://yeks4widx55f" path="res://tests/dialogues.ssh" id="1_g0kum"]
+[ext_resource type="Script" path="res://starscript/src/StarScriptShell.gd" id="2_qa158"]
+[ext_resource type="Script" path="res://starscript/lib/lib_standard.gd" id="3_22giv"]
+
+[sub_resource type="GDScript" id="GDScript_a11oe"]
+script/source = "extends Control
+
+@export var test_script : StarScript
+
+var my_parser : StarScriptParser
+@export var shell : StarScriptShell
+
+func c(k:StringName, p:Array) -> StarScriptCommand:
+	return StarScriptCommand.create(k, p)
+
+func _ready():
+	
+	#print(StarScriptExpression.parse(\"3 + 3\"))
+	
+	test_interpreter()
+	pass
+
+func test_interpreter():
+#	var block := StarScriptSection.new()
+#
+#	block.commands = [
+#		c(&\"set\", [\"heart\", \"=\", 3]),
+#		c(&\"print\", [], c(&\"get\", [\"heart\"])),
+#		c(&\"set\", [\"heart\", \"=\", 6]),
+#		c(&\"print\", [], c(&\"get\", [\"heart\"])),
+#		c(&\"set\", [\"heart\", \"+=\", 3]),
+#		c(&\"set\", [\"heart\", \"*=\", 3]),
+#		c(&\"print\", [], c(&\"get\", [\"heart\"])),
+#	]
+	
+	var result = await shell.x_section(test_script.sections[\"first_section\"])
+	print(\"\\nReturns: \", result)
+"
+
+[node name="tester" type="Control" node_paths=PackedStringArray("shell")]
+layout_mode = 3
+anchors_preset = 0
+script = SubResource("GDScript_a11oe")
+test_script = ExtResource("1_g0kum")
+shell = NodePath("StarScriptShell")
+
+[node name="StarScriptShell" type="Node" parent="."]
+script = ExtResource("2_qa158")
+libraries = Array[Script]([ExtResource("3_22giv")])

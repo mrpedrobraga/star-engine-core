@@ -1,0 +1,192 @@
+###
+
+Multi-line comments.
+
+###
+
+# Single-line comments.
+
+# Both should be ignored.
+
+# A section begins with --
+# It doesn't specifically take parameters
+# but if it does you should notate it.
+
+--builtins
+	* Dialogue can begin with a '*' or a '-'.
+	* The information regarding which one was used
+	* will be saved.
+
+	* The text allows for [pause 3]tags to be inserted,
+	* but StarScript does *not* handle them at all.
+	* Whatever goes inside a dialogue line just gets passed\
+onto the module that will execute the dialogue.
+
+	* <speak-as="Pourheps">Perhaps</speak-as> your dialog is for TTS!
+
+	# Prints Hello onto the standard output.
+	print Hello!
+
+	# You can create labels to go back to afterwards.
+	::label::    
+
+	# Comparisons
+	if false
+		# Whatever is inside of an if block executes
+		# if the condition expression is truthy.
+
+		# Goes to a label or a line number.
+		goto label
+	elif true
+		# Same as an if statement but it runs if the previous
+		print This one runs, though.
+	
+	# Unless functions opposite to ifs
+
+	# Code written inside {{}}s will be treated as Godot expressions.
+	# Those are useful for doing mathematics,
+	# but can also interface with more complex objects.
+
+	# You can interface with this from the interpreter side.
+	unless {{3 + 3 > 5}}
+		print Hey.
+	else
+		# Runs if the previous statement was an if, an elif or an unless.
+		# and it failed.
+	
+	# Set properties on the scope with :
+
+	cool_scope: yes
+	duration: 3
+
+	# If the keys are left empty,
+	# they will be assigned increasing integers
+	: yes # Property 0
+	: yes # Property 1
+	: no  # Property 2
+
+	# The property can be another scope.
+
+	my_awesome_subscope:
+		print Hello there!
+
+	# Note these are evaluated before everything else,
+	# so you can't set them conditionally.
+	
+	# You can use properties on commands to specify things
+	# in a more sane manner.
+	- I'm your boss!
+		volume: 5
+		flavour: 7
+	
+	# But dialogues by default allow you to define a speaker and a set
+	# of properties.
+	- player : Hello!
+	- player, whispering : Hello again.
+	- player, whispering, sad : I'm so sad.
+	
+	# Those properties don't actually do anything from the 
+	# StarScript side, but you can read them from your dialog box.
+
+	# Some properties can be added 
+
+	# You can call another section as a function
+	# (if you name a section with a command that already exists,
+	# the section will shadow it).
+	give_pizza 3
+		extra: Cheese
+	
+	# You can set to a variable
+	# with '='.
+	# Variables can not have their value changed,
+	# and are discarded when their scope ends.
+	age = 3
+
+	# Their value can be accessed using {}.
+	print I am {age} years old.
+
+
+# Here in out-of-any-sections land there isn't much you can do...
+# but you are able to assign properties to the script.
+
+cool_script: yes
+lame_script: no
+
+# Even full objects.
+# You are able to query this information
+# from within AND from without StarScript,
+# so I guess you can use this instead of JSON
+# for your random data?
+
+npc:
+	name: Benichi
+	age: 220
+	dislikes_my_array_syntax: yes
+	items:
+		:
+			name: strawberry #🍓
+			amount: 5
+		:
+			name: pineapple #🍍
+			amount: 3
+	
+	when_interacting:
+		* Hey, I'm your friendly NPC!
+		* Come join me in this wonderful world!
+		print Hello!
+
+
+--give_pizza
+	# Usage: give_pizza <amount>
+
+	# Use $ to refer to a parameter by number,
+	# or to a property by name.
+	item give player pepperoni_pizza %1
+
+	# Use {} to refer to a fact (a global parameter).
+	# Accepts / to access members of Dictionaries.
+	* Use this {items/pepperoni_pizza} well.
+
+--money <character> give|take <amount>
+
+	# Some of your parameters might be words.
+	# You can use match statements to branch execution.
+	match %2
+		give
+			fact increment %1/money %3
+			# Note that you should escape a $ if that's
+			# supposed to be parsed literally.
+			* Gained US$ %3!!!
+		take
+			fact decrement %1/money %3
+			* Lost US$ %3...
+		_
+			error Invalid parameter %3
+	
+	# You can use return statements to return to the previous scope,
+	# where this function was called from.
+
+	# You might even pass values to a return statement.
+	return %3
+
+--custom_commands
+	# You can extend the StarScript interpreter
+	# to accept your own commands.
+
+	fact set PizzaEaten yes
+
+	# will be broken down as
+
+	###
+		{
+			key : "fact"
+			params : [
+				"set",
+				"Benichi",
+				true
+			]
+		}
+	###
+
+	# Spaces can be escaped with a \
+	# Line-breaks can be escaped with a \, too.
