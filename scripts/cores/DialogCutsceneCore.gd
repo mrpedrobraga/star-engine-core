@@ -36,7 +36,7 @@ var camera_zoom : float = 1.0:
 var camera_target : CanvasItem
 
 ##NODE; The dialog box that will execute any dialog.
-@warning_ignore("unused_variable")
+@warning_ignore("unused_private_class_variable")
 @export var _dialog_box: SmartRichTextLabel
 
 ##Executes a [b]dialog[/b] given a [i]StarScript[/i] [b]pool[/b] and a [b]key[/b].

@@ -9,6 +9,16 @@ static func _install(shell : StarScriptShell):
 			await dbox.write(command.params[0])
 	)
 	
+	shell.register_command ( "bgm play|pause|resume|load|stack|pop <name:String>",
+		func lib_starscript_dialog (shell : StarScriptShell, command : StarScriptCommand, context):
+			var ac : AudioCore = Game.Audio
+			
+			match command.params[0]:
+				"play":
+					ac.bgm_load_from_bank(command.params[1])
+					ac.bgm_resume(true)
+	)
+	
 	# Calls a method on the current room.
 	shell.register_command ( "call <method> ...",
 		func lib_starscript_call (shell : StarScriptShell, command : StarScriptCommand, context):

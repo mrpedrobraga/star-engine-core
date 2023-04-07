@@ -31,11 +31,13 @@ func _input(ev):
 #				FEEDBACK.export()
 				get_tree().quit()
 			KEY_F5:
+				return
 				current_room_index -= 1
 				current_room_index = wrapi(current_room_index, 0, rooms.size())
 				
 				Game.change_room(rooms[current_room_index])
 			KEY_F6:
+				return
 				current_room_index += 1
 				current_room_index = wrapi(current_room_index, 0, rooms.size())
 				

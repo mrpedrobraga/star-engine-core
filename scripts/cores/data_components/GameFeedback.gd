@@ -26,6 +26,7 @@ func get_average_FPS():
 	
 	var f := 0
 	for i in FPS_stack: f+=i
+	@warning_ignore("integer_division")
 	return f / FPS_stack.size()
 
 func gather_data():

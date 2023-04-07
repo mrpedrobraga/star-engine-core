@@ -24,7 +24,7 @@ func bgm_pause():
 	bgm_player.stream_paused = true
 
 func bgm_load_from_bank(bgm:String) -> void:
-	Shell.printx("[Game::AudioCore] Loading BGM from MUS/" + str(bgm))
+	Shell.r_print("[Game::AudioCore] Loading BGM from MUS/" + str(bgm))
 	var r = Game.Data.get_resource("MUS/" + bgm)
 	if (r is int) and r == ERR_DOES_NOT_EXIST:
 		Shell.print_err("NullReference", "Audio Resource Does Not Exist: " + str(bgm))
@@ -32,7 +32,7 @@ func bgm_load_from_bank(bgm:String) -> void:
 	_bgm_back_buffer = r
 
 func bgm_preload_from_bank(bgm:String) -> void:
-	Shell.printx("[Game::AudioCore] Preloading BGM from MUS/" + str(bgm))
+	Shell.r_print("[Game::AudioCore] Preloading BGM from MUS/" + str(bgm))
 	Game.Data.preload_resource("MUS/" + bgm)
 
 func bgm_resume(restart = false) -> void:

@@ -19,7 +19,7 @@ func _input(ev):
 ## Check this implementation of _ready to see what happens
 ## when the game is loaded.
 func _ready():
-	printx("Booting Star engine...")
+	r_print("Booting Star engine...")
 	
 	# Gets all the files on the same directory.
 	var exe_dir = OS.get_executable_path().get_base_dir()
@@ -32,16 +32,16 @@ func _ready():
 	var core_packs = []
 	
 	# Load any .pcks in the executable's neighbourhood.
-	printx("Looking for resource packs to load.")
+	r_print("Looking for resource packs to load.")
 	for file in files:
 		if file.get_extension() == "pck":
-			printx(" - Loading " + file + ".")
+			r_print(" - Loading " + file + ".")
 			ProjectSettings.load_resource_pack(exe_dir.path_join(file), true)
 	
 	# Now focus on the packs folder inside the game's file system.
 	# It'll contain the packs loaded in the previous step,
 	# as well as things bundled with the executable.
-	printx("Checking out loaded packs.")
+	r_print("Checking out loaded packs.")
 	d = DirAccess.open("res://packs")
 	
 	# Look for GamePacks inside each subfolder of res://packs.
@@ -56,10 +56,10 @@ func _ready():
 		# If there's no pack.tres, the game pack will be ignored.
 		# Its files are still very much loaded.
 		if not game_pack:
-			#printx(" - No 'pack.tres' found for '%s'." % pack)
+			#r_print(" - No 'pack.tres' found for '%s'." % pack)
 			continue
 
-		printx(" - Found " + str(game_pack))		
+		r_print(" - Found " + str(game_pack))		
 		# Calls _setup on the game pack.
 		game_pack._setup()
 		packs.push_back ({
@@ -85,7 +85,7 @@ func _ready():
 	# Select which pack to boot.
 	match core_packs.size():
 		0:
-			printx("No game packs found to boot.")
+			r_print("No game packs found to boot.")
 			return
 		1:
 			pack_to_boot = core_packs[0]
@@ -96,7 +96,7 @@ func _ready():
 			# say, a game and its level editor.
 			pack_to_boot = core_packs[0]
 	
-	printx("Booting into " + str(pack_to_boot) + ".")
+	r_print("Booting into " + str(pack_to_boot) + ".")
 	
 	await get_tree().process_frame
 	
@@ -121,7 +121,7 @@ func get_dir_tree(path, max_level = -1, level = 0):
 	return t
 
 ## Prints a message to the standard output, and to the screen.
-func printx(message):
+func r_print(message):
 	_output_label.text += str(message) + "\n"
 	print_rich(message)
 

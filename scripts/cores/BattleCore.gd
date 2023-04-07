@@ -36,13 +36,13 @@ func battle_loop():
 				stfx._round_start()
 		
 		await _do_ally_turns()
-		Shell.printx ("-------------------")
+		Shell.r_print ("-------------------")
 		
 		# Break if the ally choices resulted in battle dismissal.
 		if not is_in_battle: break
 		
 		await _do_opponent_turns()
-		Shell.printx ("-------------------")
+		Shell.r_print ("-------------------")
 		
 		# Break if the opponent's choices resulted in battle dismissal.
 		if not is_in_battle: break
@@ -57,7 +57,7 @@ func battle_loop():
 			for stfx in ch.stats.status_effects:
 				stfx._battle_end(battle_instance)
 
-	Shell.printx("-------------------", " BATTLE END!!! ")
+	Shell.r_print("-------------------\nBATTLE END!!! ")
 	#TODO: Put characters back on the overworld.
 
 ##VIRTUAL FUNCTION for the ally turns.
@@ -104,9 +104,9 @@ func engage_battle(battle : BattleInstance, transition_duration = 0.0):
 	
 	battle_instance.setup()
 	
-	Shell.printx("-------------------" + " BATTLE START!!! ")
-	Shell.printx(str(battle))
-	Shell.printx("-------------------\n")
+	Shell.r_print("-------------------" + " BATTLE START!!! ")
+	Shell.r_print(str(battle))
+	Shell.r_print("-------------------\n")
 	
 	# Animate the battle transition!
 	Game.Audio.bgm_pause()

@@ -38,7 +38,9 @@ func update_texture():
 		
 	var sh := p.pool[current_sheet] as SpriteSheet
 	texture.atlas = sh.texture
+	@warning_ignore("narrowing_conversion")
 	hframes = texture.get_width()  / sh.frame_size.x
+	@warning_ignore("narrowing_conversion")
 	vframes = texture.get_height() / sh.frame_size.y
 	update_region()
 

@@ -34,13 +34,13 @@ class_name GamePack
 var _output : RichTextLabel
 
 ## Prints out a method to the standard output.
-func printx(message):
+func r_print(message):
 	message = "[%s] "%bundle_id + message
 	_output.text += str(message) + "\n"
 	print_rich(message)
 
 ## A reference to the tree, so it can change rooms.
-@warning_ignore("unused_variable")
+@warning_ignore("unused_private_class_variable")
 var _tree : SceneTree
 
 ## Prepare whatever when this pack is loaded into the engine.

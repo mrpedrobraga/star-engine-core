@@ -8,6 +8,11 @@ static func _install(shell : StarScriptShell):
 			return str(msg)
 	)
 	
+	shell.register_command ( "wait <amt:number>",
+		func (shell : StarScriptShell, command : StarScriptCommand, context):
+			await float(command.params[0])
+	)
+	
 	shell.register_command ( "eval ...",
 		func (shell : StarScriptShell, command : StarScriptCommand, context):
 			#shell.r_print(str(command.params[0]))

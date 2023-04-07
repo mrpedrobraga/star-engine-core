@@ -24,6 +24,8 @@ var object : Node
 const regex_syntax_variable := "<(?<name>\\w+)(?::(?<type>\\w+))?>$"
 const regex_keyword := "\\w+(?:|\\w+)*"
 const regex_param_syntax := "(\\w+(\\|\\w+)+|<\\w+(:\\w+)?>|\\w+)"
+const boolean_truths := ['true', 'yes', 'on', 'always', 'sure', 'maybe']
+const boolean_falses := ['false', 'no', 'off', 'never', 'nah']
 
 ## Register a command giving a syntax and a handler.
 func register_command(syntax : String, handler : Callable):
@@ -219,12 +221,24 @@ func match_syntax(params : Array, command_handler : Dictionary) -> Dictionary:
 							if not typeof(param) == TYPE_STRING:
 								error.call()
 						"int":
+							if param is String:
+								if param.is_valid_int():
+									params[i] = param.to_int()
+								elif param.is_valid_hex_number(true):
+									params[i] = param.hex_to_int()
 							if not typeof(param) == TYPE_INT:
 								error.call()
 						"bool":
+							if param in boolean_truths:
+								params[i] = true
+							if param in boolean_falses:
+								params[i] = false
 							if not typeof(param) in [TYPE_BOOL, TYPE_INT, TYPE_FLOAT]:
 								error.call()
 						"number":
+							if param is String:
+								if param.is_valid_float():
+									params[i] = param.to_float()
 							if not typeof(param) in [TYPE_BOOL, TYPE_INT, TYPE_FLOAT]:
 								error.call() # CAST!!!
 				
