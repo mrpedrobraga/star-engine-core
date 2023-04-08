@@ -39,6 +39,8 @@ var wait_for_text_delay:bool = true
 @export var text_ok_action = ""
 @export var text_cancel_action = ""
 
+@export var disable_cancel = false
+
 @export var text_action_prompt_node : CanvasItem
 
 @export var tts_enabled : bool = false
@@ -50,7 +52,7 @@ func _input(event):
 	if text_ok_action:
 		if Input.is_action_just_pressed(text_ok_action):
 			emit_signal("ok_pressed")
-	if text_cancel_action:
+	if text_cancel_action and not disable_cancel:
 		if Input.is_action_just_pressed(text_cancel_action):
 			emit_signal("cancel_pressed")
 func _gui_input(event):
@@ -118,6 +120,7 @@ func write(_text):
 					"tw":
 						wait_for_text_delay = true
 					"skip":
+						print('skipping')
 						clear()
 						resumed.emit()
 						completed.emit()

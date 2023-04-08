@@ -18,8 +18,8 @@ enum TriggerCondition {
 	set(v):
 		trigger_with_raycast = v
 		if(trigger_with_raycast):
-			_area.collision_layer = raycast_layer | 0b10
-			_area.collision_mask = raycast_layer | 0b10
+			_area.collision_layer = raycast_layer 
+			_area.collision_mask = raycast_layer
 		else:
 			_area.collision_layer = 0b10
 			_area.collision_mask = 0b10
@@ -62,6 +62,7 @@ func _init():
 	layout_direction = Control.LAYOUT_DIRECTION_LTR
 
 func _ready():
+	use_parent_material = true
 	if Engine.is_editor_hint():
 		modulate = Color.WHITE
 		return
@@ -74,9 +75,6 @@ func _ready():
 	mouse_exited.connect((func ():
 		_mouse_over = false
 	))
-	
-	_area.collision_layer = _area.collision_layer | 0b10
-	_area.collision_mask = _area.collision_mask | 0b10
 	
 	_area.add_child(_shape)
 	add_child(_area)
@@ -136,5 +134,8 @@ func _trigger():
 	pass
 
 func _draw():
+	if (not Engine.is_editor_hint()) and (not draw_on_game_also):
+		return
+	
 	draw_rect(Rect2(Vector2(), size), Color(color, 0.2), true)
 	draw_rect(Rect2(Vector2(), size), color, false, _SCALE)
