@@ -8,8 +8,8 @@ class_name StarScriptEvent
 @export var event_pool : StarScript:
 	set(v):
 		event_pool = v
-		if not v.data.has(event_key):
-			event_key = v.data.keys()[0]
+		if not v.sections.has(event_key):
+			event_key = v.sections.keys()[0]
 		notify_property_list_changed()
 		update_configuration_warnings()
 var event_key : String = ""
@@ -19,20 +19,21 @@ func _init():
 
 
 func _trigger():
-	
 	if Game.DC.is_in_cutscene:
 		return
 	await get_tree().process_frame
 	
 	Game.DC.enter_cutscene()
 	
-	if not event_pool.data.has(event_key):
-		Shell.print_err(
+	if not event_pool.sections.has(event_key):
+		Shell.r_err(
 			"MissingKey", "The key " + str(event_key) +\
 			" wasn't found in the pool " + str(event_pool.resource_path) + "."
 			)
 	else:
-		await Shell.execute_block(event_pool.data[event_key].content)
+		await Shell.x_section(event_pool.sections[event_key])
+	await get_tree().process_frame
+	
 	Game.DC.exit_cutscene()
 
 var _icon = preload("res://_engine/scripts/icons/icon_dialogevent_small.png")
@@ -50,7 +51,7 @@ func _get_property_list():
 	# Section Key
 	var sections = ""
 	if event_pool:
-		var sections_array = event_pool.data.keys()
+		var sections_array = event_pool.sections.keys()
 		if sections_array.size()>0:
 			sections += sections_array[0]
 		if sections_array.size()>1:

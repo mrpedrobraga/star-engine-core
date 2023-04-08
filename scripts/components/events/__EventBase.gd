@@ -89,6 +89,10 @@ func _ready():
 	if trigger == TriggerCondition.ON_SCENE_START:
 		_trigger()
 
+func _physics_process(delta):
+	if trigger == TriggerCondition.EVERY_TICK:
+		_trigger()
+
 func _notification(what):
 	match what:
 		NOTIFICATION_RESIZED:

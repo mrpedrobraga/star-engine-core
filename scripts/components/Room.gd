@@ -24,7 +24,7 @@ class_name Room
 
 @export_group("Tools")
 ## Sets up handy nodes for organization.
-@export var setup_organization : bool = false:
+var setup_organization : bool = false:
 	set(v):
 		if Engine.is_editor_hint():
 			ORGN("Objects")
@@ -54,4 +54,7 @@ func spawn(ch : Node2D, pos : Vector2):
 ## [param first_scene] will be true if this is the 
 ## first room to be loaded after a game load.
 func initialize(first_scene : bool = false):
-	Shell.execute_block("zoom %s" % 0.8)
+	return
+	Shell.x_command(StarScriptCommand.create(
+		&"zoom", [0.8]
+	), {})

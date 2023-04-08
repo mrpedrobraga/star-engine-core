@@ -57,6 +57,7 @@ layer = 10
 script = SubResource("GDScript_wc5bo")
 
 [node name="Control@Disclaimer" type="Label" parent="."]
+visible = false
 modulate = Color(0.964706, 0.141176, 0.352941, 1)
 anchors_preset = 7
 anchor_left = 0.5
