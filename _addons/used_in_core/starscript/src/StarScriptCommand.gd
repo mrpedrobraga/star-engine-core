@@ -16,6 +16,23 @@ static func create(key_ : StringName, params_ : Array) -> StarScriptCommand:
 	__s.params = params_
 	return __s
 
+## Overriding to add property conversion functionality.
+func try_as_dictionary():
+	if commands.size() > 0:
+		return self
+	var result
+	
+	if params[0] != null:
+		result = params[0]
+	else:
+		# This property is a full-on dictionary.
+		# TODO: Handle Arrays (unnamed properties)
+		result = {}
+		for prop in properties.keys():
+			result[prop] = properties[prop].try_as_dictionary()
+	
+	return result
+
 func _to_string():
 	#return '[SSH - Command %s]' % key 
 	

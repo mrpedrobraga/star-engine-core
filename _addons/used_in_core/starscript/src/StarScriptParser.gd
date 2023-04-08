@@ -8,6 +8,7 @@ const regex_identifier = "[\\w-]+"
 const regex_command_template = "(\\w+|<\\w+>|<\\w+:\\w+>|\\[\\w+(?:\\|\\w+)+\\])"
 const regex_assignment_expr = "(?<lval>%s)\\s*(?<op>\\+=|-=|\\*=|\\/=|\\/\\/=|%%=|=)\\s*(?<rval>.*)" % regex_identifier
 const regex_dialog = "(?<prefix>[-*])\\s*(?:(?<name>[\\w-]+)(?<modifiers>(?:,[\\w\\s-]+)+)?\\s*:\\s*)?(?<content>.*)"
+const regex_property = "\\s*(?<prop>\\w+)\\s*:\\s*(?<content>.+)?"
 const regex_expr = "^\\s*{(?<content>.*)}"
 const word_characters = "abcdefghijklmnop"
 const CHAR_ESCAPE = "\\"
@@ -76,12 +77,20 @@ static func parse(source : String, target_shell = null) -> StarScript:
 						var cmd = line.content
 						last_instruction = cmd
 						scope_stack[-1].commands.push_back(cmd)
+					"property":
+						# TODO: Create a dedicated [StarScriptProperty] class.
+						var cmd = StarScriptCommand.create(&"prop", [line.content])
+						last_instruction = cmd
+						scope_stack[-1].properties[line.name] = (cmd)
 					"expr":
 						scope_stack[-1].commands.push_back(
 							StarScriptCommand.create(&"eval", [line.content])
 						)
 		pass
+	
+	root_scope.compact()
 	print(root_scope)
+	
 	return root_scope
 
 static func get_tokens(source : String, target_shell = null) -> Array[ParsingCandidate]:
@@ -397,6 +406,7 @@ static func parse_line(line : Array, target_shell = null):
 	}
 	
 	var r_dialog := RegEx.create_from_string(regex_dialog)
+	var r_property := RegEx.create_from_string(regex_property)
 	var r_label := RegEx.create_from_string("::%s::")
 	var r_expression := RegEx.create_from_string(regex_expr)
 	var r_assignment := RegEx.create_from_string(
@@ -438,6 +448,17 @@ static func parse_line(line : Array, target_shell = null):
 			var matches := r_identifier.search_all(groups.modifiers)
 			for m in matches:
 				result.content.params.append(m.get_string())
+		return result
+	
+	# Match r_property!
+	match_ = r_property.search(raw)
+	if match_:
+		var groups = get_named_groups(match_)
+		result.type = "property"
+		result.name = groups.prop
+		if not groups.has('content'):
+			groups.content = null
+		result.content = groups.content
 		return result
 	
 	var broken_params = line[0].split(" ")

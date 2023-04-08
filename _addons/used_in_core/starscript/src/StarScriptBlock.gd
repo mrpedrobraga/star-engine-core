@@ -41,6 +41,26 @@ var StarScriptCommand := preload("StarScriptCommand.gd")
 ## (They'll be defined on runtime).
 @export var local_variables : Dictionary = {}
 
+## If this block has no subcommands, but has properties,
+## it returns a [Dictionary] version of this block. [br]
+## Otherwise, it returns itself unchanged.
+func try_as_dictionary():
+	if commands.size() > 0:
+		return self
+	var result := {}
+	
+	for prop in properties.keys():
+		result[prop] = properties[prop].try_as_dictionary()
+	
+	return result
+
+## Gets a property from [member properties].
+## This method is safe because it considers any property might
+## be a [StarScriptProperty] or a Variant.[br]
+func get_property(property):
+	# TODO: Implement nested property resolution.
+	return properties[property]
+
 func _to_string():
 	var repr := ""
 	

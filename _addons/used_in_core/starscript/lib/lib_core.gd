@@ -10,7 +10,7 @@ static func _install(shell : StarScriptShell):
 	
 	shell.register_command ( "wait <amt:number>",
 		func (shell : StarScriptShell, command : StarScriptCommand, context):
-			await float(command.params[0])
+			await shell.get_tree().create_timer(float(command.params[0])).timeout
 	)
 	
 	shell.register_command ( "eval ...",

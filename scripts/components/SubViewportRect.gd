@@ -5,6 +5,7 @@ class_name SubViewportRect
 ## Renders all the children through a [SubViewport].
 
 func _ready():
+	clip_contents = true
 	if Engine.is_editor_hint():
 		return
 	setup()

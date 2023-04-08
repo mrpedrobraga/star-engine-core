@@ -226,6 +226,7 @@ func match_syntax(params : Array, command_handler : Dictionary) -> Dictionary:
 									params[i] = param.to_int()
 								elif param.is_valid_hex_number(true):
 									params[i] = param.hex_to_int()
+								param = params[i]
 							if not typeof(param) == TYPE_INT:
 								error.call()
 						"bool":
@@ -233,12 +234,14 @@ func match_syntax(params : Array, command_handler : Dictionary) -> Dictionary:
 								params[i] = true
 							if param in boolean_falses:
 								params[i] = false
+							param = params[i]
 							if not typeof(param) in [TYPE_BOOL, TYPE_INT, TYPE_FLOAT]:
 								error.call()
 						"number":
 							if param is String:
 								if param.is_valid_float():
 									params[i] = param.to_float()
+									param = params[i]
 							if not typeof(param) in [TYPE_BOOL, TYPE_INT, TYPE_FLOAT]:
 								error.call() # CAST!!!
 				
