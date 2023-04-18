@@ -27,34 +27,45 @@ signal resumed
 signal completed
 
 signal ok_pressed
-signal cancel_pressed
+signal skip_typewriting_pressed
 
-# Whether this label is currently writing.
+## Whether this label is currently writing.
 var is_typing := false
 var is_emitting_physical_sound := false
-
-@export var text_delay:float = 0.05
-var _text_delay_scale := 1.0
-var wait_for_text_delay:bool = true
-@export var text_ok_action = ""
-@export var text_cancel_action = ""
-
-@export var disable_cancel = false
-
-@export var text_action_prompt_node : CanvasItem
-
 @export var tts_enabled : bool = false
 
+## Whether [method write] will put delay in between each typewritten character.
+var write_use_delay:bool = true
+## The delay between each character in typewriting.
+@export var typewriting_character_delay:float = 0.05
+var _typewriting_character_delay_scale := 1.0
+## The action listened for to confirm dialogues.
+@export var text_ok_action = ""
+## The action listened for to skip_typewriting dialogues.
+@export var text_skip_typewriting_action = ""
+## If skip_typewritingling typewriting allowed.
+@export var disable_skip_typewriting = false
+
+@export var typewriting_tag_whitelist := [
+	"pause", "speed", "skip", "no_tw", "tw", "portrait", "input"
+]
+
+@export_category("Hookups")
+
+@export var text_action_prompt_node : CanvasItem
+@export var portrait_node : AnimatedSprite2D
+@export var portrait_anim_player : AnimationPlayer
+
 func _ready():
-	cancel_pressed.connect(cancel_write)
+	skip_typewriting_pressed.connect(skip_typewriting_write)
 
 func _input(event):
 	if text_ok_action:
 		if Input.is_action_just_pressed(text_ok_action):
 			emit_signal("ok_pressed")
-	if text_cancel_action and not disable_cancel:
-		if Input.is_action_just_pressed(text_cancel_action):
-			emit_signal("cancel_pressed")
+	if text_skip_typewriting_action and not disable_skip_typewriting:
+		if Input.is_action_just_pressed(text_skip_typewriting_action):
+			emit_signal("skip_typewriting_pressed")
 func _gui_input(event):
 	if event is InputEventMouseButton:
 		if event.is_pressed():
@@ -62,9 +73,34 @@ func _gui_input(event):
 				MOUSE_BUTTON_LEFT:
 					ok_pressed.emit()
 				MOUSE_BUTTON_RIGHT:
-					cancel_pressed.emit()
+					skip_typewriting_pressed.emit()
 
-func write(_text):
+var last_character_had_portrait : bool = false
+
+func write(_text, speaker = null, default_portrait = "default"):
+	## Handle voices & portraits:
+	if speaker:
+		if &"voices" in speaker:
+			var voice : AudioStream #= default_voice
+			if speaker.voices.has("default"):
+				voice = speaker.voices.default
+		if portrait_anim_player:
+			if &"portraits" in speaker and portrait_node:
+				if speaker.portraits:
+					portrait_node.sprite_frames = speaker.portraits
+					play_portrait(default_portrait, true)
+					if not last_character_had_portrait:
+						portrait_anim_player.play(&"appear")
+						last_character_had_portrait = true
+				else:
+					if last_character_had_portrait:
+						last_character_had_portrait = false
+						portrait_anim_player.play_backwards(&"appear")
+	else:
+		if last_character_had_portrait:
+			last_character_had_portrait = false
+			portrait_anim_player.play_backwards(&"appear")
+	
 	is_typing = true
 	is_emitting_physical_sound = true
 	clear()
@@ -87,15 +123,7 @@ func write(_text):
 		if not is_typing:
 			break
 		match character:
-			",":
-				visible_characters += 1
-				await get_tree().create_timer(0.1).timeout
-				char_written.emit()
-			";":
-				visible_characters += 1
-				await get_tree().create_timer(0.1).timeout
-				char_written.emit()
-			":":
+			",", ";", ":":
 				visible_characters += 1
 				await get_tree().create_timer(0.1).timeout
 				char_written.emit()
@@ -114,11 +142,11 @@ func write(_text):
 				
 				match evt.type:
 					"speed":
-						_text_delay_scale = 1. / evt.params.to_int()
+						_typewriting_character_delay_scale = 1. / evt.params.to_int()
 					"no_tw":
-						wait_for_text_delay = false
+						write_use_delay = false
 					"tw":
-						wait_for_text_delay = true
+						write_use_delay = true
 					"skip":
 						print('skipping')
 						clear()
@@ -127,23 +155,30 @@ func write(_text):
 						is_emitting_physical_sound = false
 						show_input_request(false)
 						return
+					"portrait":
+						default_portrait = evt.params
+						play_portrait(default_portrait, true)
 					"input":
 						paused.emit()
 						is_emitting_physical_sound = false
 						is_typing = false
 						show_input_request(true)
+						play_portrait(default_portrait, false)
 						await self.ok_pressed
 						show_input_request(false)
+						play_portrait(default_portrait, true)
 						is_emitting_physical_sound = true
 						resumed.emit()
 						is_typing = true
 					"pause":
-						await get_tree().create_timer(_text_delay_scale * text_delay * 4.0 * evt.params.to_int()).timeout
+						play_portrait(default_portrait, false)
+						await get_tree().create_timer(_typewriting_character_delay_scale * typewriting_character_delay * 4.0 * evt.params.to_int()).timeout
+						play_portrait(default_portrait, true)
 			_:
 				beep()
 				char_written.emit()
-				if wait_for_text_delay:
-					await get_tree().create_timer(_text_delay_scale * text_delay).timeout
+				if write_use_delay:
+					await get_tree().create_timer(_typewriting_character_delay_scale * typewriting_character_delay).timeout
 				visible_characters += 1
 		char_tick.emit()
 		queue_redraw()
@@ -151,11 +186,23 @@ func write(_text):
 	is_typing = false
 	is_emitting_physical_sound = false
 	show_input_request(true)
+	play_portrait(default_portrait, false)
 	await ok_pressed
 	show_input_request(false)
 	clear()
 	resumed.emit()
 	completed.emit()
+
+func play_portrait(p_name : String, talking : bool = false):
+	if talking and portrait_node.sprite_frames.has_animation(p_name + "_t"):
+		portrait_node.play(p_name + "_t")
+		return
+	portrait_node.play(p_name)
+
+func end_session():
+	if last_character_had_portrait:
+		last_character_had_portrait = false
+		portrait_anim_player.play_backwards(&"appear")
 
 func beep():
 	if has_node("beep"):
@@ -168,7 +215,7 @@ func show_input_request(value):
 	if value and text_action_prompt_node.has_node("anim"):
 		text_action_prompt_node.get_node("anim").play("bounce")
 
-func cancel_write():
+func skip_typewriting_write():
 	if is_typing:
 		is_typing = false
 		visible_ratio = 0.99999
@@ -183,10 +230,6 @@ var special_buffer : Array = [
 	
 ]
 
-@export var tw_tags := [
-	"pause", "speed", "skip", "no_tw", "tw", "portrait", "input"
-]
-
 func special_format(input : String):
 	special_buffer.clear()
 	
@@ -197,7 +240,7 @@ func special_format(input : String):
 	r_expr.compile("\\[(?<key>\\w+)(?<params> .*?)?\\]")
 	var m_expr : Array[RegExMatch] = r_expr.search_all(input)
 	for mm in m_expr:
-		if mm.get_string(1) in tw_tags:
+		if mm.get_string(1) in typewriting_tag_whitelist:
 			input = input.replace(mm.get_string(), FormatCharacters.GENERIC)
 			special_buffer.append(
 				{

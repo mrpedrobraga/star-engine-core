@@ -49,7 +49,13 @@ func start():
 	print ("Setting up game.")
 	
 	# Load the first game room (or the main menu)
-	Game.change_room(Game.game_setup_save.resume_room)
+	Game.change_room(
+		Game.game_setup_save.resume_room,
+		{
+			"is_first_room": true,
+			"target_marker": "Reload"
+		}
+	)
 
 
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED

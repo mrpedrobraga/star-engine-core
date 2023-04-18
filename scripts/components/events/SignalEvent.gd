@@ -17,6 +17,8 @@ var _icon = preload("res://_engine/scripts/icons/icon_event_small.png")
 
 func _draw():
 	super()
+	if (not Engine.is_editor_hint()) and (not draw_on_game_also):
+		return
 	
 	draw_set_transform(Vector2(size/2) + Vector2.UP * icon_offset, 0.0, Vector2(float(_SCALE), float(_SCALE)))
 	draw_texture(_icon, 0.5 * (-_icon.get_size()))

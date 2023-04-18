@@ -8,6 +8,9 @@ class_name SightlessRadarAnchor
 ##The action this 
 @export var action : StringName = "sightless_pulse_radar_emit"
 
+func _ready():
+	$Sprite2D.modulate.a = 0
+
 func _input(ev):
 	if Input.is_action_just_pressed(action):
 		

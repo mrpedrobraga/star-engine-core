@@ -118,3 +118,29 @@ static func _install(shell : StarScriptShell):
 				return await shell.x_block(command, context)
 			return null
 	)
+	
+	shell.register_command ( "await <message>",
+		func (shell : StarScriptShell, command : StarScriptCommand, context):
+			var messages = command.params.duplicate()
+			# TODO: Implement conjunction;
+			var await_all : bool = false
+			var message_completion_statuses : Array[bool] = []
+			message_completion_statuses.resize(messages.size())
+			message_completion_statuses.fill(false)
+			while true:
+				var message_name : String = await shell.message
+				if message_name in messages:
+					message_completion_statuses[messages.find(message_name)] = true
+				
+				var can_move_on : bool = false
+				if await_all:
+					can_move_on = true
+					for i in message_completion_statuses:
+						can_move_on = can_move_on and i
+				else:
+					can_move_on = false
+					for i in message_completion_statuses:
+						can_move_on = can_move_on or i
+				if can_move_on:
+					break
+	)

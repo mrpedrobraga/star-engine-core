@@ -2,7 +2,6 @@
 
 [ext_resource type="AudioStream" uid="uid://nr8myeqb7fev" path="res://_engine/audio/sounds/ui_default_typewriter.wav" id="1_23fss"]
 [ext_resource type="Script" path="res://_engine/scripts/components/accessibility/SightlessRadarAnchor.gd" id="2_601uk"]
-
 [ext_resource type="Texture2D" uid="uid://dpwr0uurf7ct1" path="res://_engine/img/sightless_radar_anchor.png" id="3_t6lhi"]
 
 [sub_resource type="Animation" id="Animation_03gy7"]
@@ -18,6 +17,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_348an"]
@@ -35,6 +46,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1.4, 1.4), Vector2(1, 1), Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(0.5, 2, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7vn17"]

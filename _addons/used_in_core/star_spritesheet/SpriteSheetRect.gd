@@ -34,7 +34,7 @@ func update_texture():
 		return
 	
 	if not p.pool[current_sheet] is SpriteSheet:
-		Shell.print_err("ResourceTypeMismatch", "One of " + str(name) + "'s entries on its pool isn't of type SpriteSheet!")
+		Shell.r_err("ResourceTypeMismatch", "One of " + str(name) + "'s entries on its pool isn't of type SpriteSheet!")
 		
 	var sh := p.pool[current_sheet] as SpriteSheet
 	texture.atlas = sh.texture

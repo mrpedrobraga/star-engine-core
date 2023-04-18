@@ -110,8 +110,8 @@ func process_states() -> void:
 var current_room : Room
 
 ## Changes the current room
-func change_room(room_scene : PackedScene, position : Vector2 = Vector2.ZERO, is_first_room : bool = false):
-	var room_node = room_scene.instantiate()
+func change_room(room_scene : PackedScene, transition_context : Dictionary = {}):
+	var room_node = room_scene.instantiate().duplicate()
 	if not room_node is Room:
 		Shell.print_err.call_deferred("TypeError", "The given scene is not of type 'Room': " + str(room_scene))
 		return
@@ -127,33 +127,49 @@ func change_room(room_scene : PackedScene, position : Vector2 = Vector2.ZERO, is
 		if old_room:
 			old_room.name = "old_room"
 			old_room.visible = false
-			old_room.queue_free()
+			old_room.queue_free.call_deferred()
 		# New room is now the current one.
 		current_room = room_node
+		current_room.visible = true
 		current_room.name = "current_room"
 		States[&"Overworld"].add_sibling(current_room)
-		current_room.global_position = position
 		
 		## Add the party characters in the scene.
 		for i in get_party():
-			print(i)
 			var n = i.world_node
-			current_room.spawn(n, Vector2.ZERO)
+			current_room.spawn(n)
 			
+			if transition_context.has("target_marker"):
+				var marker = current_room.get_marker(transition_context.target_marker)
+				if marker:
+					n.global_position = marker.global_position
 			## TODO: Move this to [Room], perhaps?
-			if current_room.resume_hotspot:
+			elif current_room.resume_hotspot:
 				n.global_position = current_room.resume_hotspot.global_position
+			await get_tree().process_frame
 		
-		current_room.initialize(is_first_room)
+		DC.camera_focus_on_target()
+		
+		current_room.initialize(
+			transition_context
+		)
 
 ##Returns the player's controlled character
 func get_player_vessel() -> Character:
 	return Data.data.current_vessel
 
+##Returns the player's controlled character's node
+func get_player_vessel_node() -> CharacterVessel2D:
+	return Data.data.current_vessel.world_node
+
 ##Sets the player's controlled character
 func set_player_vessel(character : Character) -> void:
 	Data.data.current_vessel = character
 	add_to_party(character)
+
+##Sets the player's control of their vessel on or off.
+func set_player_vessel_enabled(enabled : bool) -> void:
+	Data.data.current_vessel.world_node.set_enabled(enabled)
 
 ##Returns the current party as specified in your GameSaveData
 func get_party() -> Array[Character]:

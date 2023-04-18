@@ -89,8 +89,6 @@ static func parse(source : String, target_shell = null) -> StarScript:
 		pass
 	
 	root_scope.compact()
-	print(root_scope)
-	
 	return root_scope
 
 static func get_tokens(source : String, target_shell = null) -> Array[ParsingCandidate]:

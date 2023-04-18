@@ -19,13 +19,15 @@ var commands_by_key : Dictionary = {}
 
 ## Thes node that owns this shell,
 ## useful if this shell will be spawned to handle a character.
-var object : Node
+@export var object : Node
 
 const regex_syntax_variable := "<(?<name>\\w+)(?::(?<type>\\w+))?>$"
 const regex_keyword := "\\w+(?:|\\w+)*"
 const regex_param_syntax := "(\\w+(\\|\\w+)+|<\\w+(:\\w+)?>|\\w+)"
 const boolean_truths := ['true', 'yes', 'on', 'always', 'sure', 'maybe']
 const boolean_falses := ['false', 'no', 'off', 'never', 'nah']
+
+signal message(message_name : String)
 
 ## Register a command giving a syntax and a handler.
 func register_command(syntax : String, handler : Callable):
@@ -106,8 +108,14 @@ func x_block(block : StarScriptBlock, parent_context : Dictionary):
 	var i_index := 0
 	var result
 	
+	# Pass in the block through the context.
+	context.block = block
+	
 	# Run all the commands
 	while i_index < block.commands.size():
+		# Pass in the iteration index through the context.
+		context.i_index = i_index
+		
 		# The return value of a block is the value of
 		# the last command that runs in it.
 		result = await x_command(block.commands[i_index], context)
@@ -259,12 +267,12 @@ func r_error(error_name : String, error_desc : String, error_placement : String)
 	)
 
 ## Prints a message to the standard outputs.
-func r_print(message : String):
-	print_rich(message)
+func r_print(_message : String):
+	print_rich(_message)
 
 ## Prints a message to the standard error outputs.
-func r_err(errorname:String, message : String):
-	push_error(message)
+func r_err(errorname:String, errormessage : String):
+	push_error(errormessage)
 
 func _eval_if_expr(obj, context):
 	var result = obj
@@ -280,6 +288,8 @@ const libcore := preload("../lib/lib_core.gd")
 
 func _init():
 	libcore._install(self)
+
+func _ready():
 	_setup()
 
 func _setup():

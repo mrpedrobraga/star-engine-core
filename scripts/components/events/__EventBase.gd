@@ -14,13 +14,16 @@ enum TriggerCondition {
 
 ##The trigger condition for the event.
 @export var trigger := TriggerCondition.ON_TOUCH
+var collision_layer : int = 0b10
 @export var trigger_with_raycast : bool = false:
 	set(v):
 		trigger_with_raycast = v
 		if(trigger_with_raycast):
+			collision_layer = raycast_layer
 			_area.collision_layer = raycast_layer 
 			_area.collision_mask = raycast_layer
 		else:
+			collision_layer = 0b10
 			_area.collision_layer = 0b10
 			_area.collision_mask = 0b10
 ##The offset of the icon, in pixels.
@@ -69,6 +72,8 @@ func _ready():
 	
 	_area.area_entered.connect(_on_area_enter)
 	_area.area_exited.connect(_on_area_exit)
+	_area.collision_layer = collision_layer 
+	_area.collision_mask = collision_layer
 	mouse_entered.connect((func ():
 		_mouse_over = true
 	))
@@ -122,8 +127,8 @@ func _input(ev):
 		if Input.is_action_just_pressed(interaction_action):
 			if Game.get_state() == required_game_state:
 				_activated = true
-				_trigger()
 				set_deferred("_activated", false)
+				_trigger()
 
 func _on_area_exit(area):
 	if area is EventProber:
@@ -138,4 +143,4 @@ func _draw():
 		return
 	
 	draw_rect(Rect2(Vector2(), size), Color(color, 0.2), true)
-	draw_rect(Rect2(Vector2(), size), color, false, _SCALE)
+	draw_rect(Rect2(Vector2() + Vector2(0.5, 0.5), size - Vector2.ONE), color, false, _SCALE)

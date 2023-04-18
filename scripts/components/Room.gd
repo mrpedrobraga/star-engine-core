@@ -44,17 +44,18 @@ func ORGN(name_ : String):
 	add_child(orgn, true)
 	orgn.owner = self
 
+## Retrieves a marker.
+func get_marker(marker_name : String):
+	# TODO: Implement a better way of getting the marker.
+	return get_node("Markers/" + marker_name)
+
 ## Spawns an object at a position.
-func spawn(ch : Node2D, pos : Vector2):
-	add_child(ch)
-	ch.global_position = pos
+func spawn(ch : Node2D):
+	add_child.call_deferred(ch)
 
 ## Makes this the current room.
 ##
 ## [param first_scene] will be true if this is the 
 ## first room to be loaded after a game load.
-func initialize(first_scene : bool = false):
+func initialize(transition_context : Dictionary = {}):
 	return
-	Shell.x_command(StarScriptCommand.create(
-		&"zoom", [0.8]
-	), {})

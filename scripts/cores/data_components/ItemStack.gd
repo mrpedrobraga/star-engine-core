@@ -76,3 +76,10 @@ func partially_merge(other : ItemStack, amt_limit : int = stack_limit):
 
 func _to_string():
 	return "%sx %s" % [amount, item.display_name]
+
+func _get_icon():
+	if not item:
+		return null
+	if not item.icon:
+		return null
+	return item.icon
