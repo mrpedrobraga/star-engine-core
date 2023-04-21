@@ -7,11 +7,21 @@ class_name BattleEvent
 
 @export var battle_instance : BattleInstance
 
+@export_category("Opponents")
+
+@export var character_resources : Array[Character]
+@export var world_nodes : Array[NodePath]
+
 func _init():
 	color = Color(0.99999982118607, 0.36941140890121, 0.13345029950142)
 
 func _trigger():
-	print("ouchie!")
+	for i in character_resources.size():
+		var ch := character_resources[i]
+		
+		ch.world_node = get_node(world_nodes[i])
+		battle_instance.opponents.append(ch)
+		Game.Battle.engage_battle(battle_instance)
 
 var _icon = preload("res://_engine/scripts/icons/icon_battleevent.png")
 

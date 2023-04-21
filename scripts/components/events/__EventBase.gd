@@ -44,6 +44,11 @@ var trigger_xform : Transform2D:
 		trigger_xform = v
 		queue_redraw()
 
+@export_group("Extra")
+
+@export var parameters : Array
+@export var node_parameters : Array[NodePath]
+
 @export_group("Meta")
 ## The layer where the event will look for raycast [EventProber]s.
 @export_flags_2d_physics var raycast_layer := 0b100
@@ -59,7 +64,7 @@ var _shape := CollisionShape2D.new()
 var _col_rect := RectangleShape2D.new()
 
 @warning_ignore("unused_variable")
-var _SCALE := 1
+var _SCALE := 1.0
 
 func _init():
 	layout_direction = Control.LAYOUT_DIRECTION_LTR
@@ -88,6 +93,10 @@ func _ready():
 	_area.position = size/2
 	_col_rect.size = size
 	queue_redraw()
+	
+	# Add yourself to the current room's registered objects.
+	if Game.current_room:
+		Game.current_room.register_object("event_" + name, self)
 	
 	if trigger == TriggerCondition.ON_SCENE_START:
 		_trigger()

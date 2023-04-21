@@ -75,7 +75,7 @@ func load_game(file: String = "save") -> int:
 
 ## Gets a resource given a path.
 func get_resource(path_string : String):
-	var path = path_string.split("/")
+	var path = path_string.simplify_path().split("/")
 	
 	print("[Game::DataCore] Loading resource from " + str(path))
 	
@@ -83,7 +83,7 @@ func get_resource(path_string : String):
 
 ## Preloads the resource at a path.
 func preload_resource(path_string : String):
-	var path = path_string.split("/")
+	var path = path_string.simplify_path().split("/")
 	
 	print("[Game::DataCore] Preloading resource from " + str(path))
 	

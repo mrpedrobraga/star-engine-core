@@ -21,6 +21,7 @@ class_name Character
 @export_category("Battle")
 ##A battler script for when this character engages in battle.
 @export var battler_script : Script
+var battler_object : BattlerScript
 
 enum Direction {
 	NORTH, NORTHEAST, EAST, SOUTHEAST,

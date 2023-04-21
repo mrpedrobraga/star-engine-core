@@ -14,18 +14,6 @@ class_name StarScript
 @export_multiline var source_code : String
 @export var compilation_version : String = "2.0"
 
-## Similar to [method try_as_dictionary], but won't convert
-## this object into one, instead, it will convert only the
-## inner properties.[br]
-## This method actually modifies the contents of this [StarScript].
-func compact():
-	for key in properties.keys():
-		properties[key] = properties[key].try_as_dictionary()
-		# If conversion fails:
-		if not properties[key] is Dictionary:
-			properties[key].compact()
-	return self
-
 func _to_string():
 	#return "SSH"
 	

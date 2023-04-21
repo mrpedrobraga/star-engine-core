@@ -194,10 +194,15 @@ func write(_text, speaker = null, default_portrait = "default"):
 	completed.emit()
 
 func play_portrait(p_name : String, talking : bool = false):
+	if not portrait_anim_player:
+		return
 	if talking and portrait_node.sprite_frames.has_animation(p_name + "_t"):
 		portrait_node.play(p_name + "_t")
 		return
-	portrait_node.play(p_name)
+	if portrait_node.sprite_frames.has_animation(p_name):
+		portrait_node.play(p_name)
+	else:
+		push_warning("No portrait named '%s' in %s." % [p_name, portrait_node.sprite_frames])
 
 func end_session():
 	if last_character_had_portrait:

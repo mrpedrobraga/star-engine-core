@@ -25,6 +25,8 @@ const balloon_texture : Texture2D = preload("res://_engine/scripts/icons/icon_ma
 func _ready():
 	if not is_in_group(&"S_Markers"):
 		add_to_group(&"S_Markers", true)
+	if Game.current_room:
+		Game.current_room.register_object("marker_" + name, self)
 	
 	if not Engine.is_editor_hint():
 		return

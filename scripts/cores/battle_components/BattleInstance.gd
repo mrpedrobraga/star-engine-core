@@ -10,6 +10,7 @@ class_name BattleInstance
 var opponent_scripts : Array[BattlerScript]
 ##Useful array containing both the allies and opponents.
 var battlers : Array[Character] = []
+var battlers_dict : Dictionary = {}
 ##An array containing the current targets of the last executed action.
 var current_targets := []
 
@@ -26,12 +27,14 @@ func setup():
 	
 	opponent_scripts = []
 	for opp in opponents:
-		var n = opp.battler_script.new()
-		n.battle = self
-		opponent_scripts.append(n)
-		Game.Battle.add_child(n)
+		opp.battler_object = opp.battler_script.new()
+		opp.battler_object.battle = self
+		opponent_scripts.append(opp.battler_object)
+		Game.Battle.add_child(opp.battler_object)
 	
 	battlers.assign(allies + opponents)
+	for battler in battlers:
+		battlers_dict[battler.name] = battler
 
 func _to_string():
 	return "{" + str(allies) + " v.s. " + str(opponents) +  "}"

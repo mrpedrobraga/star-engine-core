@@ -91,6 +91,6 @@ func update():
 		return
 	
 	menu_is_current = true
-	Shell.speak(menu.get_selected_label())
+	#Shell.speak(menu.get_selected_label())
 	await get_tree().process_frame
 	menu_was_current_last_frame = true

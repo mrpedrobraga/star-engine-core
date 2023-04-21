@@ -22,7 +22,9 @@ class_name Room
 ## appear when resuming from a previous session.
 @export var resume_hotspot : Marker2D
 
-@export_group("Tools")
+@export_group("Named objects")
+var registered_objects : Dictionary
+
 ## Sets up handy nodes for organization.
 var setup_organization : bool = false:
 	set(v):
@@ -43,6 +45,16 @@ func ORGN(name_ : String):
 	orgn.name = name_
 	add_child(orgn, true)
 	orgn.owner = self
+
+## Registers an object that can be retrieved by an id.
+func register_object(obj_name : StringName, object):
+	registered_objects[obj_name] = object
+
+## Retrieves a previously registered object by its id.
+func get_entity(obj_name : StringName):
+	if registered_objects.has(obj_name):
+		return registered_objects[obj_name]
+	return null
 
 ## Retrieves a marker.
 func get_marker(marker_name : String):

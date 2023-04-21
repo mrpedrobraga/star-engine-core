@@ -29,7 +29,16 @@ func _attack(characters : Array[Character]):
 	#BattleCore.battle_instance.current_targets = characters
 	await get_tree().process_frame
 
+func _dialog(pool : StarScript, key : StringName):
+	Game.DC.enter_cutscene()
+	await Game.DC.dialog(pool, key)
+	Game.DC.exit_cutscene()
+
 ######### RESPONSES TO ALLY ACTIONS
+
+##Virtual; responds to an Ally's attack.
+func _handle_attacked(attacker : Character, attack, success : bool):
+	await get_tree().process_frame
 
 ##Virtual; responds to an Ally's Action.
 func _handle_ACT(character : Character, act_name : String) -> void:
