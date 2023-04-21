@@ -8,6 +8,7 @@ class_name BattlerScript
 
 ##A reference to the currently active battle!
 var battle : BattleInstance
+var owner_character : Character
 
 ## Some default icons
 const icon_wait = preload("res://packs/invo_SHARED/_game_data/choices/icon_wait.tres")

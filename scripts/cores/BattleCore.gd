@@ -29,28 +29,38 @@ func battle_loop():
 		for stfx in ch.stats.status_effects:
 			stfx._battle_start(battle_instance)
 	
+	var first_group_turn = _do_ally_turns
+	var second_group_turn = _do_opponent_turns
+	
+	if battle_instance.opponents_have_advantage:
+		first_group_turn = _do_opponent_turns
+		second_group_turn = _do_ally_turns
+	
 	while is_in_battle:
 		# Message the stfx that a round began.
 		for ch in battle_instance.battlers:
 			for stfx in ch.stats.status_effects:
 				stfx._round_start()
 		
-		await _do_ally_turns()
+		await first_group_turn.call()
 		Shell.r_print ("-------------------")
 		
-		# Break if the ally choices resulted in battle dismissal.
+		# Break if the first group's choices resulted in battle dismissal.
 		if not is_in_battle: break
 		
-		await _do_opponent_turns()
+		await second_group_turn.call()
 		Shell.r_print ("-------------------")
 		
-		# Break if the opponent's choices resulted in battle dismissal.
+		# Break if the second groups's choices resulted in battle dismissal.
 		if not is_in_battle: break
 		
 		# Message the stfx that a round ended.
 		for ch in battle_instance.battlers:
 			for stfx in ch.stats.status_effects:
 				stfx._round_end()
+		
+		# Increase the turn index
+		battle_instance.turn_index += 1
 
 	# Message the stfx that a battle ended.
 		for ch in battle_instance.battlers:
@@ -116,3 +126,21 @@ func engage_battle(battle : BattleInstance, transition_duration = 0.0):
 	await get_tree().create_timer(transition_duration).timeout
 	
 	battle_loop()
+
+##Dismisses the battle and breaks from the battle loop.
+func dismiss_battle():
+	if not is_in_battle: return
+	
+	# Animate the battle transition!
+	battle_dismiss_request.emit()
+	
+	Game.Audio.battle_music_stop()
+	
+	is_in_battle = false
+	battle_instance = null
+	
+	await get_tree().create_timer(0.2).timeout
+	
+	Game.Audio.bgm_resume()
+	Game.set_state(&"Overworld")
+	battle_dismissed.emit()

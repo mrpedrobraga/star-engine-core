@@ -16,12 +16,13 @@ func _init():
 	color = Color(0.99999982118607, 0.36941140890121, 0.13345029950142)
 
 func _trigger():
+	var bi_dupl = battle_instance.duplicate()
 	for i in character_resources.size():
 		var ch := character_resources[i]
 		
 		ch.world_node = get_node(world_nodes[i])
-		battle_instance.opponents.append(ch)
-		Game.Battle.engage_battle(battle_instance)
+		bi_dupl.opponents.append(ch)
+		Game.Battle.engage_battle(bi_dupl)
 
 var _icon = preload("res://_engine/scripts/icons/icon_battleevent.png")
 

@@ -22,12 +22,18 @@ var turn_ally_choices : Array = []
 
 ## Sets up the battle.
 func setup():
+	allies.clear()
+	battlers.clear()
+	battlers_dict = {}
+	current_targets = []
+	
 	if allies.is_empty():
 		allies = Game.get_party()
 	
 	opponent_scripts = []
 	for opp in opponents:
 		opp.battler_object = opp.battler_script.new()
+		opp.battler_object.owner_character = opp
 		opp.battler_object.battle = self
 		opponent_scripts.append(opp.battler_object)
 		Game.Battle.add_child(opp.battler_object)
