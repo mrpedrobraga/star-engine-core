@@ -13,12 +13,22 @@ class_name AudioCore
 ##
 ## TODO : Add BGM stacking support.
 
-@onready var bgm_player : AudioStreamPlayer = $BGM
+@export var bgm_player : AudioStreamPlayer
 var _bgm_back_buffer : AudioStream
+var _bgm_stack : Array[AudioStream]
 
-@onready var battle_player : AudioStreamPlayer = $BattlePlayer
+@export var battle_player : AudioStreamPlayer
 
 @onready var sfx_battle_start : AudioStreamPlayer = $SFX_Battle_Start
+
+func one_shot(stream : AudioStream) -> AudioStreamPlayer:
+	var player := AudioStreamPlayer.new()
+	player.stream = stream
+	player.bus = &"SoundFX"
+	player.finished.connect(player.queue_free)
+	add_child(player)
+	player.play()
+	return player
 
 func bgm_pause():
 	bgm_player.stream_paused = true
