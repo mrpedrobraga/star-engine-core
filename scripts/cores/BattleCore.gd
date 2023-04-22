@@ -29,12 +29,12 @@ func battle_loop():
 		for stfx in ch.stats.status_effects:
 			stfx._battle_start(battle_instance)
 	
-	var first_group_turn = _do_ally_turns
+	var first_group_turn = _do_allies_turn
 	var second_group_turn = _do_opponent_turns
 	
 	if battle_instance.opponents_have_advantage:
 		first_group_turn = _do_opponent_turns
-		second_group_turn = _do_ally_turns
+		second_group_turn = _do_allies_turn
 	
 	while is_in_battle:
 		# Message the stfx that a round began.
@@ -71,7 +71,7 @@ func battle_loop():
 	#TODO: Put characters back on the overworld.
 
 ##VIRTUAL FUNCTION for the ally turns.
-func _do_ally_turns():
+func _do_allies_turn():
 	# Message the stfx that the it's the allies' turn.
 	for ch in battle_instance.battlers:
 		for stfx in ch.stats.status_effects:
