@@ -41,6 +41,11 @@ func _dialog(pool : StarScript, key : StringName):
 func _handle_attacked(attacker : Character, attack, success : bool):
 	await get_tree().process_frame
 
+##Virtual; for a master_battle_object, responds to an Ally's attack
+##on a battle on this battle object's group.
+func _handle_character_attacked(attacker : Character, target : Character, attack, success : bool):
+	await get_tree().process_frame
+
 ##Virtual; responds to an Ally's Action.
 func _handle_ACT(character : Character, act_name : String) -> void:
 	# Inherit with the result of the used ACT.

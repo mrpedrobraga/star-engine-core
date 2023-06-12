@@ -23,6 +23,7 @@ var input_transform := Transform2D.IDENTITY
 const motion_modes = "Free,Sidescroller,Discrete"
 const motion_directions = "Up,Down,Left,Right"
 var motion_mode : int = 0
+var motion_grid_size : Vector2 = Vector2(16, 16)
 var motion_maximum_speed := 768
 var motion_acceleration := 12288
 var motion_transform := Transform2D.IDENTITY
@@ -73,6 +74,7 @@ func _update_props():
 	PROPERTY ("Input/Transform", &"input_transform", TYPE_TRANSFORM2D)
 	
 	PROPERTY ("Motion/Mode", &"motion_mode", TYPE_INT, PROPERTY_HINT_ENUM, motion_modes)
+	PROPERTY ("Motion/Grid Size", &"motion_grid_size", TYPE_VECTOR2)
 	PROPERTY ("Motion/Acceleration", &"motion_acceleration", TYPE_FLOAT)
 	PROPERTY ("Motion/Maximum Speed", &"motion_maximum_speed", TYPE_FLOAT)
 	PROPERTY ("Motion/Transform", &"motion_transform", TYPE_TRANSFORM2D)
@@ -209,8 +211,43 @@ func move_sidescroller(delta):
 	collided = parent.move_and_slide()
 	
 
+var _discrete_movement_tween : Tween = null
+
 func move_discrete(delta):
-	pass
+	var move = func move_discrete_move(direction : Vector2, squish : Vector2):
+		# TODO: add buffering!
+		
+		if _discrete_movement_tween and _discrete_movement_tween.is_running():
+			return
+		
+		var squash_stretch_tween := get_tree().create_tween()
+		parent.scale = squish
+		squash_stretch_tween.tween_property(parent, ^"scale", Vector2.ONE, 0.1)
+		_discrete_movement_tween = get_tree().create_tween()
+		_discrete_movement_tween.tween_property(
+			parent,
+			^"position",
+			_snapped(
+				parent.position + direction * motion_grid_size,
+				motion_grid_size,
+				motion_grid_size*0.5
+			),
+			0.1 
+		)
+	
+	if Input.is_action_pressed(input_action_left):
+		move.call(Vector2.LEFT , Vector2(2, 0.5))
+	elif Input.is_action_pressed(input_action_right):
+		move.call(Vector2.RIGHT, Vector2(2, 0.5))
+	elif Input.is_action_pressed(input_action_up):
+		move.call(Vector2.UP   , Vector2(0.5, 2))
+	elif Input.is_action_pressed(input_action_down):
+		move.call(Vector2.DOWN , Vector2(0.5, 2))
+	
+	parent.motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+
+func _snapped(vector : Vector2, grid : Vector2, offset : Vector2):
+	return (vector - offset).snapped(grid) + offset
 
 ######################### EDITOR CONFIGURATION #########################
 

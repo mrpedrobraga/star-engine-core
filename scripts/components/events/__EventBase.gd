@@ -95,11 +95,20 @@ func _ready():
 	queue_redraw()
 	
 	# Add yourself to the current room's registered objects.
-	if Game.current_room:
-		Game.current_room.register_object("event_" + name, self)
+	if not Engine.is_editor_hint():
+		_get_room_parent().register_object("event_" + name, self)
 	
 	if trigger == TriggerCondition.ON_SCENE_START:
 		_trigger()
+
+func _get_room_parent():
+	var room : Node = self
+	while room:
+		if room is Room:
+			break
+		room = room.get_parent()
+	return room
+	
 
 func _physics_process(delta):
 	if trigger == TriggerCondition.EVERY_TICK:

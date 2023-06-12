@@ -9,7 +9,9 @@ class_name Component
 ##Checking this variable in the inspector
 ##will update the available properties for this component.
 @export var UPDATE_PROPERTIES : bool = false:
-	set(v): _update_props()
+	set(v):
+		_update_props()
+		notify_property_list_changed()
 @export_category("")
 
 func _update_props():

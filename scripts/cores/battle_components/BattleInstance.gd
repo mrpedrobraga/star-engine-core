@@ -7,7 +7,9 @@ class_name BattleInstance
 @export var allies : Array[Character] = []
 ##An array containing the opponent Characters.
 @export var opponents : Array[Character] = []
-var opponent_scripts : Array[BattlerScript]
+##A master script, for battles where the team members don't have individual scripts.
+@export var master_battle_script : Script
+var master_battle_object : BattlerScript
 ##Useful array containing both the allies and opponents.
 var battlers : Array[Character] = []
 var battlers_dict : Dictionary = {}
@@ -30,13 +32,21 @@ func setup():
 	if allies.is_empty():
 		allies = Game.get_party()
 	
-	opponent_scripts = []
+	# Create the master battle object.
+	if master_battle_script:
+		master_battle_object = master_battle_script.new()
+		master_battle_object.battle = self
+		Game.Battle.add_child(master_battle_object)
+		Game.Battle.battle_dismissed.connect(master_battle_object.queue_free)
+	
 	for opp in opponents:
-		opp.battler_object = opp.battler_script.new()
-		opp.battler_object.owner_character = opp
-		opp.battler_object.battle = self
-		opponent_scripts.append(opp.battler_object)
-		Game.Battle.add_child(opp.battler_object)
+		opp.battler_object = null
+		if opp.battler_script:
+			opp.battler_object = opp.battler_script.new()
+			opp.battler_object.owner_character = opp
+			opp.battler_object.battle = self
+			Game.Battle.add_child(opp.battler_object)
+			Game.Battle.battle_dismissed.connect(opp.battler_object.queue_free)
 	
 	battlers.assign(allies + opponents)
 	for battler in battlers:

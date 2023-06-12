@@ -15,14 +15,29 @@ class_name BattleEvent
 func _init():
 	color = Color(0.99999982118607, 0.36941140890121, 0.13345029950142)
 
+func _ready():
+	await get_tree().process_frame
+	super()
+	if not Engine.is_editor_hint():
+		Game.current_room.register_object(StringName("battle_" + name), self)
+
 func _trigger():
+	var tbkp = trigger
+	trigger = TriggerCondition.NEVER
 	var bi_dupl = battle_instance.duplicate()
+	bi_dupl.allies.assign([])
+	bi_dupl.opponents.assign([])
 	for i in character_resources.size():
 		var ch := character_resources[i]
 		
 		ch.world_node = get_node(world_nodes[i])
 		bi_dupl.opponents.append(ch)
-		Game.Battle.engage_battle(bi_dupl)
+	Game.Battle.engage_battle(bi_dupl)
+	
+	await Game.Battle.battle_dismissed
+	# Await timeout after touching the battle event.
+	await get_tree().create_timer(2.0).timeout
+	trigger = tbkp
 
 var _icon = preload("res://_engine/scripts/icons/icon_battleevent.png")
 
