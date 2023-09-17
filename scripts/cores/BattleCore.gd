@@ -70,28 +70,44 @@ func battle_loop():
 	Shell.r_print("-------------------\nBATTLE END!!! ")
 	#TODO: Put characters back on the overworld.
 
-##VIRTUAL FUNCTION for the ally turns.
+
+##Virtual with default;
+##Executes the allies' turn, and calls the routines
+##associated with the allie's turn start and end.
 func _do_allies_turn():
-	# Message the stfx that the it's the allies' turn.
+	# Message the stfx instances that the it's the allies' turn.
 	for ch in battle_instance.battlers:
 		for stfx in ch.stats.status_effects:
 			stfx._allies_turn_start()
+
+  # Here is where the allies' choices
+  # are executed.
 	await get_tree().process_frame
-	# Message the stfx that the allies' turn is over.
+	
+  # Message the stfx instances that the allies' turn is over.
 	for ch in battle_instance.battlers:
 		for stfx in ch.stats.status_effects:
 			stfx._allies_turn_end()
-##VIRTUAL FUNCTION for the opponent's turns.
+
+
+##Virtual with default;
+##Executes the allies' turn, and calls the routines
+##associated with the allie's turn start and end.
 func _do_opponent_turns():
 	# Message the stfx that it's the opponent's turn.
 	for ch in battle_instance.allies + battle_instance.opponents:
 		for stfx in ch.stats.status_effects:
 			stfx._opponents_turn_start()
+
+  # Here is where the opponents'
+  # choices are generated and executed.
 	await get_tree().process_frame
-	# Message the stfx that the opponents' turn is over.
+	
+  # Message the stfx that the opponents' turn is over.
 	for ch in battle_instance.allies + battle_instance.opponents:
 		for stfx in ch.stats.status_effects:
 			stfx._opponents_turn_end()
+
 
 ##A class that holds a single player choice for the what an ally will do in a battle.
 class AllyBattleChoice:

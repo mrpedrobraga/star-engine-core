@@ -26,6 +26,7 @@ func CATEGORY(cat : String):
 		"name": cat,
 		"usage": PROPERTY_USAGE_CATEGORY
 	}
+
 ## Adds a new simple property to the property list.
 func PROPERTY(prop : String, target: StringName, type : int, hint : int = PROPERTY_HINT_NONE, hint_string : String = "", group_toggle : bool = false):
 	extra_props[prop] = {

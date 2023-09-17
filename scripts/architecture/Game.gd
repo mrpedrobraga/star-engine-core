@@ -83,6 +83,9 @@ var Characters := {
 	
 }
 
+## The current room loaded in the game.
+var current_room : Room
+
 ##Emitted when the game state changes.
 ##@param state The state to which the Game changed.
 signal state_changed(state)
@@ -105,9 +108,6 @@ func process_states() -> void:
 
 
 #--------- Convenient Functions ---------#
-
-## The current room loaded in the game.
-var current_room : Room
 
 ## Changes the current room
 func change_room(room_scene : PackedScene, transition_context : Dictionary = {}):

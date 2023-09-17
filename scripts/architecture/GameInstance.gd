@@ -44,11 +44,11 @@ func _ready():
 	start.call_deferred()
 
 ## Loads the game world so you can play.
-## TODO: instead of calling it automatically, perhaps, it should be called from a main menu.
 func start():
-	print ("Setting up game.")
+	print ("GameInstance::start")
 	
 	# Load the first game room (or the main menu)
+  # TODO: Load room from save file, if there is one.
 	Game.change_room(
 		Game.game_setup_save.resume_room,
 		{
@@ -59,11 +59,14 @@ func start():
 
 
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED
+
 func _input(ev):
-	if Input.is_action_just_pressed("ui_fullscreen"):
+  # Allow toggling fullscreen
+  if Input.is_action_just_pressed("ui_fullscreen"):
 		var w : Window = get_tree().root
 		if w.mode == Window.MODE_FULLSCREEN:
 			w.mode = _window_mode_before_fullscreen
 		else:
 			_window_mode_before_fullscreen = w.mode
 			w.mode = Window.MODE_FULLSCREEN
+

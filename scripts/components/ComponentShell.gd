@@ -3,7 +3,9 @@ extends StarScriptShell
 class_name ComponentShell
 
 ## Class that acts like a shell but acts on a specific instance of an object.
+##
 ## It allows its executing code to be hotswapped;
+## This can be used to do things such as cutscenes.
 
 var step_block : StarScriptBlock
 var step_block_context : Dictionary

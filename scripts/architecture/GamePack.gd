@@ -51,5 +51,6 @@ func _setup():
 func _boot():
 	pass
 
+# String representation of this object, for debugging purposes.
 func _to_string():
 	return "['%s' for '%s'%s version %s]" % [name, bundle_id, " (core)" if is_core else "", version]
