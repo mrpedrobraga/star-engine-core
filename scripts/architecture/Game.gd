@@ -64,6 +64,12 @@ func load_last_save_data(game_name = ""):
 		# it creates a brand new one.
 		Game.Data.default_save_data = game_setup_save
 		Game.Data.data = Game.Data.create_save_data(game_name)
+		# Set the player character
+		Game.Data.data.character.world_node = Game.Data.data.character_vessel_scene.instantiate()
+		Game.Data.data.character.world_node.character = Game.Data.data.character
+		Game.DC.camera_target = Game.Data.data.character.world_node
+		Game.add_to_party(Game.Data.data.character)
+		
 		# [DEBUG]
 		print("[Game] Created New Save File:\n\n" + str(Game.Data.data))
 		Game.Data.save_game(user_info.save_file)
