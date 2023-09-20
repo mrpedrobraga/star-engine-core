@@ -177,7 +177,7 @@ static func get_tokens(raw : String) -> Array[Dictionary]:
 			ch_index += mat_.get_string().length()
 			iter_index += 1; continue
 		
-		# match binary literals
+		# match binary literalsS
 		mat_ = r_binary_integer.search(slice)
 		if mat_:
 			var num : int = _get_num_from_bin(mat_.get_string("content"))
