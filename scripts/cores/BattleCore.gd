@@ -80,11 +80,11 @@ func _do_allies_turn():
 		for stfx in ch.stats.status_effects:
 			stfx._allies_turn_start()
 
-  # Here is where the allies' choices
-  # are executed.
+	# Here is where the allies' choices
+	# are executed.
 	await get_tree().process_frame
 	
-  # Message the stfx instances that the allies' turn is over.
+	# Message the stfx instances that the allies' turn is over.
 	for ch in battle_instance.battlers:
 		for stfx in ch.stats.status_effects:
 			stfx._allies_turn_end()
@@ -99,11 +99,11 @@ func _do_opponent_turns():
 		for stfx in ch.stats.status_effects:
 			stfx._opponents_turn_start()
 
-  # Here is where the opponents'
-  # choices are generated and executed.
+	# Here is where the opponents'
+	# choices are generated and executed.
 	await get_tree().process_frame
 	
-  # Message the stfx that the opponents' turn is over.
+	# Message the stfx that the opponents' turn is over.
 	for ch in battle_instance.allies + battle_instance.opponents:
 		for stfx in ch.stats.status_effects:
 			stfx._opponents_turn_end()

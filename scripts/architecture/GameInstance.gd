@@ -48,7 +48,7 @@ func start():
 	print ("GameInstance::start")
 	
 	# Load the first game room (or the main menu)
-  # TODO: Load room from save file, if there is one.
+	# TODO: Load room from save file, if there is one.
 	Game.change_room(
 		Game.game_setup_save.resume_room,
 		{
@@ -61,8 +61,8 @@ func start():
 var _window_mode_before_fullscreen := Window.MODE_MINIMIZED
 
 func _input(ev):
-  # Allow toggling fullscreen
-  if Input.is_action_just_pressed("ui_fullscreen"):
+	# Allow toggling fullscreen
+	if Input.is_action_just_pressed("ui_fullscreen"):
 		var w : Window = get_tree().root
 		if w.mode == Window.MODE_FULLSCREEN:
 			w.mode = _window_mode_before_fullscreen
