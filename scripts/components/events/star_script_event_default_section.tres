@@ -1,7 +1,12 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://fxfkv3ohlsmt"]
+[gd_resource type="Resource" script_class="StarScriptSection" load_steps=2 format=3 uid="uid://fxfkv3ohlsmt"]
 
-[ext_resource type="Script" path="res://_engine/_addons/used_in_core/star_starscript/StarScriptSection.gd" id="1_ciwtu"]
+[ext_resource type="Script" path="res://_engine/_addons/used_in_core/starscript/src/StarScriptSection.gd" id="1_ciwtu"]
 
 [resource]
 script = ExtResource("1_ciwtu")
-section_key = ""
+properties = {}
+properties_arr = []
+commands = Array[Resource("res://_engine/_addons/used_in_core/starscript/src/StarScriptCommand.gd")]([])
+labels = {}
+line = 0
+local_variables = {}

@@ -44,7 +44,7 @@ var required_state = &"Overworld"
 var position_z := 0.0
 var vz := 0.0
 var input_vector := Vector2.ZERO
-var facing_vector := Vector2.DOWN
+@export var facing_vector := Vector2.DOWN
 var collided := false
 var last_collision : KinematicCollision2D
 
@@ -145,6 +145,8 @@ func _physics_process(delta):
 			move_sidescroller(delta)
 		2:
 			move_discrete(delta)
+	
+	parent.position = floor(parent.position)
 
 func move_free(delta):
 	parent.velocity = parent.velocity.move_toward(

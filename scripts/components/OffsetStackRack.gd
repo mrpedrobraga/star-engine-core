@@ -8,14 +8,14 @@ class_name OffsetStackRack2D
 ##but you can still edit each "component" of the stack independently.
 
 ##A packed array that contains the stack of [Vector2] offsets.
-@export var offset_stack : PackedVector2Array = [Vector2.ZERO]:
+@export var offset_stack : Array[Vector2i] = [Vector2i.ZERO]:
 	set(v):
 		offset_stack = v
 		update_position()
 
 ##Sets the offset at [param index] to be [param value].
 
-func set_offset_at(index : int, value : Vector2):
+func set_offset_at(index : int, value : Vector2i):
 	# If the index is too big, quickly add more spaces.
 	while index >= offset_stack.size():
 		offset_stack.push_back(Vector2.ZERO)
@@ -29,9 +29,10 @@ func get_offset_at(index : int):
 
 ##Updates its own position based on its set of offsets.
 func update_position():
-	position = Vector2.ZERO
+	var new_position = Vector2i.ZERO
 	for off in offset_stack:
-		position += off
+		new_position += off
+	position = new_position
 
 func _to_string():
 	return "[Offsets: %s]" % str(offset_stack)

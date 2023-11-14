@@ -6,11 +6,13 @@ class_name SpriteSheetRect
 @export var sprite_sheet_pool : SpriteSheetPool:
 	set(v):
 		sprite_sheet_pool = v
-		update_texture()
+		if v:
+			update_texture()
 @export var current_sheet : String:
 	set(v):
 		current_sheet = v
-		update_texture()
+		if v:
+			update_texture()
 @export var current_frame_coords : Vector2 = Vector2(0,0):
 	set(v):
 		current_frame_coords = v

@@ -3,8 +3,6 @@ class_name StarScriptBlock
 
 ## Holds the data for a single StarScript block.
 
-var StarScriptCommand := preload("StarScriptCommand.gd")
-
 @export_category("Content")
 
 ## The properties defined in this block.

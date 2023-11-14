@@ -68,7 +68,7 @@ func load_last_save_data(game_name = ""):
 		Game.Data.data.character.world_node = Game.Data.data.character_vessel_scene.instantiate()
 		Game.Data.data.character.world_node.character = Game.Data.data.character
 		Game.DC.camera_target = Game.Data.data.character.world_node
-		Game.add_to_party(Game.Data.data.character)
+		Game.set_player_vessel(Game.Data.data.character)
 		
 		# [DEBUG]
 		print("[Game] Created New Save File:\n\n" + str(Game.Data.data))
@@ -151,7 +151,7 @@ func change_room(room_scene : PackedScene, transition_context : Dictionary = {})
 					n.global_position = marker.global_position
 			## TODO: Move this to [Room], perhaps?
 			elif current_room.resume_hotspot:
-				n.global_position = current_room.resume_hotspot.global_position
+				n.global_position = floor(current_room.resume_hotspot.global_position)
 			await get_tree().process_frame
 		
 		DC.camera_focus_on_target()

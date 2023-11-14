@@ -16,7 +16,7 @@ class_name Character
 ##A reference to the character's stats ([CharacterStats]). 
 @export var stats : CharacterStats
 ##A reference to the node associated with this character.
-@export var world_node : Node2D
+var world_node : Node2D
 
 @export_category("Battle")
 ##A battler script for when this character engages in battle.

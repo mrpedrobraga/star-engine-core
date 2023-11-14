@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dq04wlt3drr30"]
+[gd_scene load_steps=3 format=3 uid="uid://dq04wlt3drr30"]
 
 [ext_resource type="Script" path="res://_engine/scripts/architecture/Bootloader.gd" id="1_5du8l"]
+[ext_resource type="FontFile" uid="uid://bsxpr1tlod3vf" path="res://_engine/fonts/JetBrainsMono-Regular.woff2" id="2_3ey6j"]
 
 [node name="Bootloader" type="Control"]
 layout_mode = 3
@@ -12,14 +13,16 @@ grow_vertical = 2
 script = ExtResource("1_5du8l")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = -16.0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = -8.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 4
+theme_override_fonts/normal_font = ExtResource("2_3ey6j")
 bbcode_enabled = true
+threaded = true

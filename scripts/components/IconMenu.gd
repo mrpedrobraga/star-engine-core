@@ -7,7 +7,7 @@ class_name IconMenu
 
 @export var icons : Array[Texture2D] = []
 
-static func create(
+static func create_with_icons(
 	_options : Array,
 	_labels : Array = [],
 	_icons : Array = [],

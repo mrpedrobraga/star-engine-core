@@ -111,4 +111,4 @@ func camera_focus_on_target():
 		if not camera_target.is_inside_tree():
 			camera_rack.set_offset_at(0, Vector2() + off)
 			return
-		camera_rack.set_offset_at(0, camera_target.global_position + off)
+		camera_rack.set_offset_at(0, Vector2i(camera_target.global_position + off))
