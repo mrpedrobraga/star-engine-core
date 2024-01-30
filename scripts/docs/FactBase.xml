@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="FactBase" inherits="Resource">
+	<brief_description>
+		A class storing all the facts of the game,
+	</brief_description>
+	<description>
+		The facts are stored at paths, and can be easily retrieved from, say, a [StarScript].
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="dict_op">
+			<return type="void" />
+			<param index="0" name="dictionary" type="Dictionary" />
+			<param index="1" name="path" type="NodePath" />
+			<param index="2" name="function" type="Callable" />
+			<description>
+				Does an operation deep within a dictionary, by using a path to resolve which subitem to affect.
+			</description>
+		</method>
+		<method name="get_fact">
+			<return type="Variant" />
+			<param index="0" name="fact" type="NodePath" />
+			<description>
+				Returns the value of a fact.
+			</description>
+		</method>
+		<method name="is_fact">
+			<return type="Variant" />
+			<param index="0" name="fact" type="NodePath" />
+			<description>
+				Checks whether a certain fact exists.
+			</description>
+		</method>
+		<method name="set_fact">
+			<return type="void" />
+			<param index="0" name="fact" type="NodePath" />
+			<param index="1" name="value" type="Variant" default="false" />
+			<description>
+				Sets a fact to hold a value.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="_data" type="Variant" setter="" getter="" default="&lt;unknown&gt;">
+		</member>
+	</members>
+</class>

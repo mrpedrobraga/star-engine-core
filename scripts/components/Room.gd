@@ -43,7 +43,7 @@ func ORGN(name_ : String):
 		return
 	var orgn := Node2D.new()
 	orgn.name = name_
-	add_child(orgn, true)
+	add_child.call_deferred(orgn, true)
 	orgn.owner = self
 
 ## Registers an object that can be retrieved by an id.

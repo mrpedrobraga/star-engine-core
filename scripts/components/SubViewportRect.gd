@@ -16,10 +16,10 @@ func setup():
 	viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 	viewport.transparent_bg = true
 	viewport.size = size
-	add_child(viewport, false, Node.INTERNAL_MODE_BACK)
+	add_child.call_deferred(viewport, false, Node.INTERNAL_MODE_BACK)
 	for child in children:
 		remove_child(child)
-		viewport.add_child(child)
+		viewport.add_child.call_deferred(child)
 	texture = viewport.get_texture()
 
 func _draw():

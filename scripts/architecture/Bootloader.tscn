@@ -25,4 +25,5 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("2_3ey6j")
 bbcode_enabled = true
+scroll_active = false
 threaded = true

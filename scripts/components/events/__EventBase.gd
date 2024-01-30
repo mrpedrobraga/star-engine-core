@@ -86,8 +86,8 @@ func _ready():
 		_mouse_over = false
 	))
 	
-	_area.add_child(_shape)
-	add_child(_area)
+	_area.add_child.call_deferred(_shape)
+	add_child.call_deferred(_area)
 	_shape.shape = _col_rect
 	_area.visible = false
 	_area.position = size/2
